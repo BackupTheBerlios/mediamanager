@@ -8,9 +8,25 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.14 2004/06/26 13:03:14 crac Exp $
+ * @version $Id: Repository.java,v 1.15 2004/06/26 13:16:03 crac Exp $
  */
 public abstract class Repository {
+    
+    // --------------------------------
+    // FIELDS
+    // --------------------------------
+    
+    protected boolean connected = false;
+    protected static String name = "Repository";
+    protected static Class query = AbstractQuery.class;
+    
+    // --------------------------------
+    // CONSTRUCTORS
+    // --------------------------------
+    
+    // --------------------------------
+    // OPERATIONS
+    // --------------------------------
     
     abstract protected DataSet update(DataSet ds);
     abstract protected DataSet insert(DataSet ds);
@@ -28,10 +44,36 @@ public abstract class Repository {
     abstract protected void updateUser(User user);
     
     abstract public javax.swing.JPanel getConfPanel();
-    abstract public String getName();
-    abstract protected Class getQueryClass();
-    
     abstract protected MetaData initialize();
     abstract protected void connect();
     abstract protected void disconnect();
+    
+    /**
+     * 
+     * @return Returns true if connection to 
+     *      repository is established
+     */
+    protected boolean isConnected() {
+        return connected;
+    }
+    
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    protected Class getQueryClass() {
+        return query;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
 }

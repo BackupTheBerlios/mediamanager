@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.37 2004/06/26 13:03:14 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.38 2004/06/26 13:16:03 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -34,18 +34,16 @@ public final class MckoiRepository extends Repository {
     // FIELDS
     // --------------------------------
     
-    private static Class query = DatabaseQuery.class;
-    
-    private static final String name = 
-        "Mckoi SQL DB Repository";
+    static {
+        name = "Mckoi SQL DB Repository";
+        query = DatabaseQuery.class;
+    }
     
     /* Database connection settings */
     private static final String connFile = "conf" + 
         File.separator + "mckoi_repository.ini";
     private ConnectionSettings connSettings = 
         new ConnectionSettings(connFile);
-    
-    private boolean connected = false;
     
     /* Mckoi SQL Database settings */
     private MckoiSettings mckoiSettings = null;
@@ -96,15 +94,6 @@ public final class MckoiRepository extends Repository {
         dbConnection.disconnect();
         connected = false;
         //dbConnection = null;
-    }
-    
-    /**
-     * 
-     * @return Returns true if connection to 
-     *      repository is established
-     */
-    protected boolean isConnected() {
-        return connected;
     }
     
     ///////////////////////////
@@ -918,22 +907,6 @@ public final class MckoiRepository extends Repository {
             e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
-    }
-    
-    /**
-     * 
-     * @return Returns the name of the repository
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /**
-     * 
-     * @return 
-     */
-    protected Class getQueryClass() {
-        return query;
     }
     
     /**
