@@ -31,8 +31,9 @@ public class PluginConf extends JPanel
 	
 	public PluginConf() {
 		manager = PluginManager.getInstance();
-		initSwing();
 		loadPluginList();
+		initSwing();
+		refresh();
 	}
 	
 	private void loadPluginList() {
@@ -56,6 +57,11 @@ public class PluginConf extends JPanel
 			plugin[i]     = (Plugin)it.next();
 			identifier[i] = plugin[i].getIdentifier();
 			name[i]       = plugin[i].getName();
+		}
+	}
+	
+	private void refresh() {
+		for (int i=0; i<plugin.length; i++) {
 			activated[i]  = manager.isPluginActivated(identifier[i]);
 			checkBox[i].setSelected(activated[i]);
 			deprecated[i] = manager.isPluginDeprecated(identifier[i]);
