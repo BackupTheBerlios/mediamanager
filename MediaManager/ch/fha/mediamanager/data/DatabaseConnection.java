@@ -17,9 +17,9 @@ import java.sql.Statement;
  * @see DatabaseSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.5 2004/06/19 08:34:52 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.6 2004/06/20 22:49:36 crac Exp $
  */
-public class DatabaseConnection {
+public final class DatabaseConnection {
     
     // --------------------------------
     // FIELDS
@@ -39,8 +39,11 @@ public class DatabaseConnection {
     
     /**
      * 
+     * @param settings
      */
-    public DatabaseConnection() {}
+    public DatabaseConnection(DatabaseSettings settings) {
+        this.settings = settings;
+    }
     
     // --------------------------------
     // OPERATIONS
@@ -241,4 +244,15 @@ public class DatabaseConnection {
         }
     }
 
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @param settings
+     */
+    public void setSettings(DatabaseSettings settings) {
+        this.settings = settings;   
+    }
 }
