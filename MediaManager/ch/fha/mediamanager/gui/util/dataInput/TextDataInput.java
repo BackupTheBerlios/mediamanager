@@ -13,29 +13,37 @@ import ch.fha.mediamanager.data.Field;
  * @see DataInput
  * 
  * @author ia02vond
- * @version $id$
+ * @version $Id: TextDataInput.java,v 1.5 2004/06/28 15:19:17 crac Exp $
  */
 public class TextDataInput extends AbstractDataInput
 	implements CaretListener {
 
 	private JTextArea textArea;
+    private javax.swing.JScrollPane scroller;
 	
 	public TextDataInput(Field field) {
 		super(field);
 		
 		textArea = new JTextArea();
+        textArea.setRows(6);
+        textArea.setLineWrap(true);
 
 		setValue(field.getValue(), false);
 		
 		textArea.setText(field.getValue().toString());
 		
 		textArea.addCaretListener(this);
+        
+        scroller = new javax.swing.JScrollPane(textArea);
+        scroller.setPreferredSize(
+            textArea.getPreferredScrollableViewportSize()
+        );
 		
 		gridSize = new Dimension(1, 3);
 	}
 	
 	public JComponent getInputComponent() {
-		return textArea;
+		return scroller;
 	}
 	
 	public void setValue(Object value) {
