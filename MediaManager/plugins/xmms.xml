@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<plugin name="MP3 Player" version="1_0" reqversion="1_1">
+
+  <source>plugins.xmms.XMMSPlugin</source>
+
+  <description>
+    Spielt ein oder mehrere Mp3 Files mit einem
+    Mp3 Player ab.
+  </description>
+
+  <mount>
+    <onEvent id="singlerow"/>
+    <onEvent id="multirow"/>
+  </mount>
+
+  <prop key="command" value="xmms"/>
+  <prop key="metafieldname" value="Kommentar"/>
+
+</plugin>
