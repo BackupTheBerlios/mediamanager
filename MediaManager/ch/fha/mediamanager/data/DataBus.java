@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.26 2004/06/27 12:26:24 crac Exp $
+ * @version $Id: DataBus.java,v 1.27 2004/06/27 14:10:55 crac Exp $
  */
 public final class DataBus {
 	
@@ -49,13 +49,7 @@ public final class DataBus {
     // --------------------------------
     
     /**
-     * Attaches the application to a data repository and
-     * loads all its meta-data.
-     * 
-     * @see Repository
-     * @see MetaField
-     * @see MetaEntity
-     * @see MetaData
+     * Attaches the application to a data repository.
      */
     public static void initialize() {
     	try {
@@ -71,7 +65,10 @@ public final class DataBus {
     }
     
     /**
-     * Connects to the repository.
+     * Connects to the repository and loads its meta data.
+     * 
+     * @see MetaData
+     * @see Repository.#initialize()
      */
     public static void connect() {
         if (currentRepository != null) {
@@ -86,10 +83,13 @@ public final class DataBus {
     
     /**
      * Disconnects from the repository.
+     * 
+     * @see Repository.#disconnect()
      */
     public static void disconnect() {
         if (currentRepository != null) {
             currentRepository.disconnect();
+            metaData = null;
             DataBus.logger.info("Repository disconnected.");
         } else {
             DataBus.logger.info("No repository available.");   
