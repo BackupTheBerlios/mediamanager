@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.11 2004/06/25 06:47:13 radisli Exp $
+//$Id: MainFrame.java,v 1.12 2004/06/27 13:18:45 crac Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -64,13 +64,13 @@ public class MainFrame extends JFrame implements
 	 * Initialisation of the basic compomponents and the window structure
 	 */
 	private void init() {
-		Mediamanager.addSavable(this);
+		MediaManager.addSavable(this);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				myWindowClosing(e);
 			}
 		});
-		Preferences prefs = Mediamanager.getPrefs();
+		Preferences prefs = MediaManager.getPrefs();
 
 		// Main Panel
 		mainTabPanel = new MainTabPanel();
@@ -278,7 +278,7 @@ public class MainFrame extends JFrame implements
 		if(option("Wollen Sie wirklich beenden?", options) == 0) {
 			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 			try {
-				Mediamanager.fireSave();
+				MediaManager.fireSave();
 			} catch(Exception e) {
 				exception(e);
 			}
