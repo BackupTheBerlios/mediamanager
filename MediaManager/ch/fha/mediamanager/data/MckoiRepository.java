@@ -19,14 +19,13 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.12 2004/06/22 21:21:35 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.13 2004/06/23 12:01:34 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -36,14 +35,23 @@ public final class MckoiRepository implements Repository {
     
     private static final String name = "Mckoi SQL DB Repository";
     
-    private static final String file = "conf" + File.separator + 
-        "mckoi_repository.ini";
+    private static final String connFile = "conf" + File.separator + 
+        "mckoi_repository";
     
-    private DatabaseSettings settings = 
-        new DatabaseSettings(file);
+    /* Database connection settings */
+    private ConnectionSettings connSettings = 
+        new ConnectionSettings(connFile);
+    
+    /* Mckoi SQL Database settings */
+    private MckoiSettings mckoiSettings = null;
+    private static final String mckoiFile = 
+        "conf" + File.separator + "mckoi.conf";
     
     private DatabaseConnection dbConnection = 
-        new DatabaseConnection(settings);
+        new DatabaseConnection(connSettings);
+    
+    private java.sql.PreparedStatement sqlNextPK = 
+        dbConnection.prepareStatement("SELECT MAX(?) FROM ?;");
     
     // --------------------------------
     // CONSTRUCTORS
@@ -84,40 +92,137 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
-     * 
-     * @param entity
-     */
-    public boolean create(MetaEntity entity){
-        // TODO
-    	return false;
-    }
-    
-    /**
-     * 
-     * @param field
-     */
-    public boolean create(MetaField field){
-        // TODO
-        return false;   
-    }
-    
-    /**
-     * 
-     * @param entity
-     */
-    public boolean delete(MetaEntity entity){
-        // TODO
-        return false;
-    }
-    
-    /**
-     * 
-     * @param field
-     */
-    public boolean delete(MetaField field) {
-        // TODO
-        return false;
-    }
+    *
+    * @param entity
+    * @param fields
+    * @return Returns true if the entity and its field 
+    *     have been created
+    */
+   public boolean create(MetaEntity entity, MetaField[] fields) {
+       if ((entity == null) || (fields == null))
+           throw new IllegalArgumentException();
+       
+       return false;
+   }
+   
+   /**
+    * 
+    * @param entity
+    * @return Returns true if the entity has been created
+    */
+   public boolean create(MetaEntity entity){ 
+       if (entity == null)
+           throw new IllegalArgumentException();
+           
+       return false;
+   }
+   
+   /**
+    * 
+    * @param field
+    * @return Returns true if the field has been created
+    */
+   public boolean create(MetaField field){
+       if ( (field == null) 
+               || (field.getType() == MetaField.USERID)
+			   || (field.getType() == MetaField.ENTRYID)
+           ) {
+           throw new IllegalArgumentException();
+       }
+       
+       String sql = "ALTER TABLE ? ADD ? ? ?;";
+       
+       java.sql.PreparedStatement create = 
+           dbConnection.prepareStatement(sql);
+           
+       try {
+           create.setString(1, field.getEntity().getName());
+           create.setString(2, field.getName());
+           
+           int length = field.getLength();
+           
+           switch (field.getType()) {
+               case (MetaField.INT):
+               case (MetaField.TEXT):
+               case (MetaField.VARCHAR):
+               case (MetaField.LIST):
+               case (MetaField.BOOLEAN):
+               case (MetaField.DATE):
+               case (MetaField.TIMESTAMP):
+           }
+           
+           create.executeQuery();
+       } catch (SQLException e) {
+           DataBus.logger.warn("Field " + field.getIdentifier() + " not created.");
+           return false;
+       }      
+       DataBus.logger.info("Field " + field.getIdentifier() + " created.");
+       return true;
+   }
+   
+   /**
+    * 
+    * @param entity
+    * @return Returns true if the entity has been deleted
+    */
+   public boolean delete(MetaEntity entity){
+       if ( (entity == null) 
+               || (entity.getName().equals("Entry")) 
+               || (entity.getName().equals("Fld"))
+               || (entity.getName().equals("Fldtype"))
+               || (entity.getName().equals("Ent"))
+           ) {
+           throw new IllegalArgumentException();
+       }
+       
+       // remove also Entry rows
+       String delEntries = "DELETE FROM Entry WHERE EntryId IN " + 
+           "(SELECT EntryId FROM " + entity.getName() + ");";
+       String delEntity = "DROP TABLE " + entity.getName() + ";";
+       
+       try {
+           dbConnection.getConnection().setAutoCommit(false);
+           dbConnection.executeQuery(delEntries);
+           dbConnection.executeQuery(delEntity);
+           dbConnection.getConnection().commit();
+       } catch (SQLException e) {
+           
+       }
+       
+       DataBus.logger.info("Entity " + entity.getName() + " deleted.");
+       return true;
+   }
+   
+   /**
+    * 
+    * @param field
+    * @return Returns true if the field has been deleted
+    */
+   public boolean delete(MetaField field) {
+       if ( (field == null)
+               || (field.getType() == MetaField.USERID)
+               || (field.getType() == MetaField.PK)
+               || (field.getType() == MetaField.ENTRYID)
+           ) {
+           throw new IllegalArgumentException();
+       }
+           
+       String sql = "ALTER TABLE ? DELETE ?";
+       
+       java.sql.PreparedStatement delete = 
+           dbConnection.prepareStatement(sql);
+           
+       try {
+           delete.setString(1, field.getEntity().getName());
+           delete.setString(2, field.getName());
+           delete.executeQuery();
+       } catch (SQLException e) {
+           DataBus.logger.warn("Field " + field.getIdentifier() + " not deleted.");
+           return false;
+       }
+       DataBus.logger.info("Field " + field.getIdentifier() + " deleted.");
+       return true;
+   }
     
     /**
      * Loads all meta information of the repository.
@@ -607,10 +712,12 @@ public final class MckoiRepository implements Repository {
         if ((pk == null) || (entity == null)) 
             throw new IllegalArgumentException();
         
-        String query = "SELECT MAX(" + pk + ") FROM " + entity + ";";
         try {
+            sqlNextPK.setString(1, pk);
+            sqlNextPK.setString(2, entity);
+            
             ResultSet result =  
-                dbConnection.executeQuery(query);
+                sqlNextPK.executeQuery();
             result.next();
             return (result.getInt(1) + 1);
         } catch (SQLException e) {
@@ -629,48 +736,97 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
-     * TODO: use conf/mckoi.conf with these settings
      * 
      * @return Returns the config panel
      */
     public JPanel getConfPanel() {
+        if (mckoiSettings == null) {
+            mckoiSettings = new MckoiSettings(mckoiFile);
+        }
+        
         JPanel outer = new JPanel();
         outer.setLayout(new BorderLayout());
         
         // top
         JPanel top = new JPanel();
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3,2));
+        final JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(9,2));
         
-        panel.add(new JLabel("Benutzername"));
-        final JTextField user = 
-            new JTextField(settings.getUser());
-        panel.add(user);
+        panel.add(new JLabel("DB Pfad"));
+        final JTextField dbPath = 
+            new JTextField(mckoiSettings.getDbPath());
+        panel.add(dbPath);
         
-        panel.add(new JLabel("Passwort"));
-        final JPasswordField pwd = 
-            new JPasswordField(settings.getPassword());
-        panel.add(pwd);
+        panel.add(new JLabel("Log Pfad"));
+        final JTextField logPath = 
+            new JTextField(mckoiSettings.getLogPath());
+        panel.add(logPath);
+        
+        panel.add(new JLabel("Ignore Gross- Kleinschreibung"));
+        final JTextField ignoreCase = 
+            new JTextField(mckoiSettings.getIgnoreCase());
+        panel.add(ignoreCase);
+        
+        panel.add(new JLabel("Data Cache"));
+        final JTextField dataCache = 
+            new JTextField(mckoiSettings.getDataCache());
+        panel.add(dataCache);
+        
+        panel.add(new JLabel("Entry Cache"));
+        final JTextField entryCache = 
+            new JTextField(mckoiSettings.getEntryCache());
+        panel.add(entryCache);
+        
+        panel.add(new JLabel("Max. Worker Threads"));
+        final JTextField workerThreads = 
+            new JTextField(mckoiSettings.getWorkerThreads());
+        panel.add(workerThreads);
+        
+        panel.add(new JLabel("Log Level"));
+        final JTextField logLevel = 
+            new JTextField(mckoiSettings.getLogLevel());
+        panel.add(logLevel);
+        
+        panel.add(new JLabel("Nur Lesezugriff"));
+        final JTextField readOnly = 
+            new JTextField(mckoiSettings.getReadOnly());
+        panel.add(readOnly);
         
         top.add(panel);
         
         // bottom
+        JButton restore = new JButton("default");
+        restore.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getActionCommand().equals("default")) {
+                        mckoiSettings.restoreDefaults();
+                        panel.repaint();
+                    }
+                }
+            });
+        
         JButton save = new JButton("save");
         save.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getActionCommand().equals("save")) {
-                        settings.setPassword( 
-                            pwd.getPassword().toString()
-                        );
-                        settings.setUser(user.getText());
-                        settings.saveConfig();
+                        mckoiSettings.setDataCache(dataCache.getText());
+                        mckoiSettings.setLogPath(logPath.getText());
+                        mckoiSettings.setLogLevel(logLevel.getText());
+                        mckoiSettings.setEntryCache(entryCache.getText());
+                        mckoiSettings.setWorkerThreads(workerThreads.getText());
+                        mckoiSettings.setDbPath(dbPath.getText());
+                        mckoiSettings.setReadOnly(readOnly.getText());
+                        mckoiSettings.setIgnoreCase(ignoreCase.getText());
+                        mckoiSettings.saveConfig();
                     }
                 }
             });
 
         JPanel bottom = new JPanel();
         bottom.setLayout(new FlowLayout());
+        bottom.add(restore);
         bottom.add(save);
         
         outer.add(top, BorderLayout.CENTER);

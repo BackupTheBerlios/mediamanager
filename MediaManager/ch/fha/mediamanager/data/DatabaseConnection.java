@@ -14,10 +14,10 @@ import java.sql.Statement;
  * <code>connect</code> method. Afterwards the class provides 
  * several methods for using the database in your java application.</p>
  * 
- * @see DatabaseSettings
+ * @see ConnectionSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.8 2004/06/22 17:31:40 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.9 2004/06/23 12:01:34 crac Exp $
  */
 public final class DatabaseConnection {
     
@@ -25,7 +25,7 @@ public final class DatabaseConnection {
     // FIELDS
     // --------------------------------
     
-    private DatabaseSettings settings;
+    private ConnectionSettings settings;
     
     /** 
      * The database connection. Only one used for the whole
@@ -41,7 +41,7 @@ public final class DatabaseConnection {
      * 
      * @param settings
      */
-    public DatabaseConnection(DatabaseSettings settings) {
+    public DatabaseConnection(ConnectionSettings settings) {
         this.settings = settings;
     }
     
@@ -239,7 +239,7 @@ public final class DatabaseConnection {
      * 
      * @param settings
      */
-    protected void setSettings(DatabaseSettings settings) {
+    protected void setSettings(ConnectionSettings settings) {
         this.settings = settings;   
     }
 }
