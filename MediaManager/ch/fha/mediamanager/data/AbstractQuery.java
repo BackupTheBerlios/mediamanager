@@ -5,10 +5,10 @@ import java.util.Vector;
 /**
  * Sends queries to the repository.
  * 
- * @see <a href="../../queries.html">Query Examples</a>
+ * @see <a href="{@docroot}/../../queries.html">Query Examples</a>
  * 
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.6 2004/06/28 12:43:43 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.7 2004/06/28 12:46:40 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     

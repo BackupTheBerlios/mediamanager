@@ -14,7 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.29 2004/06/28 11:56:05 crac Exp $
+ * @version $Id: DataBus.java,v 1.30 2004/06/28 12:43:43 crac Exp $
  */
 public final class DataBus {
 	
@@ -69,7 +69,7 @@ public final class DataBus {
      * Connects to the repository and loads its meta data.
      * 
      * @see MetaData
-     * @see Repository.#initialize()
+     * @see Repository#initialize()
      */
     public static void connect() {
         if (currentRepository != null) {
@@ -85,7 +85,7 @@ public final class DataBus {
     /**
      * Disconnects from the repository.
      * 
-     * @see Repository.#disconnect()
+     * @see Repository#disconnect()
      */
     public static void disconnect() {
         if (currentRepository != null) {
@@ -177,7 +177,6 @@ public final class DataBus {
     
     /**
      * 
-     * @param vec
      * @param type
      * 
      * @return Returns query handler of the 

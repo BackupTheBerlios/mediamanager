@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.44 2004/06/28 10:07:24 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.45 2004/06/28 12:43:43 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -737,7 +737,7 @@ public final class MckoiRepository extends Repository {
      * @see DataSet
      * @see DatabaseQuery
      * 
-     * @param ds
+     * @param qr
      * @return Returns the requested <code>DataSet</code>
      */
     protected DataSet load(AbstractQuery qr) {

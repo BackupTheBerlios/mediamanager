@@ -3,7 +3,7 @@ package ch.fha.mediamanager.data;
 /**
  *
  * @author crac
- * @version $Id: DatabaseQuery.java,v 1.4 2004/06/26 15:01:58 crac Exp $
+ * @version $Id: DatabaseQuery.java,v 1.5 2004/06/28 12:43:43 crac Exp $
  */
 public final class DatabaseQuery extends AbstractQuery {
     
@@ -89,7 +89,6 @@ public final class DatabaseQuery extends AbstractQuery {
     
     /**
      * 
-     * @param qr
      * @return 
      */
     protected String createRequest() {

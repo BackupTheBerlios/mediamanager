@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.18 2004/06/28 10:07:24 crac Exp $
+ * @version $Id: DataElement.java,v 1.19 2004/06/28 12:43:43 crac Exp $
  */
 public class DataElement {
 	
@@ -25,7 +25,7 @@ public class DataElement {
     /**
      * 
      * @param entity
-     * @param entryId
+     * @param entry
      */
     public DataElement(MetaEntity entity, Entry entry) {
         this.entity = entity;

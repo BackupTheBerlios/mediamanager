@@ -6,7 +6,7 @@ import java.sql.Timestamp;
  * 
  * 
  * @author luca
- * @version $Id: Entry.java,v 1.5 2004/06/27 10:05:11 crac Exp $
+ * @version $Id: Entry.java,v 1.6 2004/06/28 12:43:43 crac Exp $
  */
 public final class Entry implements Cloneable {
     
@@ -36,7 +36,6 @@ public final class Entry implements Cloneable {
      * @param id
      * @param creation
      * @param edit
-     * @param owner
      */
     public Entry(int id, Timestamp creation, Timestamp edit) {
         this.id = id;
