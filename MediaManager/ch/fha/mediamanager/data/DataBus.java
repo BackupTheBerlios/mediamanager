@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.6 2004/06/18 12:37:13 ia02vond Exp $
+ * @version $Id: DataBus.java,v 1.7 2004/06/19 08:42:03 crac Exp $
  */
 public class DataBus {
 	
@@ -53,14 +53,14 @@ public class DataBus {
      */
     public static void initialize() {
     	try {
-    	repositories = RepositoryLoader.loadRepositories();
+    	    repositories = RepositoryLoader.loadRepositories();
     	} catch (FileNotFoundException e) {
-    		throw new InternalError("no repository found");
+    		throw new InternalError("No repositories found.");
     	}
         if (repositories != null) {
         	currentRepository = repositories[0];
         } else {
-        	throw new InternalError("no repository found");
+        	throw new InternalError("No default repository found.");
         }
         // TODO metaData = currentRepository.loadMetaData();
     }
