@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.10 2004/06/21 21:42:57 crac Exp $
+ * @version $Id: DataElement.java,v 1.11 2004/06/22 09:25:15 crac Exp $
  */
 public class DataElement {
 	
@@ -193,6 +193,19 @@ public class DataElement {
      */
     public MetaEntity getMetaEntity() {
         return entity;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Field getPKField() {
+        Field[] fields = getFields();
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].getMetaField().getType() == MetaField.PK)
+                return fields[i];
+        }
+        return null;
     }
     
     // --------------------------------
