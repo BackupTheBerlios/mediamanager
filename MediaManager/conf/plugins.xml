@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<pluginlist>
+  <plugin id="xmms" active="true" />
+  <plugin id="cddb" active="true" />
+</pluginlist>
