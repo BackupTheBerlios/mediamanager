@@ -1,4 +1,4 @@
-// $Id: MediaManager.java,v 1.1 2004/06/27 13:18:45 crac Exp $
+// $Id: MediaManager.java,v 1.2 2004/06/28 10:43:41 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -75,14 +75,15 @@ public class MediaManager {
 		
 		// Gui
 		splash.setProcess(0.7, "lade graphische Umgebung ...");
-		MainFrame.getInstance();
+		MainFrame mainFrame = MainFrame.getInstance();
 		
 		// waiting ...
 		splash.setProcess(1, "");
 		try { Thread.sleep(50); } catch (Exception e) {}
 		splash.dispose();
 		
-		MainFrame.getInstance().show();
+		mainFrame.setVisible(true);
+		mainFrame.requestFocus();
 	}
 
 	/**
