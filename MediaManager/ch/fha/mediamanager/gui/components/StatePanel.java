@@ -1,4 +1,4 @@
-//$Id: StatePanel.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
+//$Id: StatePanel.java,v 1.3 2004/06/25 14:18:24 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -80,7 +80,7 @@ public class StatePanel extends JPanel {
 		
 		if(timeOut) {
 			showStatePermanent = false;
-			final int time = 1000;
+			final int time = 2000;
 			final long tstmp = System.currentTimeMillis();
 			new Thread() {
 		        public void run() {
