@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.5 2004/06/05 18:46:06 crac Exp $
+ * @version $Id: TestQuery.java,v 1.6 2004/06/10 14:02:39 crac Exp $
  */
 public class TestQuery {
     
@@ -22,6 +22,7 @@ public class TestQuery {
         
         // NB: this will be called on the application startup.
         DataBus.initialize();
+        DataBus.logger.info("App started.");
         
         MetaEntity ent = new MetaEntity("Movies");
         Field field = new Field("id", ent, new Integer(0));
@@ -51,5 +52,7 @@ public class TestQuery {
         vec.add(qcc);
         QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
         DataSet ds = qr.run();
+        
+        DataBus.logger.info("App stoped.");
     }
 }
