@@ -3,15 +3,17 @@ package ch.fha.mediamanager.data;
 import java.util.LinkedHashSet;
 
 /**
- * Holds all meta-information about the repository.
+ * Holds all meta information about the repository.
  * 
- * <p>All entities and all its fields are propagated. 
+ * <p>All entities of the repository and all their 
+ * fields are propagated through the 
+ * <code>MetaData</code>. 
  * 
  * @see MetaField
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.19 2004/06/29 14:45:05 crac Exp $
+ * @version $Id: MetaData.java,v 1.20 2004/06/30 22:11:59 crac Exp $
  */
 public final class MetaData {
     

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.56 2004/06/30 10:15:21 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.57 2004/06/30 22:11:59 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -125,6 +125,7 @@ public final class MckoiRepository extends AbstractRepository {
 
        if (create(entity)) {
            for (int i = 0; i < fields.length; i++) {
+               fields[i].setMetaEntity(entity);
                if (! create(fields[i])) {
                    delete(entity);
                    return false;

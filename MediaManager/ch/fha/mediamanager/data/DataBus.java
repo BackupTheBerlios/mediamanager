@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.36 2004/06/29 14:53:05 crac Exp $
+ * @version $Id: DataBus.java,v 1.37 2004/06/30 22:11:59 crac Exp $
  */
 public final class DataBus {
 	
@@ -69,7 +69,8 @@ public final class DataBus {
     }
     
     /**
-     * Connects to the repository and loads its meta data.
+     * Connects to the repository and loads its 
+     * <code>MetaData</code>.
      * 
      * @see MetaData
      * @see AbstractRepository#initialize()
@@ -88,6 +89,33 @@ public final class DataBus {
     }
     
     /**
+     * Used for testing the data repository from 
+     * outside the application.
+     * 
+     * Test the data package by invoking
+     * <code>
+     * DataBus.initialize();
+     * DataBus.logger.info("App started.");
+     * DataBus.connectStandalone();
+     * // ... some code ...
+     * DataBus.disconnectStandalone();
+     * DataBus.logger.info("App stoped.");
+     * </code>
+     * 
+     * @see disconnectStandalone()
+     */
+    public static void connectStandalone() {
+        if (currentRepository != null) {
+            metaData = currentRepository.initialize();
+            //user = new User();
+            
+            DataBus.logger.info("Repository connected.");
+        } else {
+            DataBus.logger.info("No repository available.");
+        }
+    }
+    
+    /**
      * Disconnects from the repository.
      * 
      * @see AbstractRepository#disconnect()
@@ -99,13 +127,31 @@ public final class DataBus {
             metaData = null;
             DataBus.logger.info("Repository disconnected.");
             if(mf.exiting) {
-            	mf.getMainActionListener().fireAction(KeyPointEvent.WINDOW_FINAL_EXIT);
+            	mf.getMainActionListener().fireAction(
+                   KeyPointEvent.WINDOW_FINAL_EXIT
+                );
             } else {
-            	mf.getMainActionListener().fireAction(KeyPointEvent.POST_DISCONNECT);
+            	mf.getMainActionListener().fireAction(
+                   KeyPointEvent.POST_DISCONNECT
+                );
             }
         } else {
             DataBus.logger.info("No repository available.");
             MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.DISCONNECT_ERROR);
+        }
+    }
+    
+    /**
+     * 
+     * @see #connectStandalone()
+     */
+    public static void disconnectStandalone() {
+        if (currentRepository != null) {
+            currentRepository.disconnect();
+            metaData = null;
+            DataBus.logger.info("Repository disconnected.");
+        } else {
+            DataBus.logger.info("No repository available.");
         }
     }
 	

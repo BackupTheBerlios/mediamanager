@@ -22,7 +22,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.10 2004/06/30 22:11:59 crac Exp $
+ * @version $Id: TestQuery.java,v 1.11 2004/06/30 22:12:38 crac Exp $
  */
 public class TestQuery {
     
@@ -183,6 +183,7 @@ public class TestQuery {
             System.out.println(flds[i].toString());
         }*/
         
+        DataBus.disconnectStandalone();
         DataBus.logger.info("App stoped.");
     }
     

@@ -3,12 +3,15 @@ package ch.fha.mediamanager.data;
 /**
  * Holds meta information about an entity.
  * 
- * <p>It is immutable.
+ * <p>It is almost immutable.
+ * 
+ * @see MetaData
+ * @see MetaField
  * 
  * @author crac
- * @version $Id: MetaEntity.java,v 1.8 2004/06/27 10:05:11 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.9 2004/06/30 22:11:59 crac Exp $
  */
-public final class MetaEntity {
+public final class MetaEntity implements Cloneable {
 	
     // --------------------------------
     // FIELDS
@@ -44,20 +47,38 @@ public final class MetaEntity {
     // --------------------------------
     
     /**
+     * Compares its name to the name of an other 
+     * <code>MetaEntity</code>.
      * 
      * @param e
-     * @return
+     * @return Returns true if both 
+     *      <code>MetaEntity</code>s are equal
      */
     public boolean equals(MetaEntity e) {
         return (name.equals(e.name));   
     }
     
     /**
+     * Returns the hashcode of its name.
      * 
-     * @return
+     * @return Returns its hashCode
      */
     public int hashCode() {
         return name.hashCode();   
+    }
+    
+    /**
+     * 
+     * @return Returns a clone of the object
+     */
+    public Object clone() {
+        MetaEntity entity;
+        try {
+            entity = (MetaEntity) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
+        return entity;
     }
     
     // --------------------------------

@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.18 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: MetaField.java,v 1.19 2004/06/30 22:11:59 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -52,7 +52,7 @@ public final class MetaField implements Cloneable {
      */
     public MetaField(String name, MetaEntity entity) {
         this.name = name;
-        this.entity = entity;
+        this.entity = (MetaEntity) entity.clone();
         this.identifier = entity.getName() + "." + name;
     }
     
@@ -83,9 +83,15 @@ public final class MetaField implements Cloneable {
     // --------------------------------
     
     /**
+     * If the <code>MetaField</code> was loaded 
+     * from the repository it has an unique id. In 
+     * this case it only compares the two ids. If
+     * none of the two have an id then it compares
+     * its names plus its entity names.
      * 
      * @param f
-     * @return Returns true if both MetaFields are equal.
+     * @return Returns true if both 
+     *      <code>MetaField</code>s are equal
      */
     public boolean equals(MetaField f) {
         if ((id == 0) || (f.id == 0)) {
@@ -96,8 +102,12 @@ public final class MetaField implements Cloneable {
     }
     
     /**
+     * If it was loaded from the repository its unique
+     * id is taken to compute the hashcode. Else it was 
+     * created newly by the application and returns 
+     * the hashcode of its name and its entity name.
      * 
-     * @return Returns the hashCode.
+     * @return Returns the hashCode
      */
     public int hashCode() {
         if (id == 0) {
@@ -109,16 +119,15 @@ public final class MetaField implements Cloneable {
     
     /**
      * 
-     * @return
+     * @return Returns a clone of the object
      */
     public Object clone() {
         MetaField f;
         try {
             f = (MetaField) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new InternalError();   
+            throw new InternalError();
         }
-        
         return f;
     }
     
@@ -138,7 +147,7 @@ public final class MetaField implements Cloneable {
     
     /**
      * 
-     * @return
+     * @return Its internal Id
      */
     public int getId() {
         return id;
@@ -147,7 +156,7 @@ public final class MetaField implements Cloneable {
     /**
      * Gets the value of type.
      * 
-     * @return the value of type
+     * @return The value of type
      */
     public int getType() {
         return type;
@@ -165,7 +174,7 @@ public final class MetaField implements Cloneable {
     /**
      * Gets the value of name.
      * 
-     * @return the value of name
+     * @return The value of name
      */
     public String getName() {
         return name;
@@ -174,7 +183,7 @@ public final class MetaField implements Cloneable {
     /**
      * Gets the value of identifier.
      * 
-     * @return the value of identifier
+     * @return The value of identifier
      */
     public String getIdentifier() {
         return identifier;
@@ -183,7 +192,7 @@ public final class MetaField implements Cloneable {
     /**
      * Gets the value of hidden.
      * 
-     * @return the value of hidden
+     * @return The value of hidden
      */
     public boolean getHidden() {
         return hidden;
@@ -199,17 +208,19 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Gets the value of entity.
+     * Gets the value of entity. It returns only 
+     * a copy of the <code>MetaEntity</code> to 
+     * prevent malicious mutations.
      * 
-     * @return the value of entity
+     * @return The value of entity
      */
     public MetaEntity getMetaEntity() {
-        return entity;
+        return (MetaEntity) entity.clone();
     }
     
     /**
      * 
-     * @return
+     * @return The default value
      */
     public Object getDefaultValue() {
         return defaultValue;   
@@ -278,8 +289,8 @@ public final class MetaField implements Cloneable {
      * 
      * @param value
      */
-    public void setEntity(MetaEntity value) {
-        entity = value;
+    protected void setMetaEntity(MetaEntity value) {
+        entity = (MetaEntity) value.clone();
     }
     
     /**
