@@ -3,7 +3,6 @@ package ch.fha.mediamanager.gui.util;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
@@ -19,7 +18,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.10 2004/06/28 14:20:35 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.11 2004/06/29 08:23:44 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {

@@ -20,14 +20,13 @@ import ch.fha.mediamanager.workflow.DeleteWorkflow;
 import ch.fha.mediamanager.workflow.EditWorkflow;
 import ch.fha.mediamanager.workflow.NewWorkflow;
 import ch.fha.pluginstruct.Plugin;
-import ch.fha.pluginstruct.PluginEvent;
 import ch.fha.pluginstruct.PluginEventObserver;
 import ch.fha.pluginstruct.PluginManager;
 import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.9 2004/06/28 21:09:50 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.10 2004/06/29 08:23:44 crac Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener, Returnable {
