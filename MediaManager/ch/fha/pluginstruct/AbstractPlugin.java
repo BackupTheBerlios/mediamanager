@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: AbstractPlugin.java,v 1.3 2004/06/28 11:25:33 ia02vond Exp $
+ * @version $Id: AbstractPlugin.java,v 1.4 2004/06/28 18:17:24 ia02vond Exp $
  */
 public abstract class AbstractPlugin implements Plugin {
 
@@ -18,7 +18,7 @@ public abstract class AbstractPlugin implements Plugin {
 	private String  source;
 	
 	/* propertie string[] list */
-	private HashMap propertieList;
+	private HashMap propertieList = new HashMap();
 
 	private EventHandler eventHandler;
 	
