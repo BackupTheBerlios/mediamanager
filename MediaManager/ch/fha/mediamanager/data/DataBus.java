@@ -10,9 +10,9 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.10 2004/06/19 14:42:48 crac Exp $
+ * @version $Id: DataBus.java,v 1.11 2004/06/19 14:43:51 crac Exp $
  */
-public class DataBus {
+public final class DataBus {
 	
     // --------------------------------
     // FIELDS
