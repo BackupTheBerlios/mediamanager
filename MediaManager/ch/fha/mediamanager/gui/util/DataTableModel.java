@@ -3,6 +3,7 @@ package ch.fha.mediamanager.gui.util;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JCheckBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
@@ -18,7 +19,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.11 2004/06/29 08:23:44 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.12 2004/06/29 11:47:31 ia02vond Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -90,7 +91,11 @@ public class DataTableModel extends AbstractTableModel
 	}
 
 	public Class getColumnClass(int columnIndex) {
-		return String.class;
+		if (metaFields[columnIndex].getType() == MetaField.BOOLEAN) {
+			return Boolean.class;
+		} else {
+			return String.class;
+		}
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
