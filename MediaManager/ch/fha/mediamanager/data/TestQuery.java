@@ -6,7 +6,7 @@ import java.util.Vector;
  * 
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.1 2004/05/27 19:23:32 crac Exp $
+ * @version $Id: TestQuery.java,v 1.2 2004/05/29 18:10:41 crac Exp $
  */
 public class TestQuery {
     
@@ -40,7 +40,7 @@ public class TestQuery {
         vec.add(qcb);
         vec.add(new Integer(QueryRequest.OR));
         vec.add(qcc);
-        QueryRequest qr = new QueryRequest(vec, Repository.LOAD);
+        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
         DataSet ds = qr.run();
 
     }

@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.6 2004/05/25 07:36:12 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.7 2004/05/29 18:10:41 crac Exp $
  */
 public class QueryRequest {
     
@@ -18,6 +18,11 @@ public class QueryRequest {
     public static final int AND = 1;          // *
     public static final int BRACE_OPEN = 3;   // (
     public static final int BRACE_CLOSE = 4;  // )
+    
+    public static final int INSERT = 0;
+    public static final int UPDATE = 1;
+    public static final int LOAD = 2;
+    public static final int DELETE = 3;
     
     // --------------------------------
     // ATTRIBUTES
@@ -81,11 +86,11 @@ public class QueryRequest {
      */
     public DataSet run() {
         switch (this.type) {
-            case(Repository.LOAD):
+            case(LOAD):
                 return repository.load(this);
-            case(Repository.UPDATE):
+            case(UPDATE):
                 return repository.update(dSet);
-            case(Repository.DELETE):
+            case(DELETE):
                 return repository.delete(dSet);
             
         }
