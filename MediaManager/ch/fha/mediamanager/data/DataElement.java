@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.14 2004/06/22 17:31:11 crac Exp $
+ * @version $Id: DataElement.java,v 1.15 2004/06/25 08:58:17 crac Exp $
  */
 public class DataElement {
 	
@@ -30,18 +30,6 @@ public class DataElement {
     public DataElement(MetaEntity entity, Entry entry) {
         this.entity = entity;
         this.entry = (Entry) entry.clone();
-        initFields(entity);
-    }
-    
-    /**
-     *
-     * @param entity
-     * @param owner
-     */
-    public DataElement(MetaEntity entity, User owner) {
-        this.entity = entity;
-        this.entry = new Entry();
-        this.entry.setOwner(owner);
         initFields(entity);
     }
     
@@ -139,14 +127,6 @@ public class DataElement {
      */
     public java.sql.Timestamp getCreation() {
         return entry.getCreation();
-    }
-    
-    /**
-     * 
-     * @return Returns the owner
-     */
-    public User getOwner() {
-        return entry.getUser();   
     }
     
     /**
@@ -300,13 +280,5 @@ public class DataElement {
         }
         
         fields.add(field);
-    }
-    
-    /**
-     * 
-     * @param owner
-     */
-    public void setOwner(User owner) {
-        entry.setOwner(owner);
     }
 }

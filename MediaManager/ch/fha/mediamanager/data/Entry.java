@@ -3,8 +3,10 @@ package ch.fha.mediamanager.data;
 import java.sql.Timestamp;
 
 /**
+ * 
+ * 
  * @author luca
- * @version $Id: Entry.java,v 1.3 2004/06/22 09:24:50 crac Exp $
+ * @version $Id: Entry.java,v 1.4 2004/06/25 08:58:17 crac Exp $
  */
 public final class Entry implements Cloneable {
     
@@ -17,7 +19,7 @@ public final class Entry implements Cloneable {
         new Timestamp(System.currentTimeMillis());
     private Timestamp edit = 
         new Timestamp(System.currentTimeMillis());
-    private User owner = null;
+    //private User owner = null;
     
     // --------------------------------
     // CONSTRUCTORS
@@ -36,11 +38,10 @@ public final class Entry implements Cloneable {
      * @param edit
      * @param owner
      */
-    public Entry(int id, Timestamp creation, Timestamp edit, User owner) {
+    public Entry(int id, Timestamp creation, Timestamp edit) {
         entryId = id;
         this.creation = creation;
         this.edit = edit;
-        this.owner = owner;
     }
     
     // --------------------------------
@@ -89,13 +90,13 @@ public final class Entry implements Cloneable {
         return edit;   
     }
     
-    /**
+    /*
      * 
      * @return
      */
-    public User getUser() {
+    /*public User getUser() {
         return owner;   
-    }
+    }*/
     
     // --------------------------------
     // MUTATORS
@@ -117,11 +118,11 @@ public final class Entry implements Cloneable {
         entryId = id;
     }
     
-    /**
+    /*
      * 
      * @param user
      */
-    public void setOwner(User user) {
+    /*public void setOwner(User user) {
         owner = user;
-    }
+    }*/
 }

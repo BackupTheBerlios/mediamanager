@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.26 2004/06/24 21:52:43 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.27 2004/06/25 08:58:17 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -66,6 +66,7 @@ public final class MckoiRepository implements Repository {
     // --------------------------------
     
     ///////////////////////////
+    /// CONNECTION OPERATIONS ///
     ///////////////////////////
     
     /**
@@ -105,13 +106,18 @@ public final class MckoiRepository implements Repository {
     }
     
     ///////////////////////////
+    /// USER OPERATIONS     ///
     ///////////////////////////
     
-    public void insertUser(User user) {}
-    public void updateUser(User user) {}
-    public void deleteUser(User user) {}
+    public void insertUser(User user) {
+        throw new UnsupportedOperationException(); }
+    public void updateUser(User user) {
+        throw new UnsupportedOperationException(); }
+    public void deleteUser(User user) {
+        throw new UnsupportedOperationException(); }
     
     ///////////////////////////
+    /// META OPERATIONS     ///
     ///////////////////////////
     
     /**
@@ -424,6 +430,10 @@ public final class MckoiRepository implements Repository {
         DataBus.logger.info("MetaData loaded.");
         return data;
     }
+    
+    ///////////////////////////
+    /// DATA OPERATIONS     ///
+    ///////////////////////////
 
     /**
      * Inserts a <code>DataSet</code> to the repository.
@@ -644,7 +654,7 @@ public final class MckoiRepository implements Repository {
         
         String query = "SELECT * FROM " + ent;
         query += " LEFT JOIN Entry ON " + entryField + " = Entry.EntryId ";
-        query += " LEFT JOIN Users ON Entry.EntryUsersId = Users.UsersUUID ";
+        //query += " LEFT JOIN Users ON Entry.EntryUsersId = Users.UsersUUID ";
         
         query += createRequestStatement(qr);
         DataBus.logger.debug(query);
@@ -693,17 +703,16 @@ public final class MckoiRepository implements Repository {
                 }
                 
                 // static fields from Users and Entry tables
-                User owner = new User(
+                /*User owner = new User(
                     result.getString("UsersUUID"),
                     result.getString("UsersName"),
                     result.getString("UsersUsername")
-                );
+                );*/
                 
                 Entry entry = new Entry(
                     result.getInt("EntryId"),
                     result.getTimestamp("EntryCreation"),
-                    result.getTimestamp("EntryEdit"),
-                    owner
+                    result.getTimestamp("EntryEdit")
                 );
                 
                 e.setEntry(entry);
@@ -716,6 +725,10 @@ public final class MckoiRepository implements Repository {
         DataBus.logger.debug("DataSet loaded.");
         return ds;
     }
+    
+    ///////////////////////////
+    /// QUERY OPERATIONS    ///
+    ///////////////////////////
     
     /**
      * 
@@ -797,6 +810,10 @@ public final class MckoiRepository implements Repository {
         return output;
     }
     
+    ///////////////////////////
+    /// ENTRY OPERATIONS    ///
+    ///////////////////////////
+    
     /**
      * Deletes an entry from the repository.
      * 
@@ -854,8 +871,8 @@ public final class MckoiRepository implements Repository {
         
         int id = 0;
         String sql = "INSERT INTO Entry " +
-            "(EntryId, EntryCreation, EntryEdit, EntryUsersId) " +
-            "VALUES (?, ?, ?, ?);";
+            "(EntryId, EntryCreation, EntryEdit) " +
+            "VALUES (?, ?, ?);";
         java.sql.PreparedStatement insertPS = 
             dbConnection.prepareStatement(sql);
         
@@ -864,7 +881,7 @@ public final class MckoiRepository implements Repository {
             insertPS.setInt(1, id);
             insertPS.setTimestamp(2, entry.getCreation());
             insertPS.setTimestamp(3, entry.getEdit());
-            insertPS.setString(4, entry.getUser().getUUID());
+            //insertPS.setString(4, entry.getUser().getUUID());
             insertPS.executeUpdate();
         } catch (SQLException e) {
             DataBus.logger.debug("Entry not inserted.");

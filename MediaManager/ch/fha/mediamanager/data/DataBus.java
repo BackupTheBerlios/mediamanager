@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.19 2004/06/24 21:52:37 crac Exp $
+ * @version $Id: DataBus.java,v 1.20 2004/06/25 08:58:17 crac Exp $
  */
 public final class DataBus {
 	
@@ -30,7 +30,7 @@ public final class DataBus {
         PropertyConfigurator.configure(file);
     }
     
-    private static User user;
+    //private static User user;
     
     private static MetaData metaData;
 	private static Repository[] repositories;
@@ -72,7 +72,7 @@ public final class DataBus {
     public static void connect() {
         if (currentRepository != null) {
             metaData = currentRepository.initialize();
-            user = new User();
+            //user = new User();
             
             DataBus.logger.info("Repository connected.");
         } else {
@@ -205,14 +205,14 @@ public final class DataBus {
         return getDefaultElement(new MetaEntity(e));
     }
     
-    /**
+    /*
      * 
      * @return Returns user data of the user 
      *      running the application
      */
-    public static User getUser() {
+    /*public static User getUser() {
         return user;
-    }
+    }*/
 	
     // --------------------------------
     // MUTATORS
