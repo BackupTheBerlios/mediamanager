@@ -2,19 +2,34 @@ package ch.fha.mediamanager.data;
 
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 /**
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.3 2004/06/05 18:32:11 crac Exp $
+ * @version $Id: DataBus.java,v 1.4 2004/06/10 14:02:20 crac Exp $
  */
 public class DataBus {
 	
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 	
-	private static MetaData metaData;
+    /**
+     * Logger. The configuration file is 
+     * <code>conf/logging.conf</conf>.
+     */
+    public static Logger logger = 
+        Logger.getLogger("ch.fha.mediamanager");
+    
+    static {
+        String file = "conf" + java.io.File.separator + "logging.conf";
+        PropertyConfigurator.configure(file);
+    }
+    
+    private static MetaData metaData;
 	private static Repository repository;
 	
     // --------------------------------
@@ -72,6 +87,14 @@ public class DataBus {
      */
     public Set getMetaEntities() {
     	return metaData.getEntities();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public static Logger getLogger(String pkg) {
+    	return Logger.getLogger(pkg);
     }
 	
     // --------------------------------
