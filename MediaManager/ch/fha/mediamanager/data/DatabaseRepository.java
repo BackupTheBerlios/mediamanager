@@ -9,7 +9,7 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.4 2004/05/22 10:50:26 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.5 2004/05/22 11:51:15 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -91,8 +91,9 @@ public class DatabaseRepository implements Repository {
      * @param qc
      * @return 
      */
-    private String createConditionStatement(QueryCondition qc) {
-        String comp = (qc.getEntity()).getName() + "." + (qc.getField()).getName();
+    private String createCondStatement(QueryCondition qc) {
+        String comp = (qc.getEntity()).getName() + "." 
+            + (qc.getField()).getName();
         
         switch(qc.getComparator()) {
             case(QueryCondition.EQUALS):
@@ -132,7 +133,8 @@ public class DatabaseRepository implements Repository {
         
         for(int i = 0; i < tmp.size(); i++) {
             if (tmp.elementAt(i) instanceof QueryCondition) {
-                output += createConditionStatement((QueryCondition) tmp.elementAt(i));
+                output += 
+                    createCondStatement((QueryCondition) tmp.elementAt(i));
             } else {
                 
                 Integer t = (Integer) tmp.elementAt(i);
