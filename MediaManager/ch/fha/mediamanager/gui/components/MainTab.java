@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.7 2004/06/21 05:53:02 radisli Exp $
+//$Id: MainTab.java,v 1.8 2004/06/21 07:30:58 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -14,7 +14,9 @@ import ch.fha.mediamanager.gui.framework.*;
  * The panel which will be shown first contains connect-, config- and exit
  * button.
  */
-public class MainTab extends JPanel {
+public class MainTab extends JPanel implements
+	KeyPointListener
+{
 	// Tool Tips which is displayed in the <code>StatePanel</code> too
 	private final static String connectStr = "Zum Server verbinden";
 	private final static String disconnectStr = "Verbindung trennen";
@@ -43,17 +45,9 @@ public class MainTab extends JPanel {
 			new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(mainWindow.getConnectionStatus()) {
-						mainWindow.setConnectionStatus(false);
-						topButton.setIcon(connectImage);
-						topButton.setToolTipText(connectStr);
-						mainWindow.setStatusText("Wird getrennt ...", true);
-						topLabel.setText("Verbinden");
+						mainWindow.disconnect();
 					} else {
-						mainWindow.setConnectionStatus(true);
-						topButton.setIcon(disconnectImage);
-						topButton.setToolTipText(disconnectStr);
-						mainWindow.setStatusText("Wird verbunden ...", true);
-						topLabel.setText("Trennen");
+						mainWindow.connect();
 					}
 				}
 			} ,
@@ -84,9 +78,30 @@ public class MainTab extends JPanel {
 		bottomButtonPanel.add(bottomLabel);
 		basePanel.add(bottomButtonPanel);
 
+		mainActionListener.addActionListener(this);
 		add(basePanel, BorderLayout.WEST);
 	}
-	
+
+	/**
+	 * Method is called when a preregistered key-point is reached.
+	 *  
+	 * @param e is a <code>KeyPointEvent</code> which contains:
+	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
+	 */
+	public void runAction(KeyPointEvent e) {
+		MainFrame mainWindow = MainFrame.getInstance();
+		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
+			topButton.setIcon(disconnectImage);
+			topButton.setToolTipText(disconnectStr);
+			topLabel.setText("Trennen");
+		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
+			topButton.setIcon(connectImage);
+			topButton.setToolTipText(connectStr);
+			mainWindow.setStatusText("Wird getrennt ...", true);
+			topLabel.setText("Verbinden");
+		}
+	}
+
 	/**
 	 * Class for a picture button
 	 */

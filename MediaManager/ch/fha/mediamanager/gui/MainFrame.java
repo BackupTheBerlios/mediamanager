@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.6 2004/06/18 12:32:59 ia02vond Exp $
+//$Id: MainFrame.java,v 1.7 2004/06/21 07:30:58 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -111,7 +111,7 @@ public class MainFrame extends JFrame implements
 		windowHolder.add(statePanel, BorderLayout.SOUTH);
 		
 		cp.add(windowHolder, BorderLayout.CENTER);
-		
+
 		setVisible(true);
 		setExtendedState(prefs.getInt(SCREEN_MODE, defaultScreenMode));
 	}
@@ -188,10 +188,21 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/**
-	 * Sets the connection status
+	 * TODO
 	 */
-	public void setConnectionStatus(boolean state) {
-		statePanel.setConnectionStatus(state);
+	public void connect() {
+		statePanel.setConnectionStatus(true);
+		setStatusText("Wird verbunden ...", true);
+		mainActionListener.fireAction(KeyPointEvent.CONNECTING);
+	}
+
+	/**
+	 * TODO
+	 */
+	public void disconnect() {
+		statePanel.setConnectionStatus(false);
+		setStatusText("Wird getrennt ...", true);
+		mainActionListener.fireAction(KeyPointEvent.DISCONNECTING);		
 	}
 	
 	/**
