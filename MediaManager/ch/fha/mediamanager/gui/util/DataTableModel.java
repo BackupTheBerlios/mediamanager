@@ -26,7 +26,7 @@ public class DataTableModel extends AbstractTableModel {
 	
 	public DataTableModel(MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
-		Field field = new Field("id", metaEntity, new Integer(0));
+		Field field = new Field("TestId", metaEntity, new Integer(0));
 		QueryCondition qc = 
 		    new QueryCondition(
 		        field, 
@@ -41,11 +41,11 @@ public class DataTableModel extends AbstractTableModel {
 		
 		Iterator it = ds.iterator();
 		elements = new DataElement[ds.size()];
-		data = new Object[ds.size()][metaFields.length];
+		data = new Object[elements.length][metaFields.length];
 		
 		for (int i=0; i<elements.length && it.hasNext(); i++) {
 			elements[i] = (DataElement)it.next();
-			for (int k=0; k<metaFields.length; i++) {
+			for (int k=0; k<metaFields.length; k++) {
 				data[i][k] = elements[i].getField(metaFields[k]).getValue();
 			}
 		}
@@ -77,5 +77,9 @@ public class DataTableModel extends AbstractTableModel {
 
 	public String getColumnName(int columnIndex) {
 		return metaFields[columnIndex].getName();
+	}
+	
+	public DataElement getDataElement(int index) {
+		return elements[index];
 	}
 }
