@@ -5,23 +5,29 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.1 2004/05/20 14:40:43 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.2 2004/05/21 17:45:28 crac Exp $
  */
 public class QueryRequest {
     
     // TODO: has to be auto-loaded from config
     private Repository repository = new DatabaseRepository();
     
-    public static final int OR = 0;     // +
-    public static final int AND = 1;    // *
-    public static final int NOR = 2;    // -
-    public static final int NAND = 3;   // /
-    public static final int OPEN = 4;   // (
-    public static final int CLOSE = 5;  // )
+    public static final int OR = 0;          // +
+    public static final int AND = 1;         // *
+    public static final int BACE_OPEN = 3;   // (
+    public static final int BACE_CLOSE = 4;  // )
+    
+    // --------------------------------
+    // ATTRIBUTES
+    // --------------------------------
 
     private DataSet dSet;
     private int type;
     private Vector request;
+    
+    // --------------------------------
+    // CONSTRUCTORS
+    // --------------------------------
     
     /**
      * 
@@ -72,6 +78,10 @@ public class QueryRequest {
         return null;
     }
 
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
+    
     /**
      * Returns type of the QueryRequest.
      * 
@@ -80,6 +90,18 @@ public class QueryRequest {
     public int getType() {
         return type;
     }
+    
+    /**
+     * 
+     * @return
+     */
+    public Vector getVector() {
+        return request;
+    }
+    
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
     
     /**
      * Sets the type of the QueryRequest.
