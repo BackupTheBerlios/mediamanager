@@ -25,7 +25,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.5 2004/06/28 19:28:05 crac Exp $
+ * @version $Id: TestQuery.java,v 1.6 2004/06/29 11:53:01 crac Exp $
  */
 public class TestQuery {
     
@@ -176,11 +176,11 @@ public class TestQuery {
         }
         
         // how to get a default DataElement
-        /*DataElement e = DataBus.getDefaultElement("Test");
+        DataElement e = DataBus.getDefaultElement("Lied");
         Field[] flds = e.getFields();
         for (int i = 0; i < flds.length; i++) {
             System.out.println(flds[i].toString());
-        }*/
+        }
         
         DataBus.logger.info("App stoped.");
     }

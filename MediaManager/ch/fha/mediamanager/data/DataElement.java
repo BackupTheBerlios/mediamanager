@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.20 2004/06/28 15:25:06 crac Exp $
+ * @version $Id: DataElement.java,v 1.21 2004/06/29 11:53:01 crac Exp $
  */
 public class DataElement {
 	
@@ -56,9 +56,22 @@ public class DataElement {
             DataBus.getMetaData().getMetaFields(entity);
         java.util.Iterator it = metaFields.iterator();
         while (it.hasNext()) {
-            Field field = new Field((MetaField) it.next());
-            if (field != null)
+            MetaField mf = (MetaField) it.next();
+            Field field;
+            if (mf.getType() == MetaField.LIST) {
+                field = new Field(
+                    mf,
+                    ((String[]) mf.getDefaultValue())[0]
+                );
+            } else {
+                field = new Field(
+                    mf,
+                    mf.getDefaultValue()
+                );
+            }
+            if (field != null) {
                 fields.add(field);
+            }
         }
     }
     
@@ -221,6 +234,17 @@ public class DataElement {
         }
         
         return null;
+    }
+    
+    /**
+     * 
+     * @see #getField(MetaField)
+     * 
+     * @param field
+     * @return
+     */
+    public Field getField(String field) {
+        return getField(new MetaField(field, getMetaEntity()));
     }
     
     /**

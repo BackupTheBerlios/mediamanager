@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.12 2004/06/28 19:24:05 crac Exp $
+ * @version $Id: Field.java,v 1.13 2004/06/29 11:53:01 crac Exp $
  */
 public class Field {
 	
@@ -13,7 +13,7 @@ public class Field {
     // --------------------------------
 	
 	private MetaField meta;
-    private Object value;
+    private Object value = null;
     private Object tmpValue = null; 
     
     // --------------------------------
@@ -73,6 +73,7 @@ public class Field {
      */
     public String toString() {
         String str = meta.getName() + "::" + value;
+        str += " MetaId=" + meta.getId();
         return str;
     }
     

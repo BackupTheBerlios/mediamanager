@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.53 2004/06/29 08:14:56 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.54 2004/06/29 11:53:01 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -430,9 +430,13 @@ public final class MckoiRepository extends AbstractRepository {
                 
                 switch(mf.getType()) {
                     case (MetaField.LIST):
-                        mf.setDefaultValue(
-                            result.getString("FldDefault").split(";")
-                        );
+                        if (! result.getString("FldDefault").equals("")) {
+                            mf.setDefaultValue(
+                                result.getString("FldDefault").split(";")
+                            );
+                        } else {
+                            mf.setDefaultValue("");
+                        }
                         break;
                     case (MetaField.VARCHAR):
                     case (MetaField.TEXT):
