@@ -18,7 +18,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.15 2004/06/29 13:02:16 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.16 2004/06/29 13:34:57 ia02vond Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -125,5 +125,9 @@ public class DataTableModel extends AbstractTableModel
 			refresh();
 			fireTableChanged(new TableModelEvent(this));
 		}
+	}
+	
+	public boolean isEmpty() {
+		return empty;
 	}
 }
