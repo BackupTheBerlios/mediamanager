@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.35 2004/06/29 14:45:51 crac Exp $
+ * @version $Id: DataBus.java,v 1.36 2004/06/29 14:53:05 crac Exp $
  */
 public final class DataBus {
 	
@@ -317,6 +317,9 @@ public final class DataBus {
      */
     public static DataElement getDefaultElement(MetaEntity e) {
         Set set = metaData.getMetaFields(e);
+        
+        if (set.size() == 0) return null;
+        
         DataElement el = new DataElement(e);
         java.util.Iterator it = set.iterator();
         
