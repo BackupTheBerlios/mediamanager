@@ -1,23 +1,24 @@
-// $Id: Mediamanager.java,v 1.8 2004/06/18 12:34:15 ia02vond Exp $
+// $Id: Mediamanager.java,v 1.9 2004/06/21 12:31:27 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
-import javax.swing.*;
 import java.awt.Dimension;
-import java.util.*;
-import java.util.prefs.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.prefs.Preferences;
+
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+
+import ch.fha.mediamanager.data.DataBus;
+import ch.fha.mediamanager.gui.framework.Savable;
+import ch.fha.pluginstruct.PluginManager;
+import ch.fha.pluginstruct.Version;
 
 import com.jgoodies.plaf.FontSizeHints;
 import com.jgoodies.plaf.Options;
 import com.jgoodies.plaf.plastic.Plastic3DLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.theme.SkyBluer;
-
-import ch.fha.mediamanager.data.DataBus;
-import ch.fha.mediamanager.gui.framework.*;
-import ch.fha.mediamanager.plugin.MMPluginEvent;
-import ch.fha.pluginstruct.OperationCancelException;
-import ch.fha.pluginstruct.PluginManager;
-import ch.fha.pluginstruct.Version;
 
 /**
  * Mediamanager application
@@ -59,21 +60,23 @@ public class Mediamanager {
 		DataBus.initialize();
 		
 		// PluginManager
-		splash.setProcess(0, "lade Plugin Manager ...");
+		splash.setProcess(0.15, "lade Plugin Manager ...");
 		configurePluginManager();
 		
 		// Look & Feel
-		splash.setProcess(0, "lade Look & Feel ...");
+		splash.setProcess(0.45, "lade Look & Feel ...");
 		configureUI();
 		
 		// Gui
-		splash.setProcess(0, "lade graphische Umgebung ...");
+		splash.setProcess(0.7, "lade graphische Umgebung ...");
 		MainFrame.getInstance();
 		
 		// waiting ...
 		splash.setProcess(1, "");
 		try { Thread.sleep(50); } catch (Exception e) {}
 		splash.dispose();
+		
+		MainFrame.getInstance().show();
 	}
 
 	/**
