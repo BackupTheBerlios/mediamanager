@@ -12,9 +12,9 @@ import ch.fha.mediamanager.gui.framework.*;
  * button.
  * 
  * @author Roman Rietmann
- * @version $Id: MainTab.java,v 1.15 2004/07/04 15:37:25 crac Exp $
+ * @version $Id: MainTab.java,v 1.16 2004/07/05 07:40:13 crac Exp $
  */
-public class MainTab extends JPanel 
+public final class MainTab extends JPanel 
     implements KeyPointListener {
     
 	// Images for connectbutton
@@ -122,7 +122,7 @@ public class MainTab extends JPanel
 	/**
 	 * Class for a picture button
 	 */
-	private class NavButton extends JButton 
+	private final class NavButton extends JButton 
         implements MouseListener {
         
 		// Button dimension
@@ -175,7 +175,7 @@ public class MainTab extends JPanel
 	 * before invoking the <code>super.paint()</code>
 	 * method.
 	 */
-	private class RenderedJLabel extends JLabel {
+	private final class RenderedJLabel extends JLabel {
         
         /**
          * 
