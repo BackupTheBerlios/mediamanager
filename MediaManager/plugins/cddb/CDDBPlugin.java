@@ -300,7 +300,7 @@ public class CDDBPlugin extends MMPlugin
 			if (tmp2 != null) {
 				String categoryFieldname = tmp2[0];
 				if (element.hasField(categoryFieldname)) {
-					element.setField(categoryFieldname, rec[index].getTitle());
+					element.setField(categoryFieldname, rec[index].getCategory());
 				}
 			}
 			if (tmp3 != null) {

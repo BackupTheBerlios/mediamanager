@@ -10,8 +10,8 @@
   </description>
 
   <mount>
-    <onEvent id="singlerow"/>
-    <onEvent id="multirow"/>
+    <onEvent id="singlerow" cond="MP3s"/>
+    <onEvent id="multirow" cond="MP3s"/>
   </mount>
 
   <prop key="command" value="xmms"/>

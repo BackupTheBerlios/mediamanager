@@ -11,7 +11,7 @@
   </description>
 
   <mount>
-    <onEvent id="prenew"/>
+    <onEvent id="prenew" cond="CDs"/>
   </mount>
 
   <prop key="titlefieldname"    value="Titel" />
