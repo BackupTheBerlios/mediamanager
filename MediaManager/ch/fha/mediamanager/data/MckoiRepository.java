@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.16 2004/06/23 12:17:53 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.17 2004/06/23 14:13:27 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -35,10 +35,9 @@ public final class MckoiRepository implements Repository {
     
     private static final String name = "Mckoi SQL DB Repository";
     
-    private static final String connFile = "conf" + File.separator + 
-        "mckoi_repository.ini";
-    
     /* Database connection settings */
+    private static final String connFile = "conf" + 
+        File.separator + "mckoi_repository.ini";
     private ConnectionSettings connSettings = 
         new ConnectionSettings(connFile);
     
@@ -49,6 +48,12 @@ public final class MckoiRepository implements Repository {
     
     private DatabaseConnection dbConnection = 
         new DatabaseConnection(connSettings);
+    
+    /* SQL statements */
+    private static java.sql.PreparedStatement createEntity;
+    private static java.sql.PreparedStatement insertEntity;
+    private static java.sql.PreparedStatement createField;
+    private static java.sql.PreparedStatement insertField;
     
     // --------------------------------
     // CONSTRUCTORS
@@ -110,8 +115,33 @@ public final class MckoiRepository implements Repository {
    public boolean create(MetaEntity entity){ 
        if (entity == null)
            throw new IllegalArgumentException();
+       
+       insertEntity = 
+           dbConnection.prepareStatement("INSERT INTO Ent " +
+               "(EntId, EntName) VALUES (?, ?);");
+       createEntity = 
+           dbConnection.prepareStatement("CREATE TABLE ?;");
+       
+       try {
+           dbConnection.getConnection().setAutoCommit(false);
            
-       return false;
+           insertEntity.setInt(1, getNextPK("Ent", "EntId"));
+           insertEntity.setString(2, entity.getName());
+           insertEntity.execute();
+           
+           createEntity.setString(1, entity.getName());
+           createEntity.execute();
+           
+           dbConnection.getConnection().commit();
+       } catch (SQLException e) {
+           DataBus.logger.warn("Entity " + entity.getName() + 
+               " not created.");
+           return false;
+       }
+       
+       DataBus.logger.info("Entity " + entity.getName() + 
+           " created.");
+       return true;
    }
    
    /**
@@ -123,18 +153,37 @@ public final class MckoiRepository implements Repository {
        if ( (field == null) 
                || (field.getType() == MetaField.USERID)
 			   || (field.getType() == MetaField.ENTRYID)
+			   || (field.getType() == MetaField.PK)
+               || (field.getEntity().getId() == 0)
            ) {
            throw new IllegalArgumentException();
        }
        
        String sql = "ALTER TABLE ? ADD ? ? ?;";
        
-       java.sql.PreparedStatement create = 
+       insertField = 
+           dbConnection.prepareStatement("INSERT INTO Fld (" +
+               "FldId,FldName,FldEntId,FldFldtypeId,FldLength," +
+               "FldDefault,FldHidden,FldMandatory) VALUES (" +
+               "?,?,?,?,?,?,?,?);");
+       createField = 
            dbConnection.prepareStatement(sql);
            
        try {
-           create.setString(1, field.getEntity().getName());
-           create.setString(2, field.getName());
+           dbConnection.getConnection().setAutoCommit(false);
+           
+           insertField.setInt(1, getNextPK("Fld", "FldId"));
+           insertField.setString(2, field.getName());
+           insertField.setInt(3, field.getEntity().getId());
+           insertField.setInt(4, field.getType());
+           insertField.setInt(5, field.getLength());
+           insertField.setObject(6, field.getDefaultValue()); // ?
+           insertField.setInt(7, (field.getHidden() == true)? 1: 0);
+           insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
+           insertField.execute();
+           
+           createField.setString(1, field.getEntity().getName());
+           createField.setString(2, field.getName());
            
            int length = field.getLength();
            
@@ -148,12 +197,16 @@ public final class MckoiRepository implements Repository {
                case (MetaField.TIMESTAMP):
            }
            
-           create.executeQuery();
+           createField.execute();
+           
+           dbConnection.getConnection().commit();
        } catch (SQLException e) {
-           DataBus.logger.warn("Field " + field.getIdentifier() + " not created.");
+           DataBus.logger.warn("Field " + field.getIdentifier() + 
+               " not created.");
            return false;
        }      
-       DataBus.logger.info("Field " + field.getIdentifier() + " created.");
+       DataBus.logger.info("Field " + field.getIdentifier() + 
+           " created.");
        return true;
    }
    
@@ -176,17 +229,26 @@ public final class MckoiRepository implements Repository {
        String delEntries = "DELETE FROM Entry WHERE EntryId IN " + 
            "(SELECT EntryId FROM " + entity.getName() + ");";
        String delEntity = "DROP TABLE " + entity.getName() + ";";
+       String delEnt = "DELETE FROM Ent WHERE EntId = " + entity.getId();
+       String delFld = "DELETE FROM Fld WHERE FldEntId = " + entity.getId();
        
        try {
            dbConnection.getConnection().setAutoCommit(false);
-           dbConnection.executeQuery(delEntries);
+           
            dbConnection.executeQuery(delEntity);
+           dbConnection.executeQuery(delEntries);
+           dbConnection.executeQuery(delFld);
+           dbConnection.executeQuery(delEnt);
+           
            dbConnection.getConnection().commit();
        } catch (SQLException e) {
-           
+           DataBus.logger.warn("Entity " + entity.getName() + 
+               " not deleted.");
+           return false;
        }
        
-       DataBus.logger.info("Entity " + entity.getName() + " deleted.");
+       DataBus.logger.info("Entity " + entity.getName() +
+           " deleted.");
        return true;
    }
    
@@ -200,24 +262,29 @@ public final class MckoiRepository implements Repository {
                || (field.getType() == MetaField.USERID)
                || (field.getType() == MetaField.PK)
                || (field.getType() == MetaField.ENTRYID)
+               || (field.getId() == 0)
            ) {
            throw new IllegalArgumentException();
        }
-           
-       String sql = "ALTER TABLE ? DELETE ?";
+       
+       String delFld = "DELETE FROM Fld WHERE FldId = " + 
+           field.getId() + ";";
+       String delField = "ALTER TABLE ? DELETE ?";
        
        java.sql.PreparedStatement delete = 
-           dbConnection.prepareStatement(sql);
+           dbConnection.prepareStatement(delField);
            
        try {
            delete.setString(1, field.getEntity().getName());
            delete.setString(2, field.getName());
-           delete.executeQuery();
+           delete.execute();
        } catch (SQLException e) {
-           DataBus.logger.warn("Field " + field.getIdentifier() + " not deleted.");
+           DataBus.logger.warn("Field " + field.getIdentifier() + 
+               " not deleted.");
            return false;
        }
-       DataBus.logger.info("Field " + field.getIdentifier() + " deleted.");
+       DataBus.logger.info("Field " + field.getIdentifier() + 
+           " deleted.");
        return true;
    }
     
@@ -246,9 +313,16 @@ public final class MckoiRepository implements Repository {
                 
             while (result.next()) {
                 MetaEntity me = 
-                    new MetaEntity(result.getString("EntName"));
+                    new MetaEntity(
+                        result.getString("EntName"),
+                        result.getInt("EntId")
+                    );
                 MetaField mf = 
-                    new MetaField(result.getString("FldName"), me);
+                    new MetaField(
+                        result.getString("FldName"),
+                        me,
+                        result.getInt("FldId")
+                    );
                 
                 mf.setHidden(
                     result.getInt("FldHidden") == 0 ? false: true
