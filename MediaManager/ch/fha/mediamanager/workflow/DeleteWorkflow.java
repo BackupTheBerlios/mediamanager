@@ -17,7 +17,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.8 2004/06/28 13:45:26 crac Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.9 2004/06/30 08:00:32 ia02vond Exp $
  */
 public class DeleteWorkflow implements Workflow, Returnable {
 
@@ -44,7 +44,7 @@ public class DeleteWorkflow implements Workflow, Returnable {
 		
 		if (dataSet.size() == 1 && JOptionPane.showConfirmDialog(
 					MainFrame.getInstance(),
-					"Soll der Eintrag wirklich geloescht werden?",
+					"Soll der Eintrag wirklich gel\u00f6scht werden?",
 					"???",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
@@ -55,7 +55,7 @@ public class DeleteWorkflow implements Workflow, Returnable {
 			
 		} else if (dataSet.size() > 1 && JOptionPane.showConfirmDialog(
 				MainFrame.getInstance(),
-				"Sollen die " + dataSet.size() + " Eintraege wirklich geloescht werden?",
+				"Sollen die " + dataSet.size() + " Eintr\u00e4ge wirklich gel\u00f6scht werden?",
 				"???",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
