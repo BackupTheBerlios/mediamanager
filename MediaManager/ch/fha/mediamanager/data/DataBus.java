@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.32 2004/06/28 19:28:05 crac Exp $
+ * @version $Id: DataBus.java,v 1.33 2004/06/29 13:03:46 crac Exp $
  */
 public final class DataBus {
 	
@@ -317,7 +317,18 @@ public final class DataBus {
         
         while (it.hasNext()) {
             MetaField mf = (MetaField) it.next();
-            Field f = new Field(mf, mf.getDefaultValue());
+            Field f;
+            if (mf.getType() == MetaField.LIST) {
+                f = new Field(
+                    mf,
+                    ((String[]) mf.getDefaultValue())[0]
+                );
+            } else {
+                f = new Field(
+                    mf,
+                    mf.getDefaultValue()
+                );
+            }
             el.add(f);
         }
         
@@ -363,7 +374,7 @@ public final class DataBus {
      *      repository was not disconnected in 
      *      advance
 	 */
-	public void setRepository(AbstractRepository rep) {
+	public static void setRepository(AbstractRepository rep) {
         if (! currentRepository.isConnected()) {
             currentRepository = rep;
         } else {
