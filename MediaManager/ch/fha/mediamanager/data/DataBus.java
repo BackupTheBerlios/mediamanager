@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.37 2004/06/30 22:11:59 crac Exp $
+ * @version $Id: DataBus.java,v 1.38 2004/07/01 19:42:55 crac Exp $
  */
 public final class DataBus {
 	
@@ -92,8 +92,9 @@ public final class DataBus {
      * Used for testing the data repository from 
      * outside the application.
      * 
-     * Test the data package by invoking
-     * <code>
+     * <p>Test the data package by invoking</p>
+     * 
+     * <p><code>
      * DataBus.initialize();
      * DataBus.logger.info("App started.");
      * DataBus.connectStandalone();
@@ -419,9 +420,9 @@ public final class DataBus {
 	/**
 	 * Changes the current Repository to a new one, 
      * but only if current one has been disconnected. 
-     * Do not forget to call 
-     * <code>DataBus.disconnect();</code>
-     * in advance.
+     * Do not forget to call in advance
+     * 
+     * <p><code>DataBus.disconnect();</code></p>
      * 
 	 * @param rep
      * @throws CurrentRepositoryConnectedException if 
