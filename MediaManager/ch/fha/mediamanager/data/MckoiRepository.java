@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.54 2004/06/29 11:53:01 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.55 2004/06/29 21:08:15 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -311,17 +311,31 @@ public final class MckoiRepository extends AbstractRepository {
        }
        
        // remove also Entry rows
-       String delEntries = "DELETE FROM Entry WHERE EntryId IN " + 
-           "(SELECT EntryId FROM " + entity.getName() + ");";
+       String select = "SELECT EntryId FROM " + entity.getName() + ";";
+       String delEntries = "DELETE FROM Entry WHERE ";
+       
+       // drop the table of the entity 
        String delEntity = "DROP TABLE " + entity.getName() + ";";
+       
+       // remove all meta references
        String delEnt = "DELETE FROM Ent WHERE EntId = " + entity.getId();
        String delFld = "DELETE FROM Fld WHERE FldEntId = " + entity.getId();
        
        try {
            dbConnection.getConnection().setAutoCommit(false);
            
-           dbConnection.executeQuery(delEntries);
+           ResultSet result = dbConnection.executeQuery(select);
+
+           String str = ""; int i=0;
+           while (result.next()) {
+           	   if (i != 0) str += " OR ";
+           	   str += "EntryId=" + result.getInt("EntryId");
+           }
+           
            dbConnection.executeQuery(delEntity);
+           if (! str.equals("")) {
+               dbConnection.executeQuery(delEntries + str + ";");
+           }
            dbConnection.executeQuery(delFld);
            dbConnection.executeQuery(delEnt);
            

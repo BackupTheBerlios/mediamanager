@@ -1,10 +1,7 @@
 package ch.fha.mediamanager.testing;
 
-import java.util.Vector;
-
 import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.data.DataBus;
-import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.DatabaseQuery;
 import ch.fha.mediamanager.data.Field;
@@ -25,7 +22,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.8 2004/06/29 15:18:24 crac Exp $
+ * @version $Id: TestQuery.java,v 1.9 2004/06/29 21:08:29 crac Exp $
  */
 public class TestQuery {
     
@@ -40,6 +37,7 @@ public class TestQuery {
         
         deleteAllEntities();
         createCDDB();
+        createMP3();
         
         // create entity
         /*MetaEntity entity = new MetaEntity("Lied");
@@ -179,13 +177,30 @@ public class TestQuery {
         }*/
         
         // how to get a default DataElement
-        DataElement e = DataBus.getDefaultElement("Lied");
+        /*DataElement e = DataBus.getDefaultElement("Lied");
         Field[] flds = e.getFields();
         for (int i = 0; i < flds.length; i++) {
             System.out.println(flds[i].toString());
-        }
+        }*/
         
         DataBus.logger.info("App stoped.");
+    }
+    
+    private static void createMP3() {
+        MetaEntity ent = new MetaEntity("MP3s");
+        MetaField fa = new MetaField(MetaField.PK, "MP3Id", ent);
+        MetaField fb = new MetaField(MetaField.VARCHAR, "Interpret", ent);
+        MetaField fc = new MetaField(MetaField.VARCHAR, "Titel", ent);
+        MetaField fd = new MetaField(MetaField.VARCHAR, "Kategorie", ent);
+        MetaField fe = new MetaField(MetaField.VARCHAR, "Pfad", ent);
+        MetaField[] flds = {fa,fb,fc,fd,fe};
+        
+        AbstractQuery qry = 
+            DataBus.getQueryInstance(AbstractQuery.ENTITY_FIELDS_CREATE);
+        
+        if (qry.admin(ent, flds)) {
+            System.out.println("MP3 Entity Created, YEAH!");
+        }
     }
     
     private static void deleteAllEntities() {
