@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: QueryCondition.java,v 1.4 2004/06/05 14:13:06 crac Exp $
+ * @version $Id: QueryCondition.java,v 1.5 2004/06/05 21:21:22 crac Exp $
  */
 public class QueryCondition {
     
@@ -37,7 +37,7 @@ public class QueryCondition {
      * @param value Compare to this value
      */
     public QueryCondition(Field df, int comp, Object value) {
-        this. entity = df.getEntity();
+        this.entity = df.getEntity();
         this.field = df;
         this.comparator = comp;
         this.value = value;
