@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.19 2004/06/23 14:57:58 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.20 2004/06/23 15:02:29 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -104,7 +104,7 @@ public final class MckoiRepository implements Repository {
    public boolean create(MetaEntity entity, MetaField[] fields) {
        if ((entity == null) || (fields == null))
            throw new IllegalArgumentException();
-       
+       // TODO
        return false;
    }
    
@@ -159,6 +159,8 @@ public final class MckoiRepository implements Repository {
            ) {
            throw new IllegalArgumentException();
        }
+       
+       // TODO
        
        String sql = "ALTER TABLE ? ADD ? ? ?;";
        
@@ -267,6 +269,8 @@ public final class MckoiRepository implements Repository {
            ) {
            throw new IllegalArgumentException();
        }
+       
+       // TODO
        
        String delFld = "DELETE FROM Fld WHERE FldId = " + 
            field.getId() + ";";
