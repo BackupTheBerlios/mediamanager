@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.14 2004/06/23 12:03:05 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.15 2004/06/23 12:09:26 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -49,9 +49,6 @@ public final class MckoiRepository implements Repository {
     
     private DatabaseConnection dbConnection = 
         new DatabaseConnection(connSettings);
-    
-    private java.sql.PreparedStatement sqlNextPK = 
-        dbConnection.prepareStatement("SELECT MAX(?) FROM ?;");
     
     // --------------------------------
     // CONSTRUCTORS
@@ -711,6 +708,9 @@ public final class MckoiRepository implements Repository {
     private int getNextPK(String entity, String pk) {
         if ((pk == null) || (entity == null)) 
             throw new IllegalArgumentException();
+        
+        java.sql.PreparedStatement sqlNextPK = 
+            dbConnection.prepareStatement("SELECT MAX(?) FROM ?;");
         
         try {
             sqlNextPK.setString(1, pk);
