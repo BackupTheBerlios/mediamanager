@@ -12,7 +12,7 @@ import java.util.Set;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.13 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: DataSet.java,v 1.14 2004/07/01 11:30:40 crac Exp $
  */
 public class DataSet {
 	
@@ -96,15 +96,33 @@ public class DataSet {
      * have the same fields only the fields of the first 
      * elements are returned. 
      * 
-     * @return
+     * @see DataElement#getMetaFields()
+     * 
+     * @return Returns array of all <code>MetaField</code>s 
+     *      of this <code>DataSet</code>
      */
     public MetaField[] getMetaFields() {
         if (isEmpty()) return null;
         
         java.util.Iterator it = iterator();
         DataElement element = (DataElement) it.next();
-        
         return element.getMetaFields();
+    }
+    
+    /**
+     * 
+     * @see DataElement#getNotHiddenMetaFields()
+     * 
+     * @return Returns array of all non hidden 
+     *      <code>MetaField</code>s of this 
+     *      <code>DataSet</code>
+     */
+    public MetaField[] getNotHiddenMetaFields() {
+        if (isEmpty()) return null;
+        
+        java.util.Iterator it = iterator();
+        DataElement element = (DataElement) it.next();
+        return element.getNotHiddenMetaFields();
     }
     
     /**

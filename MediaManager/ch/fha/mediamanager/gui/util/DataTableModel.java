@@ -17,8 +17,10 @@ import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
+ * 
+ * 
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.16 2004/06/29 13:34:57 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.17 2004/07/01 11:30:40 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -54,7 +56,7 @@ public class DataTableModel extends AbstractTableModel
 		DataSet ds = qr.run();
         
         if ((ds != null) && (ds.size() > 0)) {
-            metaFields = ds.getMetaFields();
+            metaFields = ds.getNotHiddenMetaFields();
             
     		Iterator it = ds.iterator();
     		elements = new DataElement[ds.size()];
@@ -71,7 +73,7 @@ public class DataTableModel extends AbstractTableModel
     		
         } else {
             // Create one empty element
-            metaFields = tmp.getMetaFields();
+            metaFields = tmp.getNotHiddenMetaFields();
             
             elements = new DataElement[1];
             elements[0] = tmp;

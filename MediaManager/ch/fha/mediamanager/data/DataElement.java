@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.22 2004/07/01 09:12:31 crac Exp $
+ * @version $Id: DataElement.java,v 1.23 2004/07/01 11:30:40 crac Exp $
  */
 public final class DataElement {
 	
@@ -182,7 +182,7 @@ public final class DataElement {
     
     /**
      * 
-     * @return Returns array of <code>MetaField</code>s
+     * @return Returns array of all <code>MetaField</code>s
      */
     public MetaField[] getMetaFields() {
         if (fields.isEmpty()) 
@@ -198,6 +198,35 @@ public final class DataElement {
             i++;
         }
         
+        return meta;
+    }
+    
+    /**
+     * 
+     * @return Returns array of all non hidden 
+     *      <code>MetaField</code>s
+     */
+    public MetaField[] getNotHiddenMetaFields() {
+        if (fields.isEmpty()) 
+            throw new RuntimeException("No MetaFields");
+        
+        java.util.Vector vec = new java.util.Vector();
+        java.util.Iterator it = fields.iterator();
+        
+        while(it.hasNext()) {
+            Field tmp = (Field) it.next();
+            MetaField mf = tmp.getMetaField();
+            if ((! mf.getHidden()) && (mf.getType() != MetaField.PK)) {
+            	vec.add((MetaField) tmp.getMetaField());
+            }
+        }
+        
+        if (vec.isEmpty()) return null;
+        
+        MetaField[] meta = new MetaField[vec.size()];
+        for (int i = 0; i < vec.size(); i++) {
+            meta[i] = (MetaField) vec.get(i);
+        }
         return meta;
     }
     
