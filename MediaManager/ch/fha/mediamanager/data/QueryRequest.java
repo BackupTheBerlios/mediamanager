@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.9 2004/06/05 18:31:39 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.10 2004/06/20 22:41:06 crac Exp $
  */
 public class QueryRequest {
     
@@ -28,14 +28,15 @@ public class QueryRequest {
     public static final int FIELD_DELETE = 7;
     
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 
-    private Repository repository;
+    private Repository repository = DataBus.getRepository();
     private DataSet dSet;
     private int type;
     private Vector request;
-    private Set entitySet = new HashSet(5);
+    private Set entitySet = new HashSet();
+    private Vector fields = new Vector();
     
     // --------------------------------
     // CONSTRUCTORS
@@ -43,18 +44,10 @@ public class QueryRequest {
     
     /**
      * 
-     */
-    public QueryRequest() {
-    	this.repository = DataBus.getRepository();
-    }
-    
-    /**
-     * 
      * @param vec
      * @param type
      */
     public QueryRequest(Vector vec, int type) {
-        this();
         parse(vec);
         this.type = type;
         this.request = vec;
@@ -66,7 +59,6 @@ public class QueryRequest {
      * @param type
      */
     public QueryRequest(DataSet dSet, int type) {
-        this();
         this.dSet = dSet;
         this.type = type;
     }
@@ -83,13 +75,18 @@ public class QueryRequest {
      */
     private void parse(Vector vec) {
         
-        // create entitySet
         for(int i = 0; i < vec.size(); i++) {
             if (vec.elementAt(i) instanceof QueryCondition) {
+                // create entitySet
                 MetaEntity tmp = 
                     ((QueryCondition) vec.elementAt(i)).getEntity();
                 
                 if (! entitySet.contains(tmp))  entitySet.add(tmp);
+                
+                // create vector of fields
+                fields.add(
+                    ((QueryCondition) vec.elementAt(i)).getField()
+                );
             }
         }
         
@@ -141,6 +138,14 @@ public class QueryRequest {
      */
     public Set getEntities() {
         return entitySet;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Vector getFields() {
+        return fields;   
     }
     
     // --------------------------------

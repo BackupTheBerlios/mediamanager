@@ -6,7 +6,7 @@ package ch.fha.mediamanager.data;
  * <p>It is immutable.
  * 
  * @author crac
- * @version $Id: MetaEntity.java,v 1.4 2004/06/19 11:04:41 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.5 2004/06/20 22:42:16 crac Exp $
  */
 public final class MetaEntity {
 	
@@ -15,7 +15,6 @@ public final class MetaEntity {
     // --------------------------------
 	
 	private String name;
-    private String identifier;
     
     // --------------------------------
     // CONSTRUCTORS
@@ -23,20 +22,9 @@ public final class MetaEntity {
     
     /**
      * 
-     * @param id
-     */
-    public MetaEntity(String id) {
-    	this.identifier = id;
-    	this.name = id;
-    }
-    
-    /**
-     * 
-     * @param id
      * @param name
      */
-    public MetaEntity(String id, String name) {
-    	this.identifier = id;
+    public MetaEntity(String name) {
     	this.name = name;
     }
     
@@ -50,7 +38,7 @@ public final class MetaEntity {
      * @return
      */
     public boolean equals(MetaEntity e) {
-        return (identifier.equals(e.identifier));   
+        return (name.equals(e.name));   
     }
     
     /**
@@ -58,7 +46,7 @@ public final class MetaEntity {
      * @return
      */
     public int hashCode() {
-        return identifier.hashCode();   
+        return name.hashCode();   
     }
     
     // --------------------------------
@@ -66,7 +54,7 @@ public final class MetaEntity {
     // --------------------------------
     
     /**
-     * Get the value of name
+     * Get the value of name.
      * 
      * @return the value of name
      */
@@ -75,11 +63,12 @@ public final class MetaEntity {
     }
     
     /**
-     * Get the value of identifier
+     * Get the value of identifier.
      * 
-     * @return the value of identifier
+     * @deprecated Use getName() instead.
+     * @return
      */
     public String getIdentifier() {
-        return identifier;
-    }    
+        return name;   
+    }
 }
