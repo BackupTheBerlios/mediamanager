@@ -1,11 +1,9 @@
 package ch.fha.mediamanager.data;
 
-import java.util.Vector;
-
 /**
  *
  * @author crac
- * @version $Id: DatabaseQuery.java,v 1.2 2004/06/25 16:23:38 crac Exp $
+ * @version $Id: DatabaseQuery.java,v 1.3 2004/06/26 10:00:51 crac Exp $
  */
 public final class DatabaseQuery extends AbstractQuery {
     
@@ -23,7 +21,7 @@ public final class DatabaseQuery extends AbstractQuery {
      * @param vec
      * @param type
      */
-    public DatabaseQuery(Vector vec, int type) {
+    public DatabaseQuery(java.util.Vector vec, int type) {
         super(vec, type);
     }
     
@@ -34,6 +32,14 @@ public final class DatabaseQuery extends AbstractQuery {
      */
     public DatabaseQuery(DataSet dSet, int type) {
         super(dSet, type);
+    }
+    
+    /**
+     * 
+     * @param type
+     */
+    public DatabaseQuery(int type) {
+        super(type);
     }
     
     // --------------------------------
@@ -87,7 +93,7 @@ public final class DatabaseQuery extends AbstractQuery {
      * @return 
      */
     protected String createRequest() {
-        Vector tmp = getVector();
+        java.util.Vector tmp = getQueryVector();
         
         String output = (tmp.size() > 0) ? " WHERE ": "";
         

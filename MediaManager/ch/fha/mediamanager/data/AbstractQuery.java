@@ -3,8 +3,8 @@ package ch.fha.mediamanager.data;
 import java.util.Vector;
 
 /**
- * @author luca
- * @version $Id: AbstractQuery.java,v 1.1 2004/06/25 16:04:33 crac Exp $
+ * @author crac
+ * @version $Id: AbstractQuery.java,v 1.2 2004/06/26 10:01:07 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
@@ -14,7 +14,7 @@ public abstract class AbstractQuery implements Query {
     
     private Repository repository = DataBus.getRepository();
     private DataSet dSet;
-    private int type;
+    private int type = 0;
     private Vector request;
     private MetaEntity entity;
     private Vector fields = new Vector();
@@ -24,11 +24,17 @@ public abstract class AbstractQuery implements Query {
     // --------------------------------
     
     /**
-     * 
+     * Default constructor.
      */
     public AbstractQuery() {}
     
     /**
+     * Prepares query to retrieve data from the 
+     * repository.
+     * 
+     * @see Query.#LOAD
+     * 
+     * @see #run()
      * 
      * @param vec
      * @param type
@@ -40,12 +46,40 @@ public abstract class AbstractQuery implements Query {
     }
     
     /**
+     * Prepares query to edit a <code>DataSet</code> 
+     * on the repository.
+     * 
+     * @see Query.#INSERT
+     * @see Query.#UPDATE
+     * @see Query.#DELETE
+     * 
+     * @see #run()
      * 
      * @param dSet
      * @param type
      */
     public AbstractQuery(DataSet dSet, int type) {
         this.dSet = dSet;
+        this.type = type;
+    }
+    
+    /**
+     * Prepares query to perform admin operations on 
+     * <code>MetaData</code> of the repository.
+     * 
+     * @see Query.#ENTITY_CREATE
+     * @see Query.#ENTITY_DELETE
+     * @see Query.#ENTITY_FIELD_CREATE
+     * @see Query.#FIELD_CREATE
+     * @see Query.#FIELD_DELETE
+     * 
+     * @see #admin(MetaEntity)
+     * @see #admin(MetaEntity, MetaField[])
+     * @see #admin(MetaField)
+     * 
+     * @param type
+     */
+    public AbstractQuery(int type) {
         this.type = type;
     }
     
@@ -63,7 +97,6 @@ public abstract class AbstractQuery implements Query {
      * @param vec
      */
     private void parse(Vector vec) {
-        
         for(int i = 0; i < vec.size(); i++) {
             if (vec.elementAt(i) instanceof QueryCondition) {
                 // create entitySet
@@ -82,9 +115,12 @@ public abstract class AbstractQuery implements Query {
     
     /**
      * 
-     * @return  DataSet
+     * @return 
      */
     public DataSet run() {
+        if (this.type == 0)
+            throw new RuntimeException("Querytype was not set.");
+        
         switch (this.type) {
             case(LOAD):
                 return repository.load(this);
@@ -97,6 +133,65 @@ public abstract class AbstractQuery implements Query {
         }
         
         return null;
+    }
+    
+    /**
+     * 
+     * @param entity
+     * @return Returns true if the administration  
+     *      of the <code>MetaEntity</code> was successful
+     */
+    public boolean admin(MetaEntity entity) {
+        if (this.type == 0)
+            throw new RuntimeException("Querytype was not set.");
+        
+        switch (this.type) {
+            case (ENTITY_CREATE):
+                return repository.create(entity);
+            case (ENTITY_DELETE):
+                return repository.delete(entity);
+        }
+
+        return false;
+    }
+    
+    /**
+     * 
+     * @param e
+     * @param f
+     * @return Returns true if the administration  
+     *      of the <code>MetaEntity</code> and its
+     *      <code>MetaField</code>s was successful
+     */
+    public boolean admin(MetaEntity e, MetaField[] f) {
+        if (this.type == 0)
+            throw new RuntimeException("Querytype was not set.");
+        
+        switch (this.type) {
+            case (ENTITY_FIELD_CREATE):
+                return repository.create(e, f);
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param field
+     * @return Returns true if the administration  
+     *      of the <code>MetaField</code> was successful
+     */
+    public boolean admin(MetaField field) {
+        if (this.type == 0)
+            throw new RuntimeException("Querytype was not set.");
+        
+        switch (this.type) {
+            case (FIELD_CREATE):
+                return repository.create(field);
+            case (FIELD_DELETE):
+                return repository.delete(field);
+        }
+
+        return false;
     }
 
     // --------------------------------
@@ -116,7 +211,7 @@ public abstract class AbstractQuery implements Query {
      * 
      * @return
      */
-    public Vector getVector() {
+    public Vector getQueryVector() {
         return request;
     }
     
