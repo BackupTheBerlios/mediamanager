@@ -1,4 +1,4 @@
-//$Id: StandartToolBar.java,v 1.3 2004/06/27 20:31:48 radisli Exp $
+//$Id: StandartToolBar.java,v 1.4 2004/06/28 11:01:57 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.event.ActionEvent;
@@ -50,6 +50,13 @@ public class StandartToolBar extends AbstractToolBar implements
 				"about",
 				"About");
 		
+		this.addSeparator();
+		
+		addToolbarElement("images/iexit.gif",
+				mainActionListener,
+				"exit",
+				"Beenden");
+
 		mainActionListener.addActionListener(this);
 	}
 
