@@ -11,14 +11,16 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import ch.fha.mediamanager.data.DataElement;
+import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
+import ch.fha.mediamanager.workflow.DeleteWorkflow;
 import ch.fha.mediamanager.workflow.EditWorkflow;
 import ch.fha.mediamanager.workflow.NewWorkflow;
 import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.2 2004/06/23 13:44:12 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.3 2004/06/23 13:51:34 ia02vond Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener {
@@ -86,7 +88,13 @@ public class DataTablePopupMenu extends JPopupMenu
 		
 		} else if (source == deleteMI) {
 			
-			//new DeleteWorkflow(dataSet).start();
+			DataSet set = new DataSet();
+			int selected[] = table.getSelectedRows();
+			for (int i=0; i<selected.length; i++) {
+				set.add(model.getDataElement(selected[i]));
+			}
+				
+			new DeleteWorkflow(set).start();
 		}
 	}
 	
