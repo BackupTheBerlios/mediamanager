@@ -8,17 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * It connects to a database using the configuration
- * defined in the ini-file named by the static constant {@link #DB_CONF_FILE_NAME}.
- * If the configuration file can not be found, a new default one will be
- * created. 
+ * It connects to a database using the <code>DatabaseSettings</code>.
  * 
- * <p>You can connect to the specified database invoking the <code>connect</code>
- * method. Afterwards the class provides several methods for using the database
- * in your java application.</p>
+ * <p>You can connect to the specified database invoking the 
+ * <code>connect</code> method. Afterwards the class provides 
+ * several methods for using the database in your java application.</p>
+ * 
+ * @see DatabaseSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.3 2004/06/18 12:04:44 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.4 2004/06/19 08:30:05 crac Exp $
  */
 public class DatabaseConnection {
     
@@ -29,7 +28,7 @@ public class DatabaseConnection {
     private DatabaseSettings settings;
     
     /** 
-     * The database connection. There's only one used for the whole
+     * The database connection. Only one used for the whole
      * application
      */
     private Connection connection;
@@ -116,9 +115,9 @@ public class DatabaseConnection {
             result.next();
             return result.getInt("max") + 1;
         } catch (SQLException e) {
-            System.out.println ("Error while getting next primary key.");
+            DataBus.logger.fatal("Error while getting next primary key.");
             e.printStackTrace();
-            throw new RuntimeException("Fehlerhafte Datenbank Anfrage.");
+            throw new RuntimeException("Erroneous database query.");
         }
     }
     
@@ -155,7 +154,7 @@ public class DatabaseConnection {
         try {
             return connection.prepareStatement(query);
         } catch (SQLException e) {
-            System.out.println ("Error while preparing statement '" + query);
+            DataBus.logger.fatal("Error while preparing statement '" + query);
             e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
@@ -195,7 +194,7 @@ public class DatabaseConnection {
         try {
             Class.forName(settings.getDriver()).newInstance();
         } catch (Exception e) {
-            DataBus.logger.warn("Database driver is not ready.");
+            DataBus.logger.fatal("Database driver is not ready.");
             e.printStackTrace();
             error = true;
         }
@@ -220,13 +219,13 @@ public class DatabaseConnection {
                    settings.getUser(), 
                    settings.getPassword());
         } catch (SQLException e) {
-            DataBus.logger.warn("Database connection not established.");
+            DataBus.logger.fatal("Database connection not established.");
             e.printStackTrace();
             error = true;
         }
     
         if (error) {
-            throw new RuntimeException("Beim Verbinden mit der Datenbank ist ein Fehler aufgetreten.");
+            throw new RuntimeException("Database connection problem.");
         }
     }
 
