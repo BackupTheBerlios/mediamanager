@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.9 2004/06/22 17:31:40 crac Exp $
+ * @version $Id: TestQuery.java,v 1.10 2004/06/23 17:20:24 crac Exp $
  */
 public class TestQuery {
     
@@ -53,7 +53,7 @@ public class TestQuery {
             new QueryCondition(
                 field, 
                 QueryCondition.EQUALS, 
-                new Integer(2)
+                new Integer(1)
             );
         Vector vec = new Vector();
         vec.add(qc);
@@ -105,34 +105,12 @@ public class TestQuery {
             }
         }
         
-        /*MetaEntity ent = new MetaEntity("Movies");
-        Field field = new Field("id", ent, new Integer(0));
-        QueryCondition qca = 
-            new QueryCondition(
-                field, 
-                QueryCondition.GREATER, 
-                new Integer(1)
-            );
-        QueryCondition qcb = 
-            new QueryCondition(
-                field, 
-                QueryCondition.LESSER, 
-                new Integer(10)
-            );
-        QueryCondition qcc = 
-            new QueryCondition(
-                field, 
-                QueryCondition.EQUALS, 
-                new Integer(20)
-            );
-        Vector vec = new Vector();
-        vec.add(qca);
-        vec.add(new Integer(QueryRequest.AND));
-        vec.add(qcb);
-        vec.add(new Integer(QueryRequest.OR));
-        vec.add(qcc);
-        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
-        DataSet ds = qr.run();*/
+        // how to get a default DataElement
+        DataElement e = DataBus.getDefaultElement("Test");
+        Field[] flds = e.getFields();
+        for (int i = 0; i < flds.length; i++) {
+            System.out.println(flds[i].toString());
+        }
         
         DataBus.logger.info("App stoped.");
     }
