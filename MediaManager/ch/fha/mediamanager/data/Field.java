@@ -4,9 +4,9 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.13 2004/06/29 11:53:01 crac Exp $
+ * @version $Id: Field.java,v 1.14 2004/06/30 22:21:39 crac Exp $
  */
-public class Field {
+public final class Field {
 	
     // --------------------------------
     // FIELDS
@@ -42,7 +42,7 @@ public class Field {
      * @param entity
      */
     public Field(String name, MetaEntity entity) {
-    	this(name, entity, null);
+    	this(name, (MetaEntity) entity.clone(), null);
     }
     
     /**
@@ -51,7 +51,7 @@ public class Field {
      * @param value
      */
     public Field(MetaField field, Object value) {
-         this.meta = field;
+         this.meta = (MetaField) field.clone();
          this.value = value;
     }
     
@@ -88,7 +88,7 @@ public class Field {
      * 
      * @see MetaField
      * 
-     * @return Returns its meta data
+     * @return Returns a copy of its <code>MetaField</code>
      */
     public MetaField getMetaField() {
         return (MetaField) meta.clone();
@@ -115,11 +115,11 @@ public class Field {
     /**
      * 
      * 
-     * @return Returns the entity the field 
-     *      belongs to
+     * @return Returns a copy of the <code>MetaEntity</code>
+     *      the field belongs to
      */
     public MetaEntity getMetaEntity() {
-    	return meta.getMetaEntity();
+    	return (MetaEntity) meta.getMetaEntity().clone();
     }
     
     /**
@@ -144,20 +144,6 @@ public class Field {
     // --------------------------------
     // MUTATORS
     // --------------------------------
-    
-    /**
-     * Sets the meta information of the field.
-     * 
-     * TODO: Do we need this or should it not be possible
-     * to change the meta information?
-     * 
-     * @see MetaField
-     * 
-     * @param value
-     */
-    public void setMetaField(MetaField value) {
-        meta = value;
-    }
     
     /**
      * Sets the value of the field.
