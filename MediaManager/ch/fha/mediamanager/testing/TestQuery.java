@@ -10,7 +10,6 @@ import ch.fha.mediamanager.data.DatabaseQuery;
 import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.MetaField;
-import ch.fha.mediamanager.data.Query;
 import ch.fha.mediamanager.data.QueryCondition;
 import ch.fha.mediamanager.data.Repository;
 
@@ -26,7 +25,7 @@ import ch.fha.mediamanager.data.Repository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.2 2004/06/27 15:04:02 crac Exp $
+ * @version $Id: TestQuery.java,v 1.3 2004/06/27 16:13:57 crac Exp $
  */
 public class TestQuery {
     
@@ -40,7 +39,7 @@ public class TestQuery {
         DataSet ds = null;
         
         // create entity
-        MetaEntity entity = new MetaEntity("Lied");
+        /*MetaEntity entity = new MetaEntity("Lied");
         MetaField f1 = new MetaField(MetaField.PK, "LiedId", entity);
         MetaField f2 = new MetaField(MetaField.INT, "Laenge", entity);
         MetaField f3 = new MetaField(MetaField.INT, "Jahr", entity);
@@ -52,7 +51,7 @@ public class TestQuery {
         
         if (query.admin(entity, fields)) {
             System.out.println("Created, YEAH!");
-        }
+        }*/
         
         // delete entity
         /*MetaEntity entity = 
@@ -84,9 +83,33 @@ public class TestQuery {
             ds = qr.run();
         }*/
         
-        // update example:
-        /*MetaEntity ent = new MetaEntity("Test");
-        Field field = new Field("TestId", ent, new Integer(0));
+        // update example (1):
+        /*DataElement el = DataBus.getDefaultElement("Lied");
+        Field f = el.getPKField();
+        QueryCondition qc = 
+            new QueryCondition(
+                f, 
+                QueryCondition.EQUALS, 
+                new Integer(1)
+            );
+        Vector vec = new Vector();
+        vec.add(qc);
+        AbstractQuery qr =
+            DataBus.getQueryInstance(vec, AbstractQuery.LOAD);
+        DataSet set = qr.run();
+        
+        if ((set != null) && (set.size() == 1)) {
+            java.util.Iterator it = set.iterator();
+            DataElement e = (DataElement) it.next();
+            set.remove(e);
+            e.setField("Interpret", "DJ Bobo");
+            set.add(e);
+            qr = DataBus.getQueryInstance(set, AbstractQuery.UPDATE);
+            ds = qr.run();
+        }*/
+        
+        // update example (2):
+        /*Field field = new Field("TestId", ent, new Integer(0));
         QueryCondition qc = 
             new QueryCondition(
                 field, 
@@ -109,8 +132,16 @@ public class TestQuery {
             ds = qr.run();
         }*/
         
+        // insert example (1):
+        /*DataElement el = DataBus.getDefaultElement("Lied");
+        el.setField("Interpret", new String("DJ Bobo"));
+        DataSet set = new DataSet();
+        set.add(el);
+        AbstractQuery qr = 
+            DataBus.getQueryInstance(set, AbstractQuery.INSERT);
+        ds = qr.run();*/
         
-        // insert example:
+        // insert example (2):
         /*MetaEntity ent = new MetaEntity("Test");
         DataElement el = DataBus.getDefaultElement(ent);
         el.setField("Interpret", new String("Bobo"));
@@ -118,12 +149,14 @@ public class TestQuery {
         DataSet set = new DataSet();
         set.add(el);
         AbstractQuery qr = 
-            DataBus.getQueryInstance(vec, AbstractQuery.INSERT);
+            DataBus.getQueryInstance(set, AbstractQuery.INSERT);
         ds = qr.run();*/
         
         // query example: return all with id > 0
-        MetaEntity ent = new MetaEntity("Test");
-        Field field = new Field("TestId", ent, new Integer(0));
+        //MetaEntity ent = new MetaEntity("Test");
+        DataElement tmp = DataBus.getDefaultElement("Test");
+        Field field = tmp.getPKField();
+        //Field field = new Field("LiedId", ent, new Integer(0));
         QueryCondition qc = 
             new QueryCondition(
                 field, 
