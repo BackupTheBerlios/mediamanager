@@ -6,7 +6,7 @@ package ch.fha.mediamanager.data;
  * <p>It is immutable.
  * 
  * @author crac
- * @version $Id: MetaEntity.java,v 1.7 2004/06/24 13:45:13 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.8 2004/06/27 10:05:11 crac Exp $
  */
 public final class MetaEntity {
 	
@@ -79,16 +79,6 @@ public final class MetaEntity {
      */
     public int getId() {
         return id;
-    }
-    
-    /**
-     * Gets the value of identifier.
-     * 
-     * @deprecated Use getName() instead.
-     * @return
-     */
-    public String getIdentifier() {
-        return name;   
     }
     
     // --------------------------------

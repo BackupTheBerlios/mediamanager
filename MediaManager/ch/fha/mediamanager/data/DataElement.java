@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.16 2004/06/27 09:30:15 crac Exp $
+ * @version $Id: DataElement.java,v 1.17 2004/06/27 10:05:11 crac Exp $
  */
 public class DataElement {
 	
@@ -118,7 +118,7 @@ public class DataElement {
      * @return Returns Timestamp of last modification
      */
     public java.sql.Timestamp getLastModified() {
-        return entry.getEdit();
+        return entry.getLastModified();
     }
     
     /**

@@ -6,7 +6,7 @@ import java.sql.Timestamp;
  * 
  * 
  * @author luca
- * @version $Id: Entry.java,v 1.4 2004/06/25 08:58:17 crac Exp $
+ * @version $Id: Entry.java,v 1.5 2004/06/27 10:05:11 crac Exp $
  */
 public final class Entry implements Cloneable {
     
@@ -14,10 +14,10 @@ public final class Entry implements Cloneable {
     // FIELDS
     // --------------------------------
     
-    private int entryId = 0;
+    private int id = 0;
     private Timestamp creation = 
         new Timestamp(System.currentTimeMillis());
-    private Timestamp edit = 
+    private Timestamp modified = 
         new Timestamp(System.currentTimeMillis());
     //private User owner = null;
     
@@ -39,9 +39,9 @@ public final class Entry implements Cloneable {
      * @param owner
      */
     public Entry(int id, Timestamp creation, Timestamp edit) {
-        entryId = id;
+        this.id = id;
         this.creation = creation;
-        this.edit = edit;
+        this.modified = edit;
     }
     
     // --------------------------------
@@ -71,7 +71,7 @@ public final class Entry implements Cloneable {
      * @return
      */
     public int getId() {
-        return entryId;   
+        return id;   
     }
     
     /**
@@ -86,8 +86,8 @@ public final class Entry implements Cloneable {
      * 
      * @return
      */
-    public Timestamp getEdit() {
-        return edit;   
+    public Timestamp getLastModified() {
+        return modified;   
     }
     
     /*
@@ -106,8 +106,8 @@ public final class Entry implements Cloneable {
      * 
      * @param stamp
      */
-    protected void setEdit(Timestamp stamp) {
-        edit = stamp;
+    protected void setLastModified(Timestamp stamp) {
+        modified = stamp;
     }
     
     /**
@@ -115,7 +115,7 @@ public final class Entry implements Cloneable {
      * @param id
      */
     protected void setId(int id) {
-        entryId = id;
+        this.id = id;
     }
     
     /*
