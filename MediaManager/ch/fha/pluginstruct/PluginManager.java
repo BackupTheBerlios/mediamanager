@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.6 2004/06/28 11:25:33 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.7 2004/06/28 13:45:49 ia02vond Exp $
  */
 public final class PluginManager {
 	
@@ -79,6 +79,13 @@ public final class PluginManager {
 			throw new IllegalStateException("pluginmanager has not been initialized yet, use getInstance(String[], Version)");
 		}
 		return manager;
+	}
+	
+	/**
+	 * Sets the InOut interface.
+	 */	
+	public void setInOut(InOut inOut) {
+		this.inOut = inOut;
 	}
 	
 	/**
