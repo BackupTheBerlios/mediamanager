@@ -14,11 +14,15 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.4 2004/06/05 16:37:41 crac Exp $
+ * @version $Id: TestQuery.java,v 1.5 2004/06/05 18:46:06 crac Exp $
  */
 public class TestQuery {
     
     public static void main(String[] args) {
+        
+        // NB: this will be called on the application startup.
+        DataBus.initialize();
+        
         MetaEntity ent = new MetaEntity("Movies");
         Field field = new Field("id", ent, new Integer(0));
         QueryCondition qca = 
