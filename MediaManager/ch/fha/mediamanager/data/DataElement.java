@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.9 2004/06/21 13:55:59 crac Exp $
+ * @version $Id: DataElement.java,v 1.10 2004/06/21 21:42:57 crac Exp $
  */
 public class DataElement {
 	
@@ -16,6 +16,7 @@ public class DataElement {
 	
     private Set fields = new HashSet();
     private Entry entry = null;
+    private MetaEntity entity = null;
     
     // --------------------------------
     // CONSTRUCTORS
@@ -27,20 +28,29 @@ public class DataElement {
      * @param entryId
      */
     public DataElement(MetaEntity entity, Entry entry) {
+        this.entity = entity;
         this.entry = (Entry) entry.clone();   
     }
     
     /**
      *
      * @param entity
+     * @param owner
      */
-    public DataElement(MetaEntity entity) {}
+    public DataElement(MetaEntity entity, User owner) {
+        this.entity = entity;
+        this.entry = new Entry();
+        this.entry.setOwner(owner);
+    }
     
     /**
-     * 
-     *
-     */
-    public DataElement() {}
+    *
+    * @param entity
+    */
+   public DataElement(MetaEntity entity) {
+       this.entity = entity;
+       this.entry = new Entry();
+   }
     
     // --------------------------------
     // OPERATIONS
@@ -51,6 +61,9 @@ public class DataElement {
      * @param field
      */
     public void add(Field field) {
+        if (entity == null) {
+            entity = field.getMetaField().getEntity();
+        }
         fields.add(field);
     }
     
@@ -179,9 +192,7 @@ public class DataElement {
      * @return Returns the <code>MetaEntity</code>
      */
     public MetaEntity getMetaEntity() {
-        java.util.Iterator it = iterator();
-        Field tmp = (Field) it.next();
-        return tmp.getEntity();
+        return entity;
     }
     
     // --------------------------------
@@ -194,5 +205,30 @@ public class DataElement {
      */
     public void setEntry(Entry entry) {
         entry = (Entry) entry.clone();
+    }
+    
+    /**
+     * 
+     * @param field
+     * @param value
+     */
+    public void setField(String field, Object value) {
+        MetaField mf = new MetaField(field, entity);
+        java.util.Iterator it = iterator();
+        
+        while(it.hasNext()) {
+            Field tmp = (Field) it.next();
+            if (tmp.getMetaField().equals(mf)) {
+                tmp.setValue(value);
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param owner
+     */
+    public void setOwner(User owner) {
+        entry.setOwner(owner);
     }
 }

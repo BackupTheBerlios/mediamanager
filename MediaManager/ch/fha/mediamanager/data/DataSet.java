@@ -12,7 +12,7 @@ import java.util.HashSet;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.7 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: DataSet.java,v 1.8 2004/06/21 21:42:45 crac Exp $
  */
 public class DataSet {
 	
@@ -65,6 +65,20 @@ public class DataSet {
     // --------------------------------
     // ACCESSORS
     // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public String getPKField() {
+        MetaField[] mf = getMetaFields();
+        for (int i = 0; i < mf.length; i++) {
+            if (mf[i].getType() == MetaField.PK) {
+                return mf[i].getName();
+            }
+        }
+        return null;
+    }
     
     /**
      * Returns the meta data about all fields of the 
