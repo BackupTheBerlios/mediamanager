@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.Repository;
 import ch.fha.mediamanager.gui.components.BarBorder;
 
@@ -37,7 +38,11 @@ public class RepositoryConf extends JPanel
 		this.setLayout(new BorderLayout());
 		this.add(comboBox, BorderLayout.NORTH);
 		
-		this.currentRepPanel = new JPanel();
+		if (DataBus.getRepository() != null) {
+			this.currentRepPanel = DataBus.getRepository().getConfPanel();
+		} else {
+			this.currentRepPanel = new JPanel();
+		}
 		this.add(currentRepPanel, BorderLayout.CENTER);
 	}
 		
@@ -48,6 +53,7 @@ public class RepositoryConf extends JPanel
 		int index = comboBox.getSelectedIndex();
 		if (index > -1) {
 			currentRepPanel = repositories[index].getConfPanel();
+			currentRepPanel.repaint();
 		} else {
 			currentRepPanel = new JPanel();
 		}
