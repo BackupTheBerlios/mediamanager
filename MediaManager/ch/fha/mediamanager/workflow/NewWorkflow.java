@@ -15,7 +15,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.5 2004/06/28 11:23:24 ia02vond Exp $
+ * @version $Id: NewWorkflow.java,v 1.6 2004/06/28 13:45:26 crac Exp $
  */
 public class NewWorkflow implements Workflow, Returnable {
 
@@ -87,7 +87,8 @@ public class NewWorkflow implements Workflow, Returnable {
 					set.add(dataElement);
 					AbstractQuery req = 
 	                    DataBus.getQueryInstance(set, AbstractQuery.INSERT);
-					
+					req.run();
+                    
 					state = POSTINSERT;
 					pluginManager.fireEvent(
 						this,
