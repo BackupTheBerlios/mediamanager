@@ -26,30 +26,30 @@ import javax.swing.border.Border;
  * </ul>
  * 
  * @author ia02vond
- * @version $Id: BarBorder.java,v 1.1 2004/06/18 12:30:14 ia02vond Exp $
+ * @version $Id: BarBorder.java,v 1.2 2004/07/04 15:19:52 crac Exp $
  */
 public class BarBorder implements Border {
 
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 
-	/** The title. */
+	/* The title. */
 	private String title;
 	
-	/** The title font. */
+	/* The title font. */
 	private Font font;
 	
-	/** The bar thickness. */
+	/* The bar thickness. */
 	private int thickness;
 	
-	/** Color definitions. */
+	/* Color definitions. */
 	private Color textColor, textShadowColor, barColor;
 	
-	/** If true the title will have a shadow. */
+	/* If true the title will have a shadow. */
 	private boolean textShadow;
 	
-	/** The border offset. */
+	/* The border offset. */
 	private final static int OFFSET = 3;
 
     // --------------------------------

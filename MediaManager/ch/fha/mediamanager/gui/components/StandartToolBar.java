@@ -11,16 +11,19 @@ import ch.fha.mediamanager.gui.framework.*;
 /**
  * 
  * @author radisli
- * @version $Id: StandartToolBar.java,v 1.8 2004/06/30 18:54:56 crac Exp $
+ * @version $Id: StandartToolBar.java,v 1.9 2004/07/04 15:19:04 crac Exp $
  */
 public class StandartToolBar extends AbstractToolBar 
     implements KeyPointListener {
     
 	private ToolBarButton connect;
 	// Images for connectbutton
-	private final static ImageIcon connectImage = new ImageIcon("images/iconnect.gif");
-	private final static ImageIcon connectingImage = new ImageIcon("images/iconnecting.gif");
-	private final static ImageIcon disconnectImage = new ImageIcon("images/idisconnect.gif");
+	private final static ImageIcon connectImage = 
+        new ImageIcon("images" + java.io.File.separator + "iconnect.gif");
+	private final static ImageIcon connectingImage = 
+        new ImageIcon("images" + java.io.File.separator + "iconnecting.gif");
+	private final static ImageIcon disconnectImage = 
+        new ImageIcon("images" + java.io.File.separator + "idisconnect.gif");
 
 
     /**
@@ -29,10 +32,13 @@ public class StandartToolBar extends AbstractToolBar
      */
 	public StandartToolBar() {
 		super();
+        setRollover(true);
+        
 		final MainFrame mainWindow = MainFrame.getInstance();
 		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 		
-		connect = addToolbarElement("images/iconnect.gif",
+		connect = addToolbarElement(
+                "images" + java.io.File.separator + "iconnect.gif",
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(mainWindow.getConnectionStatus()) {
@@ -44,21 +50,24 @@ public class StandartToolBar extends AbstractToolBar
 				},
 				null,
 				MainFrame.connectStr);
-		addToolbarElement("images/iconfig.gif",
+		addToolbarElement(
+                "images" + java.io.File.separator + "iconfig.gif",
 				mainActionListener,
 				"config",
 				"Einstellungen");
 		
 		this.addSeparator();
 		
-		addToolbarElement("images/iabout.gif",
+		addToolbarElement(
+                "images" + java.io.File.separator + "iabout.gif",
 				mainActionListener,
 				"about",
 				"About");
 		
 		this.addSeparator();
 		
-		addToolbarElement("images/iexit.gif",
+		addToolbarElement(
+                "images" + java.io.File.separator + "iexit.gif",
 				mainActionListener,
 				"exit",
 				"Beenden");

@@ -1,4 +1,3 @@
-//$Id: FileMenu.java,v 1.5 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components.menu;
 
 import javax.swing.*;
@@ -7,14 +6,24 @@ import java.awt.event.*;
 import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 
+/**
+ * 
+ * @author radisli
+ * @version $Id: FileMenu.java,v 1.6 2004/07/04 15:19:04 crac Exp $
+ */
 public class FileMenu extends JMenu implements
-	KeyPointListener
-{
+	KeyPointListener {
+    
 	private JMenuItem connectState, prefs;
 	
+    /**
+     * 
+     *
+     */
 	public FileMenu() {
 		final MainFrame mainWindow = MainFrame.getInstance();
-		ActionHandler mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = 
+            mainWindow.getMainActionListener();
 		setText("File");
 		
 		connectState = new JMenuItem(MainFrame.connectStrShort);
@@ -51,6 +60,10 @@ public class FileMenu extends JMenu implements
 		mainActionListener.addActionListener(this);
 	}
 	
+    /**
+     * 
+     *
+     */
 	private void connect() {
 		connectState.setText(MainFrame.connectStrShort);
 		connectState.setMnemonic(KeyEvent.VK_V);

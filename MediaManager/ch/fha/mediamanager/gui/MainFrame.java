@@ -1,4 +1,3 @@
-//$Id: MainFrame.java,v 1.21 2004/06/29 20:41:42 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -16,15 +15,16 @@ import ch.fha.mediamanager.gui.components.*;
 import ch.fha.mediamanager.gui.framework.*;
 
 /**
- * The main view of the <em>SpellCheck</em> application.
+ * The main view of the <em>MediaManager</em> application.
  *
  * @author Roman Rietmann
+ * @version $Id: MainFrame.java,v 1.22 2004/07/04 15:19:04 crac Exp $
  */
 public class MainFrame extends JFrame implements
 	KeyPointListener,
 	Savable,
-	InOut
-{
+	InOut {
+    
 	private StandartToolBar standartToolBar;
 	private MainTabPanel mainTabPanel;
 	private JPanel mainConfigPanel;
@@ -60,7 +60,7 @@ public class MainFrame extends JFrame implements
 	public static final Font titleFont = new Font("arial", Font.BOLD, 20);
 	
 	// Information loaded from the package/manifest
-	private static final String apptitle = "MediaManager";
+	private static final String APP_TITLE = "MediaManager";
 
 	// Keywords that name the settings
 	private static final String WINDOW_WIDTH = "windowWidth";
@@ -83,7 +83,8 @@ public class MainFrame extends JFrame implements
 	private MainFrame() {}
 	
 	/**
-	 * Initialisation of the basic compomponents and the window structure
+	 * Initialisation of the basic compomponents and the 
+     * window structure.
 	 */
 	private void init() {
 		MediaManager.addSavable(this);
@@ -101,7 +102,7 @@ public class MainFrame extends JFrame implements
 		windowXPos = prefs.getInt(WINDOW_X_POS, defaultWindowXPos);
 		windowYPos = prefs.getInt(WINDOW_Y_POS, defaultWindowYPos);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setTitle(apptitle);
+		setTitle(APP_TITLE);
 		Image icon = Toolkit.getDefaultToolkit().getImage("images/icon.gif");
 		setIconImage(icon);
 		
@@ -147,10 +148,10 @@ public class MainFrame extends JFrame implements
 	/** 
 	 * Returns a reference to the global <code>MainFrame</code> object.
 	 *
-	 * All methods must use this method instead of directly
+	 * <p>All methods must use this method instead of directly
 	 * accessing the instance reference!
 	 *
-	 * @return the application's top-level window
+	 * @return The application's top-level window
 	 */
 	public static MainFrame getInstance() {
 		if(instance == null) {
@@ -161,8 +162,8 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/** 
-	 * Returns the <code>mainActionListener</code> object, which handles
-	 * the basic operations. (e.g. Exit)
+	 * Returns the <code>mainActionListener</code> object, 
+     * which handles the basic operations (e.g. Exit).
 	 *
 	 * @return mainActionListener
 	 */
@@ -183,8 +184,9 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/**
-	 * Covers the showed panel by the <code>panel</code>. The old one will be saved
-	 * and can be restored by the <code>removeCoverPanel</code> method.
+	 * Covers the showed panel by the <code>panel</code>. 
+     * The old one will be saved and can be restored by 
+     * the <code>removeCoverPanel</code> method.
 	 *
 	 * @param panel which should cover the active panel
 	 */
@@ -194,7 +196,8 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/**
-	 * Restores the panel which was covered by the <code>loadCoverPanel</code> method
+	 * Restores the panel which was covered by the 
+     * <code>loadCoverPanel</code> method.
 	 */
 	public void removeCoverPanel() {
 		if(coverPanel != null) {
@@ -219,9 +222,10 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/**
-	 * Sets the status-text in the <code>statePanel</code> to <code>s</code>.
-	 * The <code>timeOut</code> defines whether the status-text disapears
-	 * after a certain time (true) or never (false).
+	 * Sets the status-text in the <code>statePanel</code> to 
+     * <code>s</code>. The <code>timeOut</code> defines whether 
+     * the status-text disapears after a certain time (true) or 
+     * never (false).
 	 *
 	 * @param s is the string which should be shown in the status-bar
 	 * @param timeOut defines whether the status-text disapears
@@ -376,6 +380,10 @@ public class MainFrame extends JFrame implements
 			JOptionPane.ERROR_MESSAGE);
 	}
 
+    /**
+     * 
+     * @param e
+     */
 	public void runAction(KeyPointEvent e) {
 		int kpe = e.getKeyPointEvent();
 		if(kpe == KeyPointEvent.POST_CONNECT) {

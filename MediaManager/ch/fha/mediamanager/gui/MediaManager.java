@@ -1,4 +1,3 @@
-// $Id: MediaManager.java,v 1.3 2004/06/28 13:45:37 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -24,13 +23,14 @@ import com.jgoodies.plaf.plastic.theme.SkyBluer;
  * Mediamanager application
  *
  * @author Roman Rietmann
+ * @version $Id: MediaManager.java,v 1.4 2004/07/04 15:19:04 crac Exp $
  */
 public class MediaManager {
-	/** Preferences */
+	/* Preferences */
 	private static Preferences prefs = Preferences.userNodeForPackage(MediaManager.class);
-	/** Preferences owner */
+	/* Preferences owner */
 	private static LinkedList prefsOwner = new LinkedList();
-	/** Declaration of all possible plugin events in the application */
+	/* Declaration of all possible plugin events in the application */
 	private final static String[] PLUGIN_EVENTS = {
 			"prenew",
 			"postnew",
@@ -46,13 +46,14 @@ public class MediaManager {
 			"singlerow",
 			"multirow"
 	};
-	/** current application version, used for plugin manager */
+	/* current application version, used for plugin manager */
 	private final static Version APPL_VERSION = new Version("1_0");
 	
 	
 
 	/**
-	 * Main method creates a <code>MainFrame</code>
+	 * Creates a <code>MainFrame</code> and lunches 
+     * the application.
 	 */
 	public static void main(String[] args) {
 		//JFrame.setDefaultLookAndFeelDecorated(true);
