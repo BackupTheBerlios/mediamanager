@@ -17,7 +17,7 @@ import java.sql.Statement;
  * @see DatabaseSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.6 2004/06/20 22:49:36 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.7 2004/06/21 21:41:52 crac Exp $
  */
 public final class DatabaseConnection {
     
@@ -94,31 +94,6 @@ public final class DatabaseConnection {
             return stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.out.println ("Error while executing update '" + sql);
-            e.printStackTrace();
-            throw new RuntimeException("Erroneous database query.");
-        }
-    }
-    
-    /**
-     * Returns the next primarykey for the given entity name.
-     * <p>ATTENTION: the entity's primarykey column name must be called
-     * <code>id</code>
-     * 
-     * @param entityName   the entity name which the next primarykey should be acquired of
-     * 
-     * @return the next primarykey
-     * 
-     * @throws RuntimeException
-     *         if a database access error occurs
-     */
-    public int getNextPrimaryKey(String entityName) throws RuntimeException {
-        ResultSet result = executeQuery("select max(id) as max from " + entityName + ";");
-        
-        try {
-            result.next();
-            return result.getInt("max") + 1;
-        } catch (SQLException e) {
-            DataBus.logger.fatal("Error while getting next primary key.");
             e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
