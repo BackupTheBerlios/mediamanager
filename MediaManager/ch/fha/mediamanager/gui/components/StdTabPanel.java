@@ -1,4 +1,4 @@
-//$Id: StdTabPanel.java,v 1.12 2004/06/23 20:46:15 ia02vond Exp $
+//$Id: StdTabPanel.java,v 1.13 2004/06/24 06:12:31 crac Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -19,7 +19,7 @@ public class StdTabPanel extends JPanel {
 		setLayout(new BorderLayout());
 		MainFrame mainWindow = MainFrame.getInstance();
 		ActionHandler mainActionListener = mainWindow.getMainActionListener();
-		setBorder(new BarBorder(metaEntity.getName() + " > Übersicht"));
+		setBorder(new BarBorder(metaEntity.getName() + " > Uebersicht"));
 		
 		DataTableModel model = new DataTableModel(metaEntity);
 		table = new JTable(model);
