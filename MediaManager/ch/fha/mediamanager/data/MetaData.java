@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.10 2004/06/23 13:53:46 crac Exp $
+ * @version $Id: MetaData.java,v 1.11 2004/06/23 17:01:03 crac Exp $
  */
 public final class MetaData {
     
@@ -48,7 +48,9 @@ public final class MetaData {
      * @param entity
      */
     protected void addEntity(MetaEntity entity) {
-    	metaEntities.add(entity);
+        if (! contains((MetaEntity) entity)) {
+            metaEntities.add(entity);
+        }
     }
     
     /**
@@ -56,7 +58,9 @@ public final class MetaData {
      * @param field
      */
     protected void addField(MetaField field) {
-    	metaFields.add(field);
+        if (! contains((MetaField) field)) {
+    	    metaFields.add(field);
+        }
     }
     
     /**
@@ -147,7 +151,7 @@ public final class MetaData {
      *      <code>MetaEntity</code> is available
      */
     public boolean contains(MetaEntity e) {
-        java.util.Iterator it = fieldIterator();
+        java.util.Iterator it = entityIterator();
         while (it.hasNext()) {
             MetaEntity tmp = (MetaEntity) it.next();
             if (tmp.equals(e)) {
