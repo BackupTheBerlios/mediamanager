@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <repositories>
-	<repository name="Mckoi SQL DB Repository" class="ch.fha.mediamanager.data.DatabaseRepository" />
+	<repository name="Mckoi SQL DB Repository" class="ch.fha.mediamanager.data.MckoiRepository" />
 </repositories>
