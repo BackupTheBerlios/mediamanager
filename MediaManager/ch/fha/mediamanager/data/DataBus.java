@@ -9,7 +9,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.4 2004/06/10 14:02:20 crac Exp $
+ * @version $Id: DataBus.java,v 1.5 2004/06/10 20:07:02 crac Exp $
  */
 public class DataBus {
 	
@@ -41,15 +41,16 @@ public class DataBus {
     // --------------------------------
     
     /**
-     * Initializes the databus with a repository and
-     * its metadata.
+     * Attaches the application to a data repository and
+     * loads all its meta-data.
      * 
      * @see Repository
      * @see MetaField
      * @see MetaEntity
+     * @see MetaData
      */
     public static void initialize() {
-    	repository = new DatabaseRepository();
+        repository = new DatabaseRepository();
         metaData = repository.loadMetaData();
     }
 	
@@ -62,7 +63,7 @@ public class DataBus {
 	 * @return
 	 */
 	public static Repository getRepository() {
-		return repository;
+	    return repository;
 	}
 	
 	/**
@@ -70,7 +71,7 @@ public class DataBus {
 	 * @return
 	 */
 	public MetaData getMetaData() {
-		return metaData;
+	    return metaData;
 	}
     
     /**
@@ -78,7 +79,7 @@ public class DataBus {
      * @return
      */
     public Set getMetaFields() {
-    	return metaData.getFields();
+        return metaData.getFields();
     }
     
     /**
@@ -86,7 +87,7 @@ public class DataBus {
      * @return
      */
     public Set getMetaEntities() {
-    	return metaData.getEntities();
+        return metaData.getEntities();
     }
     
     /**
@@ -94,7 +95,7 @@ public class DataBus {
      * @return
      */
     public static Logger getLogger(String pkg) {
-    	return Logger.getLogger(pkg);
+        return Logger.getLogger(pkg);
     }
 	
     // --------------------------------
@@ -106,6 +107,6 @@ public class DataBus {
 	 * @param repository
 	 */
 	public void setRepository(Repository rep) {
-		repository = rep;
+	    repository = rep;
 	}
 }

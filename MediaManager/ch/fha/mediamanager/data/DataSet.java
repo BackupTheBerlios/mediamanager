@@ -1,18 +1,20 @@
 package ch.fha.mediamanager.data;
 
-import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 
 /**
+ * Contains a set of data elements.
+ * 
+ * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.4 2004/06/05 14:13:06 crac Exp $
+ * @version $Id: DataSet.java,v 1.5 2004/06/10 20:07:02 crac Exp $
  */
 public class DataSet {
 	
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 	
     private Set dSet = new HashSet();
@@ -37,8 +39,8 @@ public class DataSet {
      * 
      * @return
      */
-    public Iterator iterator() {
-    	return dSet.iterator();
+    public java.util.Iterator iterator() {
+        return dSet.iterator();
     }
     
     /**
@@ -46,7 +48,7 @@ public class DataSet {
      * @return
      */
     public boolean isEmpty() {
-    	return dSet.isEmpty();
+        return dSet.isEmpty();
     }
     
     /**
@@ -54,6 +56,6 @@ public class DataSet {
      * @return
      */
     public int size() {
-    	return dSet.size();
+        return dSet.size();
     }
 }

@@ -1,16 +1,22 @@
 package ch.fha.mediamanager.data;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * Holds all meta-information about the repository.
+ * 
+ * <p>All entities and its fields are propagated. 
+ * 
+ * @see MetaField
+ * @see MetaEntity
+ * 
  * @author crac
- * @version $Id: MetaData.java,v 1.2 2004/06/05 20:13:55 crac Exp $
+ * @version $Id: MetaData.java,v 1.3 2004/06/10 20:07:02 crac Exp $
  */
 public class MetaData {
     
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
     
     private Set metaFields;
@@ -57,7 +63,7 @@ public class MetaData {
      * 
      * @return
      */
-    public Iterator entityIterator() {
+    public java.util.Iterator entityIterator() {
     	return metaEntities.iterator();
     }
     
@@ -65,7 +71,7 @@ public class MetaData {
      * 
      * @return
      */
-    public Iterator fieldIterator() {
+    public java.util.Iterator fieldIterator() {
     	return metaFields.iterator();
     }
     
