@@ -22,7 +22,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.9 2004/06/29 21:08:29 crac Exp $
+ * @version $Id: TestQuery.java,v 1.10 2004/06/30 22:11:59 crac Exp $
  */
 public class TestQuery {
     
@@ -31,7 +31,7 @@ public class TestQuery {
         // NB: this will be called on the application startup.
         DataBus.initialize();
         DataBus.logger.info("App started.");
-        DataBus.connect();
+        DataBus.connectStandalone();
         
         DataSet ds = null;
         
