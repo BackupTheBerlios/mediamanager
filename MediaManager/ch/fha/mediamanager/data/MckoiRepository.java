@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.23 2004/06/24 14:52:30 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.24 2004/06/24 14:59:19 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -77,19 +77,20 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
-     * 
+     * Connects to database.
      */
     public void connect() {
-        dbConnection.connect();
+        if (dbConnection != null) {
+            dbConnection.connect();
+        }
     }
     
     /**
-     * 
-     *
+     * Disconnects from database.
      */
     public void disconnect() {
         dbConnection.disconnect();
-        dbConnection = null;
+        //dbConnection = null;
     }
     
     /**
