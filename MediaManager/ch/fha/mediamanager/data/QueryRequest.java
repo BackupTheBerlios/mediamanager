@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.11 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.12 2004/06/21 21:42:26 crac Exp $
  */
 public class QueryRequest {
     
@@ -103,6 +103,8 @@ public class QueryRequest {
                 return repository.update(dSet);
             case(DELETE):
                 return repository.delete(dSet);
+            case(INSERT):
+                return repository.insert(dSet);
             
         }
         

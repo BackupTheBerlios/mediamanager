@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.6 2004/06/10 14:02:39 crac Exp $
+ * @version $Id: TestQuery.java,v 1.7 2004/06/21 21:42:17 crac Exp $
  */
 public class TestQuery {
     
@@ -23,8 +23,43 @@ public class TestQuery {
         // NB: this will be called on the application startup.
         DataBus.initialize();
         DataBus.logger.info("App started.");
+        DataBus.loadRepository();
         
-        MetaEntity ent = new MetaEntity("Movies");
+        // insert example:
+        /*MetaEntity ent = new MetaEntity("Test");
+        DataElement el = DataBus.getDefaultElement(ent);
+        el.setOwner(new User("A"));
+        el.setField("Interpret", new String("Bobo"));
+        el.setField("Stil", new String("Pop"));
+        DataSet set = new DataSet();
+        set.add(el);
+        QueryRequest qr = new QueryRequest(set, QueryRequest.INSERT);
+        DataSet ds = qr.run();*/
+        
+        // query example: return all with id > 0
+        MetaEntity ent = new MetaEntity("Test");
+        Field field = new Field("TestId", ent, new Integer(0));
+        QueryCondition qc = 
+            new QueryCondition(
+                field, 
+                QueryCondition.GREATER, 
+                new Integer(0)
+            );
+        Vector vec = new Vector();
+        vec.add(qc);
+        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        
+        DataSet ds = qr.run();
+        
+        if (ds != null) {
+            java.util.Iterator it = ds.iterator();
+            while(it.hasNext()) {
+                DataElement e = (DataElement) it.next();
+                System.out.println(e.toString());
+            }
+        }
+        
+        /*MetaEntity ent = new MetaEntity("Movies");
         Field field = new Field("id", ent, new Integer(0));
         QueryCondition qca = 
             new QueryCondition(
@@ -51,7 +86,7 @@ public class TestQuery {
         vec.add(new Integer(QueryRequest.OR));
         vec.add(qcc);
         QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
-        DataSet ds = qr.run();
+        DataSet ds = qr.run();*/
         
         DataBus.logger.info("App stoped.");
     }
