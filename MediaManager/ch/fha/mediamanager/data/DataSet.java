@@ -12,7 +12,7 @@ import java.util.HashSet;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.8 2004/06/21 21:42:45 crac Exp $
+ * @version $Id: DataSet.java,v 1.9 2004/06/22 10:04:23 crac Exp $
  */
 public class DataSet {
 	
@@ -110,15 +110,7 @@ public class DataSet {
         
         java.util.Iterator it = iterator();
         DataElement element = (DataElement) it.next();
-        
-        it = element.iterator();
-        Field[] arr = new Field[element.size()];
-        int i = 0;
-        while (it.hasNext()) {
-            Field tmp = (Field) it.next();
-            arr[i] = tmp; i++;
-        }
-        return arr;
+        return element.getFields();
     }
     
     /**
