@@ -1,11 +1,13 @@
-//$Id: MainFrame.java,v 1.13 2004/06/27 19:36:17 radisli Exp $
+//$Id: MainFrame.java,v 1.14 2004/06/28 10:37:40 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
 import java.awt.Container;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
 import java.util.prefs.*;
 
 import ch.fha.pluginstruct.*;
@@ -34,6 +36,12 @@ public class MainFrame extends JFrame implements
 	
 	// Singleton reference
 	private static MainFrame instance = null;
+	
+	// Windows specifications
+	private static int windowWidth;
+	private static int windowHeight;
+	private static int windowXPos;
+	private static int windowYPos;
 	
 	// Default settings
 	private static final int defaultWindowWidth = 400;
@@ -65,11 +73,6 @@ public class MainFrame extends JFrame implements
 	 */
 	private void init() {
 		MediaManager.addSavable(this);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				myWindowClosing(e);
-			}
-		});
 		Preferences prefs = MediaManager.getPrefs();
 
 		// Main Panel
@@ -79,12 +82,14 @@ public class MainFrame extends JFrame implements
 		mainConfigPanel = new MainConfigPanel();
 		
 		// Load window preferences
+		windowWidth = prefs.getInt(WINDOW_WIDTH, defaultWindowWidth);
+		windowHeight = prefs.getInt(WINDOW_HEIGHT, defaultWindowHeight);
+		windowXPos = prefs.getInt(WINDOW_X_POS, defaultWindowXPos);
+		windowYPos = prefs.getInt(WINDOW_Y_POS, defaultWindowYPos);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle(apptitle);
-		setSize(prefs.getInt(WINDOW_WIDTH, defaultWindowWidth),
-				prefs.getInt(WINDOW_HEIGHT, defaultWindowHeight));
-		setLocation(prefs.getInt(WINDOW_X_POS, defaultWindowXPos), 
-					prefs.getInt(WINDOW_Y_POS, defaultWindowYPos));
+		setSize(windowWidth, windowHeight);
+		setLocation(windowXPos, windowYPos);
 		Image icon = Toolkit.getDefaultToolkit().getImage("images/icon.gif");
 		setIconImage(icon);
 		
@@ -114,7 +119,14 @@ public class MainFrame extends JFrame implements
 		
 		cp.add(windowHolder, BorderLayout.CENTER);
 
+		pack();
 		setExtendedState(prefs.getInt(SCREEN_MODE, defaultScreenMode));
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				myWindowClosing(e);
+			}
+		});
 	}
 	
 	/** 
@@ -246,14 +258,15 @@ public class MainFrame extends JFrame implements
 	 * @param prefs the object where the local settings should be stored
 	 */
 	public void savePrefs(Preferences prefs) {
-		System.out.println("Saving MainFrame settings!");
+		int screenMode = getExtendedState();
+		setExtendedState(JFrame.NORMAL);
 		Dimension windowSize = getSize();
-		int windowWidth = windowSize.width;
-		int windowHeight = windowSize.height;
-		int windowXPos = getLocation().x;
-		int windowYPos = getLocation().y;
-		int screenMode = getExtendedState(); 
-		
+		windowWidth = windowSize.width;
+		windowHeight = windowSize.height;
+		windowXPos = this.getX();
+		windowYPos = this.getY();
+		setVisible(false);
+ 		
 		try {
 			prefs.putInt(WINDOW_WIDTH, windowWidth);
 			prefs.putInt(WINDOW_HEIGHT, windowHeight);
@@ -265,7 +278,6 @@ public class MainFrame extends JFrame implements
 			exception(e);
 		}
 	}
-
 	
 	/**
 	 * Triggers the method <code>fireSave</code> which calls all registred
