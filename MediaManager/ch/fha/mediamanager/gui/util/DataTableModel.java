@@ -16,7 +16,7 @@ import ch.fha.mediamanager.data.DataBus;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.5 2004/06/27 16:19:16 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.6 2004/06/27 19:19:24 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel {
 
@@ -36,7 +36,7 @@ public class DataTableModel extends AbstractTableModel {
 		QueryCondition qc = 
 		    new QueryCondition(
 		        field, 
-		        QueryCondition.GREATER_EQUALS, 
+		        QueryCondition.GREATER, 
 		        new Integer(0)
 		    );
 		Vector vec = new Vector();
@@ -46,18 +46,31 @@ public class DataTableModel extends AbstractTableModel {
             AbstractQuery.LOAD
         );
 		DataSet ds = qr.run();
-		metaFields = ds.getMetaFields();
-		
-		Iterator it = ds.iterator();
-		elements = new DataElement[ds.size()];
-		data = new Object[elements.length][metaFields.length];
-		
-		for (int i=0; i<elements.length && it.hasNext(); i++) {
-			elements[i] = (DataElement)it.next();
-			for (int k=0; k<metaFields.length; k++) {
-				data[i][k] = elements[i].getField(metaFields[k]).getValue();
-			}
-		}
+        
+        if (ds.size() > 0) {
+            metaFields = ds.getMetaFields();
+            
+    		Iterator it = ds.iterator();
+    		elements = new DataElement[ds.size()];
+    		data = new Object[elements.length][metaFields.length];
+    		
+    		for (int i=0; i<elements.length && it.hasNext(); i++) {
+    			elements[i] = (DataElement)it.next();
+    			for (int k=0; k<metaFields.length; k++) {
+    				data[i][k] = elements[i].getField(metaFields[k]).getValue();
+    			}
+    		}
+        } else {
+            // Create one element with default values
+            metaFields = tmp.getMetaFields();
+            
+            elements = new DataElement[1];
+            elements[0] = tmp;
+            data = new Object[1][metaFields.length];
+            for (int j = 0; j < metaFields.length; j++) {
+                data[0][j] = metaFields[j].getDefaultValue();
+            }
+        }
 	}
 	
 	public int getColumnCount() {
