@@ -29,7 +29,7 @@ public class TextDataInput extends AbstractDataInput
 		
 		textArea.getDocument().addDocumentListener(this);
 		
-		gridSize = new Dimension(3, 1);
+		gridSize = new Dimension(1, 3);
 	}
 	
 	public JComponent getInputComponent() {
