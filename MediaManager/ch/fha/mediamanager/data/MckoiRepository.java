@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.25 2004/06/24 21:44:27 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.26 2004/06/24 21:52:43 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -103,6 +103,13 @@ public final class MckoiRepository implements Repository {
     public boolean isConnected() {
         return connected;
     }
+    
+    ///////////////////////////
+    ///////////////////////////
+    
+    public void insertUser(User user) {}
+    public void updateUser(User user) {}
+    public void deleteUser(User user) {}
     
     ///////////////////////////
     ///////////////////////////
