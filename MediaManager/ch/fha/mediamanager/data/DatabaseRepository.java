@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.JPanel;
+
 /**
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.14 2004/06/14 13:33:51 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.15 2004/06/15 12:02:38 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -21,6 +23,8 @@ public final class DatabaseRepository implements Repository {
     private DatabaseConnection dbConnection; 
         // = new DatabaseConnection(); // will be added when db is functional
     
+    private final String name = "Mckoi Repository";
+    
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
@@ -28,6 +32,27 @@ public final class DatabaseRepository implements Repository {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public JPanel getConfPanel() {
+        // combo box for other repositories
+        
+        // text field for username
+        
+        // text field for password
+        return null;   
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
     
     /**
      * 
@@ -97,6 +122,15 @@ public final class DatabaseRepository implements Repository {
      * @return
      */
     public DataSet insert(DataSet ds) {
+        if (ds.isEmpty()) return null;
+        
+        String sql = "INSERT INTO ";
+        Iterator it = ds.iterator();
+        
+        while(it.hasNext()) {
+            
+        }
+        
         return null;
     }
     
@@ -106,6 +140,15 @@ public final class DatabaseRepository implements Repository {
      * @return
      */
     public DataSet update(DataSet ds) {
+        if (ds.isEmpty()) return null;
+        
+        String sql = "UPDATE ";
+        Iterator it = ds.iterator();
+        
+        while(it.hasNext()) {
+            
+        }
+        
         return null;
     }
     
@@ -115,6 +158,15 @@ public final class DatabaseRepository implements Repository {
      * @return
      */
     public DataSet delete(DataSet ds) {
+        if (ds.isEmpty()) return null;
+        
+        String sql = "DELETE FROM ";
+        Iterator it = ds.iterator();
+        
+        while(it.hasNext()) {
+            
+        }
+        
         return null;
     }
     
