@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.21 2004/06/24 11:19:32 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.22 2004/06/24 13:12:33 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -51,9 +51,7 @@ public final class MckoiRepository implements Repository {
         new DatabaseConnection(connSettings);
     
     /* SQL statements */
-    private static java.sql.PreparedStatement createEntity;
     private static java.sql.PreparedStatement insertEntity;
-    private static java.sql.PreparedStatement createField;
     private static java.sql.PreparedStatement insertField;
     
     // --------------------------------
@@ -120,18 +118,18 @@ public final class MckoiRepository implements Repository {
        insertEntity = 
            dbConnection.prepareStatement("INSERT INTO Ent " +
                "(EntId, EntName) VALUES (?, ?);");
-       createEntity = 
-           dbConnection.prepareStatement("CREATE TABLE ?;");
+       String createEntity = "CREATE TABLE " + entity.getName() + ";";
        
        try {
+           int id = getNextPK("Ent", "EntId");
+           
            dbConnection.getConnection().setAutoCommit(false);
            
-           insertEntity.setInt(1, getNextPK("Ent", "EntId"));
+           insertEntity.setInt(1, id);
            insertEntity.setString(2, entity.getName());
            insertEntity.execute();
            
-           createEntity.setString(1, entity.getName());
-           createEntity.execute();
+           dbConnection.executeQuery(createEntity);
            
            dbConnection.getConnection().commit();
        } catch (SQLException e) {
@@ -160,10 +158,8 @@ public final class MckoiRepository implements Repository {
            throw new IllegalArgumentException();
        }
        
-       // TODO
-       
        String alter = "ALTER TABLE " + field.getEntity().getName() + 
-           " ADD ;";
+           " ADD " + field.getName();
        
        insertField = 
            dbConnection.prepareStatement("INSERT INTO Fld (" +
@@ -172,9 +168,12 @@ public final class MckoiRepository implements Repository {
                "?,?,?,?,?,?,?,?);");
            
        try {
+           int id = getNextPK("Fld", "FldId");
+           field.setId(id);
+           
            dbConnection.getConnection().setAutoCommit(false);
            
-           insertField.setInt(1, getNextPK("Fld", "FldId"));
+           insertField.setInt(1, id);
            insertField.setString(2, field.getName());
            insertField.setInt(3, field.getEntity().getId());
            insertField.setInt(4, field.getType());
@@ -184,17 +183,28 @@ public final class MckoiRepository implements Repository {
            insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
            insertField.execute();
            
-           int length = field.getLength();
-           
            switch (field.getType()) {
                case (MetaField.INT):
+                   alter += " INTEGER ";
+                   break;
                case (MetaField.TEXT):
                case (MetaField.VARCHAR):
                case (MetaField.LIST):
+                   alter += " VARCHAR(" + field.getLength() +
+                       ") ";
+                   break;
                case (MetaField.BOOLEAN):
+                   alter += " TINYINT ";
+                   break;
                case (MetaField.DATE):
+               	   alter += " DATE ";
+                   break;
                case (MetaField.TIMESTAMP):
+               	   alter += " TIMESTAMP ";
+                   break;
            }
+           
+           alter += " NOT NULL ";
            
            dbConnection.executeQuery(alter);
            
@@ -266,12 +276,10 @@ public final class MckoiRepository implements Repository {
            throw new IllegalArgumentException();
        }
        
-       // TODO
-       
        String delFld = "DELETE FROM Fld WHERE FldId = " + 
            field.getId() + ";";
        String delField = "ALTER TABLE " + 
-           field.getEntity().getName() + " DELETE " + field.getName() + ";";
+           field.getEntity().getName() + " DROP " + field.getName() + ";";
            
        try {
            dbConnection.getConnection().setAutoCommit(false);
