@@ -1,14 +1,14 @@
-//$Id: StdTabPanel.java,v 1.5 2004/06/23 10:47:34 ia02vond Exp $
+//$Id: StdTabPanel.java,v 1.6 2004/06/23 11:45:57 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
+
 import javax.swing.*;
 import java.util.prefs.*;
 
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
-import ch.fha.mediamanager.gui.util.DataTableModel;
 
 public class StdTabPanel extends JPanel implements
 	Savable
