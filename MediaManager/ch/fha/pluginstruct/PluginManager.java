@@ -1,9 +1,11 @@
 package ch.fha.pluginstruct;
 
+import java.util.Iterator;
+
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.2 2004/05/18 07:41:06 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.3 2004/06/14 20:16:54 ia02vond Exp $
  */
 public final class PluginManager {
 	
@@ -66,6 +68,10 @@ public final class PluginManager {
 		eventHandler.fireEvent(pluginEvent, event, condition);
 	}
 	
+	public Iterator getPluginIterator() {
+		return container.iterator();
+	}
+	
 	public boolean isPluginActivated(String identifier) {
 		
 		if (!initialized) throw new IllegalStateException("not initialized");
@@ -78,6 +84,13 @@ public final class PluginManager {
 		if (!initialized) throw new IllegalStateException("not initialized");
 		
 		getContainer().setPluginActivity(identifier, activated);
+	}
+	
+	public boolean isPluginDeprecated(String identifier) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
+		return getContainer().isPluginDeprecated(identifier);
 	}
 	
 	public void addEventHandlerListener(EventHandlerListener listener) {
