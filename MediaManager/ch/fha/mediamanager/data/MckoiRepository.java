@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.38 2004/06/26 13:16:03 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.39 2004/06/26 13:45:37 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -187,6 +187,7 @@ public final class MckoiRepository extends Repository {
 			   || (field.getType() == MetaField.ENTRYID)
                || (field.getEntity().getId() == 0)
                || (field.getId() != 0)
+               || (field.getType() == MetaField.INVALID_TYPE)
                || (field.getName().equals(""))
            ) {
            throw new IllegalArgumentException();
@@ -349,6 +350,7 @@ public final class MckoiRepository extends Repository {
                || (field.getType() == MetaField.PK)
                || (field.getType() == MetaField.ENTRYID)
                || (field.getId() == 0)
+               || (field.getType() == MetaField.INVALID_TYPE)
            ) {
            throw new IllegalArgumentException();
        }

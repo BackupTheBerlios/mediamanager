@@ -12,7 +12,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.15 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: MetaData.java,v 1.16 2004/06/26 13:49:15 crac Exp $
  */
 public final class MetaData {
     
@@ -37,10 +37,10 @@ public final class MetaData {
      */
     protected void remove(Object o) {
         if (o instanceof MetaEntity) {
-            addEntity((MetaEntity) o);
+            removeEntity((MetaEntity) o);
         }
         else if (o instanceof MetaField) {
-            addField((MetaField) o);
+            removeField((MetaField) o);
         }
     }
     
@@ -48,7 +48,7 @@ public final class MetaData {
      * 
      * @param entity
      */
-    protected void remove(MetaEntity entity) {
+    protected void removeEntity(MetaEntity entity) {
         metaEntities.remove(entity);
     }
     
@@ -56,7 +56,7 @@ public final class MetaData {
      * 
      * @param field
      */
-    protected void remove(MetaField field) {
+    protected void removeField(MetaField field) {
         metaFields.remove(field);
     }
     

@@ -7,11 +7,12 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.15 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: MetaField.java,v 1.16 2004/06/26 13:45:37 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
     /* Field types */
+    public final static int INVALID_TYPE = 0;
 	public final static int PK = 1;
     public final static int ENTRYID = 2;
     public final static int USERID = 3;
@@ -31,12 +32,12 @@ public final class MetaField implements Cloneable {
     // --------------------------------
     
     private int id = 0;
-    private int type;
-    private int length;
+    private int type = INVALID_TYPE;
+    private int length = 0;
     private String name;
     private String identifier; // Entity.Field
-    private boolean hidden;
-    private boolean mandatory;
+    private boolean hidden = false;
+    private boolean mandatory = false;
     private MetaEntity entity;
     private Object defaultValue;
     
