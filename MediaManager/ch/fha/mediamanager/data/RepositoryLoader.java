@@ -13,7 +13,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $id$
+ * @version $Id: RepositoryLoader.java,v 1.2 2004/06/16 09:53:28 crac Exp $
  */
 public class RepositoryLoader implements ContentHandler {
 	
