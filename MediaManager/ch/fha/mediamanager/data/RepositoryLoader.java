@@ -1,6 +1,7 @@
 package ch.fha.mediamanager.data;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -13,12 +14,12 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $Id: RepositoryLoader.java,v 1.2 2004/06/16 09:53:28 crac Exp $
+ * @version $Id: RepositoryLoader.java,v 1.3 2004/06/18 12:37:31 ia02vond Exp $
  */
 public class RepositoryLoader implements ContentHandler {
 	
 	/** Path to the xml repository configuration file. */
-	private final static String XML_FILE = "";
+	private final static String XML_FILE = "conf/repositoryconf.xml";
 	
 	/* list of founded repositories */
 	private LinkedList repList = new LinkedList();
@@ -29,7 +30,7 @@ public class RepositoryLoader implements ContentHandler {
 	 * <code>Repository</code> instances.
 	 * @return array of <code>Repository</code> instances
 	 */
-	public static Repository[] loadRepositories() {
+	public static Repository[] loadRepositories() throws FileNotFoundException {
 		RepositoryLoader loader = new RepositoryLoader();
 		return loader.load();
 	}
@@ -37,7 +38,7 @@ public class RepositoryLoader implements ContentHandler {
 	/** private constructor */
 	private RepositoryLoader() {}
 	
-	private Repository[] load() {
+	private Repository[] load() throws FileNotFoundException {
 		XMLReader parser = new SAXParser();
 		
 		if ( (new File(XML_FILE)).exists() ) {
@@ -51,8 +52,9 @@ public class RepositoryLoader implements ContentHandler {
 			}
 			
 			return (Repository[])repList.toArray(new Repository[repList.size()]);
-		}
-		return null;		
+		} else {
+			throw new InternalError("xml repository configuration file not found");
+		}		
 	}
 
 	public void startElement(
