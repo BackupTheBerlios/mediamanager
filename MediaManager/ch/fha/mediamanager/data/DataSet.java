@@ -1,21 +1,21 @@
 package ch.fha.mediamanager.data;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.2 2004/05/21 18:08:42 crac Exp $
+ * @version $Id: DataSet.java,v 1.3 2004/05/22 07:35:56 crac Exp $
  */
 public class DataSet {
-    private Map dSet = new HashMap();
+    private Set dSet = new HashSet();
     
     /**
      * 
      * @param e
      */
     public void add(DataElement e) {
-        // TODO
+        dSet.add(e);
     }
 }
