@@ -14,4 +14,8 @@
     <onEvent id="prenew"/>
   </mount>
 
+  <prop key="titlefieldname" value="Interpret" />
+  <prop key="categoryfieldname" value="Stil" />
+  <prop key="artistfieldname" value="Kommentar" />
+
 </plugin>
