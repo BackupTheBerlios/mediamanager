@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.11 2004/06/19 14:43:51 crac Exp $
+ * @version $Id: DataBus.java,v 1.12 2004/06/20 22:48:51 crac Exp $
  */
 public final class DataBus {
 	
@@ -70,10 +70,7 @@ public final class DataBus {
      */
     public static void loadRepository() {
         if (currentRepository != null) {
-            synchronized (currentRepository) {
-                currentRepository.initialize();
-                metaData = currentRepository.loadMetaData();
-            }
+            metaData = currentRepository.initialize();
         } else {
             DataBus.logger.info("No repository available.");   
         }
@@ -99,7 +96,7 @@ public final class DataBus {
 	 * 
 	 * @return
 	 */
-	public MetaData getMetaData() {
+	public static MetaData getMetaData() {
 	    return metaData;
 	}
     
@@ -107,7 +104,7 @@ public final class DataBus {
      * 
      * @return
      */
-    public Set getMetaFields() {
+    public static Set getMetaFields() {
         return metaData.getFields();
     }
     
@@ -115,7 +112,7 @@ public final class DataBus {
      * 
      * @return
      */
-    public Set getMetaEntities() {
+    public static Set getMetaEntities() {
         return metaData.getEntities();
     }
     
