@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.8 2004/06/19 09:43:51 crac Exp $
+ * @version $Id: DataBus.java,v 1.9 2004/06/19 10:02:23 crac Exp $
  */
 public class DataBus {
 	
@@ -70,8 +70,10 @@ public class DataBus {
      */
     public static void loadRepository() {
         if (currentRepository != null) {
-            currentRepository.initialize();
-            metaData = currentRepository.loadMetaData();
+            synchronized (currentRepository) {
+                currentRepository.initialize();
+                metaData = currentRepository.loadMetaData();
+            }
         } else {
             DataBus.logger.info("No repository available.");   
         }
