@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.6 2004/06/15 12:12:16 crac Exp $
+ * @version $Id: DataElement.java,v 1.7 2004/06/18 12:03:17 crac Exp $
  */
 public class DataElement {
 	
@@ -95,5 +95,15 @@ public class DataElement {
         }
         
         return null;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public MetaEntity getMetaEntity() {
+        java.util.Iterator it = iterator();
+        Field tmp = (Field) it.next();
+        return tmp.getEntity();
     }
 }
