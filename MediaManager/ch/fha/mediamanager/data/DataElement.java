@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.7 2004/06/18 12:03:17 crac Exp $
+ * @version $Id: DataElement.java,v 1.8 2004/06/21 12:56:41 crac Exp $
  */
 public class DataElement {
 	
@@ -15,10 +15,24 @@ public class DataElement {
     // --------------------------------
 	
     private Set fields = new HashSet();
+    private Entry entry = null;
     
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    
+    /**
+     * 
+     * @param entryId
+     */
+    public DataElement(Entry entry) {
+        this.entry = (Entry) entry.clone();   
+    }
+    
+    /**
+     *
+     */
+    public DataElement() {}
     
     // --------------------------------
     // OPERATIONS
@@ -56,13 +70,50 @@ public class DataElement {
     	return fields.size();
     }
     
+    /**
+     * 
+     * @return
+     */
+    public String toString() {
+        String str = "DataElement:\n";
+        java.util.Iterator it = iterator();
+        while (it.hasNext()) {
+            str += ((Field) it.next()).toString() + "\n";
+        }
+        return str;
+    }
+    
     // --------------------------------
     // ACCESSORS
     // --------------------------------
     
     /**
      * 
-     * @return
+     * @return Returns the owner
+     */
+    public User getOwner() {
+        return entry.getUser();   
+    }
+    
+    /**
+     * 
+     * @return Returns the <code>Entry</code>
+     */
+    public Entry getEntry() {
+        return (Entry) entry.clone();   
+    }
+    
+    /**
+     * 
+     * @return Returns value of entryId
+     */
+    public int getEntryId() {
+        return entry.getId();   
+    }
+    
+    /**
+     * 
+     * @return Returns array of <code>MetaField</code>s
      */
     public MetaField[] getMetaFields() {
         if (isEmpty()) return null;
@@ -81,8 +132,26 @@ public class DataElement {
     
     /**
      * 
+     * @return Returns array of all <code>Field</code>s
+     */
+    public Field[] getFields() {
+        if (isEmpty()) return null;
+        
+        Field[] fields = new Field[size()];
+        java.util.Iterator it = iterator();
+        
+        int i = 0;
+        while(it.hasNext()) {
+            fields[i] = (Field) it.next();
+        }
+        
+        return fields;
+    }
+    
+    /**
+     * 
      * @param f
-     * @return
+     * @return Returns a choosen field
      */
     public Field getField(MetaField f) {
     	java.util.Iterator it = iterator();
@@ -99,11 +168,23 @@ public class DataElement {
     
     /**
      * 
-     * @return
+     * @return Returns the <code>MetaEntity</code>
      */
     public MetaEntity getMetaEntity() {
         java.util.Iterator it = iterator();
         Field tmp = (Field) it.next();
         return tmp.getEntity();
+    }
+    
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @param entry
+     */
+    public void setEntry(Entry entry) {
+        entry = (Entry) entry.clone();
     }
 }

@@ -3,7 +3,7 @@ package ch.fha.mediamanager.data;
 /**
  *
  * @author crac
- * @version $Id: User.java,v 1.3 2004/06/14 13:33:03 crac Exp $
+ * @version $Id: User.java,v 1.4 2004/06/21 12:56:41 crac Exp $
  */
 public final class User {
     
@@ -30,6 +30,20 @@ public final class User {
         this.name = name;
         this.username = username;
     }
+    
+    /**
+     * 
+     * @param uuId
+     */
+    public User(String uuId) {
+        this.uuId = uuId;
+    }
+    
+    /**
+     * 
+     *
+     */
+    public User() {}
     
     // --------------------------------
     // OPERATIONS

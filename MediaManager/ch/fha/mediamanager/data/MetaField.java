@@ -7,19 +7,20 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.9 2004/06/20 22:42:04 crac Exp $
+ * @version $Id: MetaField.java,v 1.10 2004/06/21 12:56:41 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
     /* Field types */
 	public final static int PK = 1;
-    public final static int USERID = 2;
-    public final static int INT = 3;
-    public final static int VARCHAR = 4;
-    public final static int TEXT = 5;
-    public final static int BOOLEAN = 6;
-    public final static int LIST = 7;
-    public final static int DATE = 8;
+    public final static int ENTRYID = 2;
+    public final static int USERID = 3;
+    public final static int INT = 4;
+    public final static int VARCHAR = 5;
+    public final static int TEXT = 6;
+    public final static int BOOLEAN = 7;
+    public final static int LIST = 8;
+    public final static int DATE = 9;
     
     /* Used for creation of hashCode */
     //private final static int PRIME = 13;

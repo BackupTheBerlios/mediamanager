@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.7 2004/06/20 22:42:47 crac Exp $
+ * @version $Id: MetaData.java,v 1.8 2004/06/21 12:56:41 crac Exp $
  */
 public final class MetaData {
     
@@ -178,7 +178,7 @@ public final class MetaData {
      * @param e
      * @return
      */
-    public MetaField getField(String name, MetaEntity e) {
+    public MetaField getMetaField(String name, MetaEntity e) {
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
@@ -191,10 +191,19 @@ public final class MetaData {
     
     /**
      * 
+     * @param f
+     * @return
+     */
+    public MetaField getMetaField(MetaField f) {
+        return getMetaField(f.getName(), f.getEntity());   
+    }
+    
+    /**
+     * 
      * @param e
      * @return
      */
-    public Set getFields(MetaEntity e) {
+    public Set getMetaFields(MetaEntity e) {
         Set set = new java.util.HashSet();
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {

@@ -10,9 +10,9 @@ import java.io.File;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.4 2004/06/20 22:48:07 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.5 2004/06/21 12:56:41 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -168,7 +168,7 @@ public final class MckoiRepository implements Repository {
                 data.addField(mf);
                 DataBus.logger.debug("MetaField added: " + mf.toString());
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             DataBus.logger.fatal("Could not load MetaData.");
             throw new InternalError("Could not load MetaData.");
         }
@@ -184,13 +184,63 @@ public final class MckoiRepository implements Repository {
     public DataSet insert(DataSet ds) {
         if (ds.isEmpty()) return null;
         
-        String sql = "INSERT INTO ";
+        // DataElement
+        String sql = "INSERT INTO " + ds.getMetaEntity().getName();
+        String values = " ) VALUES ( ";
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
+            // Entry / User
+            DataElement el = (DataElement) it.next();
+            Entry entry = el.getEntry();
+            if (entry.getId() != 0) break;
             
+            entry.setId(insertEntry(entry));
+            
+            sql += " ( EntryId ";
+            values += entry.getId();
+            
+            // prepare sql statement
+            Field[] fields = ds.getFields();
+            for (int i = 0; i < fields.length; i++) {
+                sql += " , " + fields[i].getName();
+                values += ",?";
+            }
+            
+            java.sql.PreparedStatement insert = 
+                dbConnection.prepareStatement(sql + values + ");");
+            
+            try {
+                // set values
+                for (int i = 0; i < fields.length; i++) {
+                    Field field = fields[i];
+                    MetaField metaField = field.getMetaField();
+                    
+                    switch (metaField.getType()) {
+                        case (MetaField.PK):
+                            int pk = dbConnection.getNextPrimaryKey(
+                                field.getMetaField().getEntity().getName()
+                            );
+                            insert.setInt(i, pk);
+                            break;
+                        case (MetaField.INT):
+                            insert.setObject(i, (Integer) field.getValue());
+                            break;
+                        case (MetaField.TEXT):
+                        case (MetaField.VARCHAR):
+                            insert.setString(i, field.getValue().toString());
+                            break;
+                    }
+                }
+                insert.executeQuery();
+            } catch (SQLException e) {
+                DataBus.logger.fatal("DataElement not inserted.");
+                throw new InternalError("DataElement not inserted.");
+            }
+            DataBus.logger.debug("DataElement inserted.");
         }
         
+        DataBus.logger.debug("DataSet inserted.");   
         return null;
     }
     
@@ -202,7 +252,7 @@ public final class MckoiRepository implements Repository {
     public DataSet update(DataSet ds) {
         if (ds.isEmpty()) return null;
         
-        String sql = "UPDATE ";
+        String sql = "UPDATE " + ds.getMetaEntity().getName();
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
@@ -241,19 +291,17 @@ public final class MckoiRepository implements Repository {
      * @return 
      */
     public DataSet load(QueryRequest qr) {
-        Vector tmp = qr.getVector();
-        
+    	Vector tmp = qr.getVector();
         if (tmp.size() == 0)    return null;
         
         DataSet ds = new DataSet();
-        String query = "SELECT * FROM ";
         
-        // entities
-        Set entities = qr.getEntities();
-        Iterator it = entities.iterator();
-        while (it.hasNext()) {
-            query += ((MetaEntity) it.next()).getName();
-        }
+        String ent = qr.getEntity().getName();
+        String entryField = ent + ".EntryId";
+        
+        String query = "SELECT * FROM " + ent;
+        query += " LEFT JOIN Entry ON " + entryField + " = Entry.EntryId ";
+        query += " LEFT JOIN Users ON Entry.EntryUsersId = Users.UsersUUID ";
         
         query += createRequestStatement(qr);
         DataBus.logger.debug(query);
@@ -272,20 +320,56 @@ public final class MckoiRepository implements Repository {
                         rsmd.getColumnLabel(i), 
                         new MetaEntity(rsmd.getTableName(i))
                     );
+                    
                     // only if known to MetaData
                     if (metaData.contains(mf)) {
+                        mf = metaData.getMetaField(mf);
                         Field field = new Field(mf);
-                        field.setValue(result.getObject(mf.getName()));
+                        
+                        switch(mf.getType()) {
+                            case(MetaField.INT):
+                            case(MetaField.PK):
+                                field.setValue(
+                                    new Integer(result.getInt(mf.getName()))
+                                );
+                                break;
+                            case(MetaField.TEXT):
+                            case(MetaField.VARCHAR):
+                                field.setValue(result.getString(mf.getName()));
+                                break;
+                            case(MetaField.BOOLEAN):
+                                field.setValue(
+                                    new Boolean(result.getBoolean(mf.getName()))
+                                );
+                                break;
+                        }
+                        
                         e.add(field);
                     } else {
                         DataBus.logger.debug("Field not in MetaData: " + mf.toString());   
                     }
                 }
                 
+                // static fields from Users and Entry tables
+                User owner = new User(
+                    result.getString("UsersUUID"),
+                    result.getString("UsersName"),
+                    result.getString("UsersUsername")
+                );
+                
+                Entry entry = new Entry(
+                    result.getInt("EntryId"),
+                    result.getTimestamp("EntryCreation"),
+                    result.getTimestamp("EntryEdit"),
+                    owner
+                );
+                
+                e.setEntry(entry);
                 ds.add(e);
             } 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             DataBus.logger.error("DataSet could not be loaded.");
+            return null;
         }
         DataBus.logger.debug("DataSet loaded.");
         return ds;
@@ -364,6 +448,36 @@ public final class MckoiRepository implements Repository {
         }
         
         return output;
+    }
+    
+    /**
+     * 
+     * @param entry
+     * @return
+     */
+    private int insertEntry(Entry entry) {
+        if (entry == null) return 0;
+        
+        int id = 0;
+        String sql = "INSERT INTO Entry " +
+            "(EntryId, EntryCreation, EntryEdit, EntryUsersId) " +
+            "VALUES (?, ?, ?, ?);";
+        java.sql.PreparedStatement insertPS = 
+            dbConnection.prepareStatement(sql);
+        
+        try {
+            id = dbConnection.getNextPrimaryKey("Entry");
+            insertPS.setInt(1, id);
+            insertPS.setTimestamp(2, entry.getCreation());
+            insertPS.setTimestamp(3, entry.getEdit());
+            insertPS.setString(4, entry.getUser().getUUID());
+            insertPS.executeUpdate();
+        } catch (SQLException e) {
+            DataBus.logger.debug("Entry not inserted.");
+            return 0;
+        }
+        DataBus.logger.info("Entry inserted.");
+        return id;
     }
     
     // --------------------------------

@@ -1,13 +1,11 @@
 package ch.fha.mediamanager.data;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Vector;
 
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.10 2004/06/20 22:41:06 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.11 2004/06/21 12:56:41 crac Exp $
  */
 public class QueryRequest {
     
@@ -35,7 +33,7 @@ public class QueryRequest {
     private DataSet dSet;
     private int type;
     private Vector request;
-    private Set entitySet = new HashSet();
+    private MetaEntity entity;
     private Vector fields = new Vector();
     
     // --------------------------------
@@ -81,7 +79,7 @@ public class QueryRequest {
                 MetaEntity tmp = 
                     ((QueryCondition) vec.elementAt(i)).getEntity();
                 
-                if (! entitySet.contains(tmp))  entitySet.add(tmp);
+                entity = tmp;
                 
                 // create vector of fields
                 fields.add(
@@ -136,8 +134,8 @@ public class QueryRequest {
      * 
      * @return
      */
-    public Set getEntities() {
-        return entitySet;
+    public MetaEntity getEntity() {
+        return entity;
     }
     
     /**

@@ -6,10 +6,13 @@ import java.util.HashSet;
 /**
  * Contains a set of data elements.
  * 
+ * <p>Note: A <code>DataSet</code> contains only 
+ * <code>MetaField</code>s of one <code>MetaEntity</code>.
+ * 
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.6 2004/06/15 12:12:16 crac Exp $
+ * @version $Id: DataSet.java,v 1.7 2004/06/21 12:56:41 crac Exp $
  */
 public class DataSet {
 	
@@ -68,7 +71,7 @@ public class DataSet {
      * <code>DataSet</code>. 
      * 
      * <p>Note: Since all its <code>DataElement</code>s 
-     * have the same fields only the field of the first 
+     * have the same fields only the fields of the first 
      * elements are returned. 
      * 
      * @return
@@ -80,5 +83,43 @@ public class DataSet {
         DataElement element = (DataElement) it.next();
         
         return element.getMetaFields();
+    }
+    
+    /**
+     * Returns an array of all <code>Field</code>s of one 
+     *  <code>DataElement</code>.
+     * 
+     * @return
+     */
+    public Field[] getFields() {
+        if (isEmpty()) return null;
+        
+        java.util.Iterator it = iterator();
+        DataElement element = (DataElement) it.next();
+        
+        it = element.iterator();
+        Field[] arr = new Field[element.size()];
+        int i = 0;
+        while (it.hasNext()) {
+            Field tmp = (Field) it.next();
+            arr[i] = tmp; i++;
+        }
+        return arr;
+    }
+    
+    /**
+     * Returns the entity.
+     * 
+     * <p>Note: Since all <code>DataElement</code>s 
+     * of a <code>DataSet</code> have fields of the same
+     * entity, only one entity is returned.
+     * 
+     * @return
+     */
+    public MetaEntity getMetaEntity() {
+        if (isEmpty()) return null;
+        
+        MetaField[] fields = getMetaFields();
+        return fields[0].getEntity();
     }
 }
