@@ -14,12 +14,13 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $Id: RepositoryLoader.java,v 1.3 2004/06/18 12:37:31 ia02vond Exp $
+ * @version $Id: RepositoryLoader.java,v 1.4 2004/06/19 09:16:44 crac Exp $
  */
 public class RepositoryLoader implements ContentHandler {
 	
 	/** Path to the xml repository configuration file. */
-	private final static String XML_FILE = "conf/repositoryconf.xml";
+	private final static String XML_FILE = 
+        "conf" + File.separator + "repositoryconf.xml";
 	
 	/* list of founded repositories */
 	private LinkedList repList = new LinkedList();
