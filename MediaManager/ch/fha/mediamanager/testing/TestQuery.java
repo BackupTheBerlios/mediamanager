@@ -25,7 +25,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.6 2004/06/29 11:53:01 crac Exp $
+ * @version $Id: TestQuery.java,v 1.7 2004/06/29 14:48:19 crac Exp $
  */
 public class TestQuery {
     
@@ -37,6 +37,8 @@ public class TestQuery {
         DataBus.connect();
         
         DataSet ds = null;
+        
+        createCDDB();
         
         // create entity
         /*MetaEntity entity = new MetaEntity("Lied");
@@ -152,7 +154,7 @@ public class TestQuery {
         ds = qr.run();*/
         
         // query example: return all with PK > 0
-        MetaEntity ent = new MetaEntity("Test");
+        /*MetaEntity ent = new MetaEntity("Test");
         Field field = DataBus.getPKField(ent);
         QueryCondition qc = 
             new QueryCondition(
@@ -173,7 +175,7 @@ public class TestQuery {
                 DataElement e = (DataElement) it.next();
                 System.out.println(e.toString());
             }
-        }
+        }*/
         
         // how to get a default DataElement
         DataElement e = DataBus.getDefaultElement("Lied");
@@ -183,5 +185,38 @@ public class TestQuery {
         }
         
         DataBus.logger.info("App stoped.");
+    }
+    
+    private static void createCDDB() {
+        
+        MetaEntity cdEnt = new MetaEntity("CDs");
+        MetaField fa = new MetaField(MetaField.PK, "CDId", cdEnt);
+        MetaField fb = new MetaField(MetaField.VARCHAR, "Interpret", cdEnt);
+        MetaField fc = new MetaField(MetaField.VARCHAR, "Kategorie", cdEnt);
+        MetaField[] flds = {fa,fb,fc};
+        
+        AbstractQuery qry = 
+            DataBus.getQueryInstance(AbstractQuery.ENTITY_FIELDS_CREATE);
+        
+        if (qry.admin(cdEnt, flds)) {
+            System.out.println("CD Entity Created, YEAH!");
+            
+            MetaEntity songEnt = new MetaEntity("Songs");
+            MetaField f1 = new MetaField(MetaField.PK, "SongId", songEnt);
+            MetaField f2 = new MetaField(MetaField.VARCHAR, "CDName", songEnt);
+            MetaField f3 = new MetaField(MetaField.INT, "TrackNr", songEnt);
+            MetaField f4 = new MetaField(MetaField.VARCHAR, "Titel", songEnt);
+            MetaField f5 = new MetaField(MetaField.INT, "Laenge", songEnt);
+            MetaField f6 = new MetaField(MetaField.TEXT, "Beschreibung", songEnt);
+            MetaField f7 = new MetaField(MetaField.VARCHAR, "Komposition", songEnt);
+            MetaField[] fields = {f1,f2,f3,f4,f5,f6,f7};
+            
+            AbstractQuery query = 
+                DataBus.getQueryInstance(AbstractQuery.ENTITY_FIELDS_CREATE);
+            
+            if (query.admin(songEnt, fields)) {
+                System.out.println("Songs Entity Created, YEAH!");
+            }
+        }
     }
 }

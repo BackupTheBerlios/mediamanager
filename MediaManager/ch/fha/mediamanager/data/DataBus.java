@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.34 2004/06/29 13:34:31 radisli Exp $
+ * @version $Id: DataBus.java,v 1.35 2004/06/29 14:45:51 crac Exp $
  */
 public final class DataBus {
 	
@@ -255,7 +255,7 @@ public final class DataBus {
      * 
      * @return Returns Set of all MetaFields
      */
-    public static LinkedList getMetaFields() {
+    public static LinkedHashSet getMetaFields() {
         return metaData.getMetaFields();
     }
     
@@ -266,7 +266,7 @@ public final class DataBus {
      * 
      * @return Returns Set of all MetaEntities
      */
-    public static Set getMetaEntities() {
+    public static LinkedHashSet getMetaEntities() {
         return metaData.getMetaEntities();
     }
     

@@ -1,8 +1,6 @@
 package ch.fha.mediamanager.data;
 
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
 
 /**
  * Holds all meta-information about the repository.
@@ -13,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.18 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: MetaData.java,v 1.19 2004/06/29 14:45:05 crac Exp $
  */
 public final class MetaData {
     
@@ -177,8 +175,8 @@ public final class MetaData {
      *      Set to prevent direct modification of 
      *      the elements
      */
-    protected LinkedList getMetaFields() {
-    	return (LinkedList) metaFields.clone();
+    protected LinkedHashSet getMetaFields() {
+    	return (LinkedHashSet) metaFields.clone();
     }
     
     /**
@@ -282,8 +280,8 @@ public final class MetaData {
      * @return Returns all <code>MetaField</code>s of 
      *      a <code>MetaEntity</code>
      */
-    protected Set getMetaFields(MetaEntity e) {
-        Set set = new java.util.HashSet();
+    protected LinkedHashSet getMetaFields(MetaEntity e) {
+        LinkedHashSet set = new LinkedHashSet();
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
