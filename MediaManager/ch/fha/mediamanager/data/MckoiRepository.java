@@ -26,9 +26,9 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.34 2004/06/25 17:06:03 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.35 2004/06/26 09:58:42 crac Exp $
  */
-public final class MckoiRepository implements Repository {
+public final class MckoiRepository extends Repository {
     
     // --------------------------------
     // FIELDS
@@ -74,7 +74,7 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      */
-    public MetaData initialize() {
+    protected MetaData initialize() {
         connect();
         return loadMetaData();
     }
@@ -82,7 +82,7 @@ public final class MckoiRepository implements Repository {
     /**
      * Connects to database.
      */
-    public void connect() {
+    protected void connect() {
         if (dbConnection != null) {
             dbConnection.connect();
             connected = true;
@@ -92,7 +92,7 @@ public final class MckoiRepository implements Repository {
     /**
      * Disconnects from database.
      */
-    public void disconnect() {
+    protected void disconnect() {
         dbConnection.disconnect();
         connected = false;
         //dbConnection = null;
@@ -103,7 +103,7 @@ public final class MckoiRepository implements Repository {
      * @return Returns true if connection to 
      *      repository is established
      */
-    public boolean isConnected() {
+    protected boolean isConnected() {
         return connected;
     }
     
@@ -111,11 +111,11 @@ public final class MckoiRepository implements Repository {
     /// USER OPERATIONS     ///
     ///////////////////////////
     
-    public void insertUser(User user) {
+    protected void insertUser(User user) {
         throw new UnsupportedOperationException(); }
-    public void updateUser(User user) {
+    protected void updateUser(User user) {
         throw new UnsupportedOperationException(); }
-    public void deleteUser(User user) {
+    protected void deleteUser(User user) {
         throw new UnsupportedOperationException(); }
     
     ///////////////////////////
@@ -130,7 +130,7 @@ public final class MckoiRepository implements Repository {
     * @return Returns true if the entity and its field 
     *     have been created
     */
-   public boolean create(MetaEntity entity, MetaField[] fields) {
+    protected boolean create(MetaEntity entity, MetaField[] fields) {
        if ((entity == null) || (fields == null))
            throw new IllegalArgumentException();
 
@@ -152,7 +152,7 @@ public final class MckoiRepository implements Repository {
     * @param entity
     * @return Returns true if the entity has been created
     */
-   public boolean create(MetaEntity entity){ 
+    protected boolean create(MetaEntity entity){ 
        if (entity == null)
            throw new IllegalArgumentException();
        
@@ -190,7 +190,7 @@ public final class MckoiRepository implements Repository {
     * @param field
     * @return Returns true if the field has been created
     */
-   public boolean create(MetaField field){
+    protected boolean create(MetaField field){
        if ( (field == null) 
                || (field.getType() == MetaField.USERID)
 			   || (field.getType() == MetaField.ENTRYID)
@@ -292,7 +292,7 @@ public final class MckoiRepository implements Repository {
     * @param entity
     * @return Returns true if the entity has been deleted
     */
-   public boolean delete(MetaEntity entity){
+   protected boolean delete(MetaEntity entity){
        if ( (entity == null) 
                || (entity.getName().equals("Entry")) 
                || (entity.getName().equals("Fld"))
@@ -336,7 +336,7 @@ public final class MckoiRepository implements Repository {
     * @param field
     * @return Returns true if the field has been deleted
     */
-   public boolean delete(MetaField field) {
+   protected boolean delete(MetaField field) {
        if ( (field == null)
                || (field.getType() == MetaField.USERID)
                || (field.getType() == MetaField.PK)
@@ -381,7 +381,7 @@ public final class MckoiRepository implements Repository {
      * @return Returns <code>MetaData</code> of the 
      *      repository
      */
-    public MetaData loadMetaData() {
+   protected MetaData loadMetaData() {
         MetaData data = new MetaData();
         
         try {
@@ -483,7 +483,7 @@ public final class MckoiRepository implements Repository {
      * @param ds
      * @return Returns always null
      */
-    public DataSet insert(DataSet ds) {
+   protected DataSet insert(DataSet ds) {
         if ((ds.isEmpty()) || (ds == null))
             throw new IllegalArgumentException();
         
@@ -571,7 +571,7 @@ public final class MckoiRepository implements Repository {
      * @param ds
      * @return Returns always null
      */
-    public DataSet update(DataSet ds) {
+    protected DataSet update(DataSet ds) {
         if (ds.isEmpty() || ds == null) 
             throw new IllegalArgumentException();
         
@@ -651,7 +651,7 @@ public final class MckoiRepository implements Repository {
      * @param ds
      * @return Returns always null
      */
-    public DataSet delete(DataSet ds) {
+    protected DataSet delete(DataSet ds) {
         if ((ds.isEmpty()) || (ds == null))
             throw new IllegalArgumentException();
         
@@ -685,8 +685,8 @@ public final class MckoiRepository implements Repository {
      * @param ds
      * @return Returns the requested <code>DataSet</code>
      */
-    public DataSet load(AbstractQuery qr) {
-    	Vector tmp = qr.getVector();
+    protected DataSet load(AbstractQuery qr) {
+    	Vector tmp = qr.getQueryVector();
         if (tmp.size() == 0)    return null;
         
         DataSet ds = new DataSet();
@@ -901,7 +901,7 @@ public final class MckoiRepository implements Repository {
      * 
      * @return 
      */
-    public Class getQueryClass() {
+    protected Class getQueryClass() {
         return query;
     }
     
