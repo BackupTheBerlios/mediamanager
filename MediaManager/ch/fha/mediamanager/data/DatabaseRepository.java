@@ -22,7 +22,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.19 2004/06/18 09:38:36 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.20 2004/06/18 12:06:08 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -30,8 +30,10 @@ public final class DatabaseRepository implements Repository {
     // FIELDS
     // --------------------------------
     
-    private DatabaseConnection dbConnection;
-    private final String name = "Mckoi Database Repository";
+    private DatabaseConnection dbConnection = 
+        new DatabaseConnection();
+    
+    private static final String name = "Mckoi Database Repository";
     
     private static final String file = "conf" + File.separator + 
         "mckoi_repository.ini";
@@ -47,8 +49,7 @@ public final class DatabaseRepository implements Repository {
      * 
      * 
      */
-    public DatabaseRepository() {
-    }
+    public DatabaseRepository() {}
     
     // --------------------------------
     // OPERATIONS
@@ -58,7 +59,7 @@ public final class DatabaseRepository implements Repository {
      * 
      */
     public void connect() {
-        dbConnection = new DatabaseConnection();
+        dbConnection.connect();
     }
     
     /**
@@ -67,15 +68,6 @@ public final class DatabaseRepository implements Repository {
      */
     public void disconnect() {
         dbConnection = null;
-    }
-    
-    /**
-     * 
-     * @param user
-     * @param pwd
-     */
-    public void saveConfig(String user, String pwd) {
-        
     }
     
     /**

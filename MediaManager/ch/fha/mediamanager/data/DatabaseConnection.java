@@ -1,22 +1,11 @@
 package ch.fha.mediamanager.data;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import java.util.Properties;
 
 /**
  * It connects to a database using the configuration
@@ -29,33 +18,15 @@ import java.util.Properties;
  * in your java application.</p>
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.2 2004/05/27 12:36:59 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.3 2004/06/18 12:04:44 crac Exp $
  */
 public class DatabaseConnection {
     
-    /** If true debug messages are printed out.*/
-    //  It's defined as a public instance variable because the TestDatabaseConnection
-    //  class makes use of it.
-    public static boolean debug = false;
+    // --------------------------------
+    // FIELDS
+    // --------------------------------
     
-    /** The name of the database configration file.*/
-    public final static String DB_CONF_FILE_NAME = 
-        "conf" + File.separator + "dbconf.ini";
-    
-    
-    /** 
-     * Default database configuration. Used when creating a new
-     * database configuration file.
-     */
-    private String driver       = "com.mckoi.JDBCDriver",
-                   protocol     = "jdbc",
-                   subprotocol  = "mckoi:local",
-                   host         = "./conf/mckoi.conf",
-                   port         = "{Port}",
-                   databasePath = "{DatabasePath}",
-                   databaseName = "{DatabaseName}",
-                   user         = "{User}",
-                   password     = "{Password}";
+    private DatabaseSettings settings;
     
     /** 
      * The database connection. There's only one used for the whole
@@ -63,16 +34,18 @@ public class DatabaseConnection {
      */
     private Connection connection;
     
+    // --------------------------------
+    // CONSTRUCTORS
+    // --------------------------------
     
     /**
-     * Configurates the database connection.
-     *
-     * @throws RuntimeException
-     *         if an error occurs
+     * 
      */
-    public DatabaseConnection() throws RuntimeException {
-        configureDatabaseConnection();
-    }
+    public DatabaseConnection() {}
+    
+    // --------------------------------
+    // OPERATIONS
+    // --------------------------------
     
     /**
      * Executes the given SQL statement, which returns a single <code>ResultSet</code> object.
@@ -92,10 +65,8 @@ public class DatabaseConnection {
             Statement stmt = connection.createStatement();
             return stmt.executeQuery(sql);
         } catch (SQLException e) {
-            if (debug) {
-                System.out.println ("[error while executing query '" + sql + "']");
-                e.printStackTrace();
-            }
+            DataBus.logger.warn("Error while executing query '" + sql);
+            e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
     }
@@ -120,10 +91,8 @@ public class DatabaseConnection {
             Statement stmt = connection.createStatement();
             return stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            if (debug) {
-                System.out.println ("[error while executing update '" + sql + "']");
-                e.printStackTrace();
-            }
+            System.out.println ("Error while executing update '" + sql);
+            e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
     }
@@ -147,11 +116,9 @@ public class DatabaseConnection {
             result.next();
             return result.getInt("max") + 1;
         } catch (SQLException e) {
-            if (debug) {
-                System.out.println ("[error while getting next primary key]");
-                e.printStackTrace();
-            }
-            throw new RuntimeException("Fehlerhafte Datenbank Anfrage");
+            System.out.println ("Error while getting next primary key.");
+            e.printStackTrace();
+            throw new RuntimeException("Fehlerhafte Datenbank Anfrage.");
         }
     }
     
@@ -188,10 +155,8 @@ public class DatabaseConnection {
         try {
             return connection.prepareStatement(query);
         } catch (SQLException e) {
-            if (debug) {
-                System.out.println ("[error while preparing statement '" + query + "']");
-                e.printStackTrace();
-            }
+            System.out.println ("Error while preparing statement '" + query);
+            e.printStackTrace();
             throw new RuntimeException("Erroneous database query.");
         }
     }
@@ -212,7 +177,7 @@ public class DatabaseConnection {
         boolean error = false;
 
         // start mysql-server
-        if (!(databasePath == null || databasePath.equals(""))) {
+        /*if (!(databasePath == null || databasePath.equals(""))) {
             try {
                 System.out.println ("***" + databasePath + "***");
                 Runtime.getRuntime().exec( databasePath );
@@ -224,37 +189,39 @@ public class DatabaseConnection {
                 }
                 error = true;
             }
-        }
+        }*/
     
         // load driver
         try {
-            Class.forName(driver).newInstance();
-            if (debug) System.out.println ("[database driver is ready]");
+            Class.forName(settings.getDriver()).newInstance();
         } catch (Exception e) {
-            if (debug) {
-                System.out.println ("[database driver is not ready]");
-                e.printStackTrace();
-            }
+            DataBus.logger.warn("Database driver is not ready.");
+            e.printStackTrace();
             error = true;
         }
     
         // get connection
         String con;
-        if (subprotocol.equals("mckoi:local")) con = host;
-        else con = host + ":" + port + "/" + databaseName;
+        if (settings.getSubprotocol().equals("mckoi:local")) { 
+            con = settings.getHost();
+        }
+        else {
+            con = settings.getHost() + ":" + 
+                settings.getPort() + "/" + 
+                settings.getDatabaseName();
+        }
         
-        String url = protocol + ":" + subprotocol + "://" + con;
+        String url = settings.getProtocol() + ":" + 
+            settings.getSubprotocol() + "://" + con;
         
-        if (debug) System.out.println ("URL: " + url);
         try {
-            connection = (java.sql.Connection)DriverManager.getConnection(url, 
-                user, password);
-            if (debug) System.out.println ("[database connection established]");
+            connection = (java.sql.Connection)
+                DriverManager.getConnection(url, 
+                   settings.getUser(), 
+                   settings.getPassword());
         } catch (SQLException e) {
-            if (debug) {
-                System.out.println ("[database connection established]");
-                e.printStackTrace();
-            }
+            DataBus.logger.warn("Database connection not established.");
+            e.printStackTrace();
             error = true;
         }
     
@@ -263,101 +230,4 @@ public class DatabaseConnection {
         }
     }
 
-    
-    /**
-     * Loads the database configuration from the propertie file. If none's found
-     * a new one will be created according to the default database configuration.
-     * 
-     * @throws RuntimeException
-     *         if an error occurs
-     * 
-     * @see    #createDefaultDatabaseConfiguration
-     * @see    #loadDatabaseConfiguration 
-     */
-    private void configureDatabaseConnection() throws RuntimeException {
-        File file = new File(DB_CONF_FILE_NAME);
-    
-        if (!file.exists()) {
-            createDefaultDatabaseConfiguration(file);
-        } else {
-            loadDatabaseConfiguration();
-        }
-    }
-
-    /**
-     * Creates a new default database configuration according to the static defined variables.
-     * 
-     * @param file    a <code>File</code> object representing the database configuration file
-     * 
-     * @throws RuntimeException
-     *         if an @see IOException is thrown while creating a new default
-     *         database configuration file
-     */
-    private void createDefaultDatabaseConfiguration(File file) throws RuntimeException {
-        try {
-            DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-
-            Properties outProp = new Properties();
-
-            outProp.setProperty("driver", driver);
-            outProp.setProperty("protocol", protocol);
-            outProp.setProperty("subprotocol", subprotocol);
-            outProp.setProperty("host", host);
-            outProp.setProperty("port", port);
-            outProp.setProperty("databasePath", databasePath);
-            outProp.setProperty("databaseName", databaseName);
-            outProp.setProperty("user", user);
-            outProp.setProperty("password", password);
-
-            outProp.store(output, "database configuration");
-        
-            output.close();
-
-            if (debug) System.out.println ("[create new " + DB_CONF_FILE_NAME + "]");
-        
-        } catch (IOException e) {
-            if (debug) {
-                System.out.println ("[error while creating file: " + DB_CONF_FILE_NAME + "]");
-                e.printStackTrace();
-            }
-            throw new RuntimeException("Error while creating db config file '" + DB_CONF_FILE_NAME + "'.");
-        }
-    }
-
-    /**
-     * Loads the database configuration from the dbconf ini-file.
-     * 
-     * @throws RuntimeException
-     *         if an @see IOException is thrown while loading from the
-     *         database connection file
-     */
-    private void loadDatabaseConfiguration() throws RuntimeException {
-        try {
-            DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream(DB_CONF_FILE_NAME)));
-
-            Properties property = new Properties();
-
-            property.load(input);
-
-            driver       = property.getProperty("driver");
-            protocol     = property.getProperty("protocol");
-            subprotocol  = property.getProperty("subprotocol");
-            host         = property.getProperty("host");
-            port         = property.getProperty("port");
-            databasePath = property.getProperty("databasePath");
-            databaseName = property.getProperty("databaseName");
-            user         = property.getProperty("user", null);
-            password     = property.getProperty("password", null);
-
-            input.close();
-
-            if (debug) System.out.println ("[database configuration loaded]");
-        } catch (IOException e) {
-            if (debug) {
-                System.out.println ("[error while reading from file: " + DB_CONF_FILE_NAME + "]");
-                e.printStackTrace();
-            }
-            throw new RuntimeException("Error while reading db config file.");
-        }
-    }
 }
