@@ -8,7 +8,7 @@ import java.util.Vector;
  * @see <a href="../../queries.html">Query Examples</a>
  * 
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.5 2004/06/28 12:34:11 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.6 2004/06/28 12:43:43 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
@@ -36,7 +36,7 @@ public abstract class AbstractQuery implements Query {
      * Prepares query to retrieve data from the 
      * repository.
      * 
-     * @see Query.#LOAD
+     * @see Query#LOAD
      * 
      * @see #run()
      * 
@@ -53,9 +53,9 @@ public abstract class AbstractQuery implements Query {
      * Prepares query to edit a <code>DataSet</code> 
      * on the repository.
      * 
-     * @see Query.#INSERT
-     * @see Query.#UPDATE
-     * @see Query.#DELETE
+     * @see Query#INSERT
+     * @see Query#UPDATE
+     * @see Query#DELETE
      * 
      * @see #run()
      * 
@@ -71,11 +71,11 @@ public abstract class AbstractQuery implements Query {
      * Prepares query to perform admin operations on 
      * <code>MetaData</code> of the repository.
      * 
-     * @see Query.#ENTITY_CREATE
-     * @see Query.#ENTITY_DELETE
-     * @see Query.#ENTITY_FIELD_CREATE
-     * @see Query.#FIELD_CREATE
-     * @see Query.#FIELD_DELETE
+     * @see Query#ENTITY_CREATE
+     * @see Query#ENTITY_DELETE
+     * @see Query#ENTITY_FIELD_CREATE
+     * @see Query#FIELD_CREATE
+     * @see Query#FIELD_DELETE
      * 
      * @see #admin(MetaEntity)
      * @see #admin(MetaEntity, MetaField[])
