@@ -3,20 +3,13 @@
 -- SQL statements for Mckoi database, see http://mckoi.com/database/
 -- 
 -- author: crac 
--- $Id: mm_core.sql,v 1.1 2004/06/21 22:02:22 crac Exp $
+-- $Id: mm_core.sql,v 1.2 2004/06/25 08:57:31 crac Exp $
 
 CREATE TABLE Ent (
   EntId INTEGER DEFAULT UNIQUEKEY('Ent') NOT NULL,
   EntName VARCHAR(255) DEFAULT '' NOT NULL UNIQUE,
   PRIMARY KEY (EntId),
   UNIQUE (EntName)
-);
-
-CREATE TABLE Users (
-  UsersUsername VARCHAR(255) DEFAULT '' NOT NULL,
-  UsersName VARCHAR(255) DEFAULT '' NOT NULL,
-  UsersUUID VARCHAR(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (UsersUUID)
 );
 
 CREATE TABLE Fldtype (
@@ -34,14 +27,13 @@ INSERT INTO Fldtype (FldtypeId, FldtypeValue) VALUES (6, 'text');
 INSERT INTO Fldtype (FldtypeId, FldtypeValue) VALUES (7, 'boolean');
 INSERT INTO Fldtype (FldtypeId, FldtypeValue) VALUES (8, 'List');
 INSERT INTO Fldtype (FldtypeId, FldtypeValue) VALUES (9, 'Date');
+INSERT INTO Fldtype (FldtypeId, FldtypeValue) VALUES (10, 'Timestamp');
 
 CREATE TABLE Entry (
   EntryId INTEGER DEFAULT UNIQUEKEY('Entry') NOT NULL,
-  EntryUsersId VARCHAR(32) NOT NULL,
   EntryCreation TIMESTAMP NOT NULL,
   EntryEdit TIMESTAMP DEFAULT 0 NOT NULL,
-  PRIMARY KEY (EntryId),
-  FOREIGN KEY (EntryUsersId) REFERENCES Users (UsersUUID)
+  PRIMARY KEY (EntryId)
 );
 
 CREATE TABLE Fld (
