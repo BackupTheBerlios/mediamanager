@@ -17,7 +17,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.7 2004/06/28 11:23:25 ia02vond Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.8 2004/06/28 13:45:26 crac Exp $
  */
 public class DeleteWorkflow implements Workflow, Returnable {
 
@@ -44,7 +44,7 @@ public class DeleteWorkflow implements Workflow, Returnable {
 		
 		if (dataSet.size() == 1 && JOptionPane.showConfirmDialog(
 					MainFrame.getInstance(),
-					"Soll der Eintrag wirklich gelöscht werden?",
+					"Soll der Eintrag wirklich geloescht werden?",
 					"???",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
@@ -55,7 +55,7 @@ public class DeleteWorkflow implements Workflow, Returnable {
 			
 		} else if (dataSet.size() > 1 && JOptionPane.showConfirmDialog(
 				MainFrame.getInstance(),
-				"Sollen die " + dataSet.size() + " Einträge wirklich gelöscht werden?",
+				"Sollen die " + dataSet.size() + " Eintraege wirklich geloescht werden?",
 				"???",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
@@ -94,7 +94,8 @@ public class DeleteWorkflow implements Workflow, Returnable {
 					set.add(dataElement);
 					AbstractQuery req = 
 		                DataBus.getQueryInstance(set, AbstractQuery.DELETE);
-							
+					req.run();
+                    
 					state = POSTDELETE;
 					pluginManager.fireEvent(
 						this,

@@ -7,7 +7,6 @@ import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.AbstractQuery;
-import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.PluginManager;
@@ -15,7 +14,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.6 2004/06/28 13:45:26 crac Exp $
+ * @version $Id: NewWorkflow.java,v 1.7 2004/06/28 13:45:59 crac Exp $
  */
 public class NewWorkflow implements Workflow, Returnable {
 
