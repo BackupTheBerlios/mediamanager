@@ -6,7 +6,7 @@ import javax.swing.JPanel;
  * A Repository holds the data.
  *
  * @author crac
- * @version $Id: Repository.java,v 1.11 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: Repository.java,v 1.12 2004/06/25 16:11:39 crac Exp $
  */
 public interface Repository {
     
@@ -29,7 +29,7 @@ public interface Repository {
     
     public JPanel getConfPanel();
     public String getName();
-    public Query getQuery();
+    public Class getQueryClass();
     
     public MetaData initialize();
     public void connect();

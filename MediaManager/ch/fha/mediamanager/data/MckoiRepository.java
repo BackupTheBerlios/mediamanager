@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.31 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.32 2004/06/25 16:11:39 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -34,8 +34,7 @@ public final class MckoiRepository implements Repository {
     // FIELDS
     // --------------------------------
     
-    private AbstractQuery query = 
-        new DatabaseQuery();
+    private Class query = DatabaseQuery.class;
     
     private static final String name = 
         "Mckoi SQL DB Repository";
@@ -910,7 +909,7 @@ public final class MckoiRepository implements Repository {
      * 
      * @return 
      */
-    public Query getQuery() {
+    public Class getQueryClass() {
         return query;
     }
     

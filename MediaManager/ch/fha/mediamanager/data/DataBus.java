@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.21 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: DataBus.java,v 1.22 2004/06/25 16:11:39 crac Exp $
  */
 public final class DataBus {
 	
@@ -127,7 +127,7 @@ public final class DataBus {
             Object[] args = {vec, new Integer(type)};
             Class[] argTypes = {vec.getClass(), int.class};
             Class qrClass = 
-                currentRepository.getQuery().getClass();
+                currentRepository.getQueryClass();
 
         	AbstractQuery qr = (AbstractQuery)
                 qrClass.getConstructor(argTypes).newInstance(args);
@@ -164,7 +164,7 @@ public final class DataBus {
             Object[] args = {ds, new Integer(type)};
             Class[] argTypes = {ds.getClass(), int.class};
             Class qrClass = 
-                currentRepository.getQuery().getClass();
+                currentRepository.getQueryClass();
 
             AbstractQuery qr = (AbstractQuery)
                 qrClass.getConstructor(argTypes).newInstance(args);
