@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Database settings.
+ * 
  * @author luca
- * @version $Id: DatabaseSettings.java,v 1.1 2004/06/18 09:39:36 crac Exp $
+ * @version $Id: DatabaseSettings.java,v 1.2 2004/06/19 08:40:30 crac Exp $
  */
 public final class DatabaseSettings {
     
@@ -48,6 +50,11 @@ public final class DatabaseSettings {
     // OPERATIONS
     // --------------------------------
     
+    /**
+     * Loads database settings from config file.
+     * 
+     * @throws InternalError
+     */
     protected void loadConfig() {
         try {
             DataInputStream input = new DataInputStream(
@@ -69,12 +76,18 @@ public final class DatabaseSettings {
             user         = property.getProperty("user", null);
             password     = property.getProperty("password", null);
             
+            DataBus.logger.info("Db config file loaded.");
         } catch (IOException e) {
             DataBus.logger.fatal("Could not read db config file.");
             throw new InternalError("Could not read db config file.");
         }
     }
     
+    /**
+     * Saves the database settings to the config file.
+     *
+     * @throws InternalError
+     */
     protected void saveConfig() {
         try {
             DataOutputStream output = new DataOutputStream(
@@ -82,6 +95,23 @@ public final class DatabaseSettings {
                    new FileOutputStream(config)
                )
             );
+            
+            Properties outProp = new Properties();
+
+            outProp.setProperty("driver", driver);
+            outProp.setProperty("protocol", protocol);
+            outProp.setProperty("subprotocol", subprotocol);
+            outProp.setProperty("host", host);
+            outProp.setProperty("port", port);
+            outProp.setProperty("databasePath", databasePath);
+            outProp.setProperty("databaseName", databaseName);
+            outProp.setProperty("user", user);
+            outProp.setProperty("password", password);
+
+            outProp.store(output, "database configuration");
+            output.close();
+            
+            DataBus.logger.info("Db config file written.");
         } catch (IOException e) {
             DataBus.logger.fatal("Could not write db config file.");
             throw new InternalError("Could not write db config file.");
