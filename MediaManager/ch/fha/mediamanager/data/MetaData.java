@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.5 2004/06/11 12:37:13 crac Exp $
+ * @version $Id: MetaData.java,v 1.6 2004/06/19 11:05:19 crac Exp $
  */
 public final class MetaData {
     
@@ -19,8 +19,8 @@ public final class MetaData {
     // FIELDS
     // --------------------------------
     
-    private Set metaFields;
-    private Set metaEntities;
+    private Set metaFields = new java.util.HashSet();
+    private Set metaEntities = new java.util.HashSet();
     
     // --------------------------------
     // CONSTRUCTORS
@@ -138,5 +138,22 @@ public final class MetaData {
      */
     public Set getFields() {
     	return metaFields;
+    }
+    
+    /**
+     * 
+     * @param e
+     * @return
+     */
+    public Set getFields(MetaEntity e) {
+        Set set = new java.util.HashSet();
+        java.util.Iterator it = fieldIterator();
+        while (it.hasNext()) {
+            MetaField tmp = (MetaField) it.next();
+            if (tmp.getEntity().equals(e)) {
+                set.add(tmp);
+            }
+        }
+        return set;
     }
 }
