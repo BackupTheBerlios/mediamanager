@@ -27,7 +27,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.5 2004/06/23 22:55:06 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.6 2004/06/24 06:36:18 crac Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener {
@@ -67,7 +67,7 @@ public class DataTablePopupMenu extends JPopupMenu
 		editMI.addActionListener(this);
 		add(editMI);
 		
-		deleteMI = new JMenuItem("Löschen");
+		deleteMI = new JMenuItem("Loeschen");
 		deleteMI.addActionListener(this);
 		add(deleteMI);
 		
