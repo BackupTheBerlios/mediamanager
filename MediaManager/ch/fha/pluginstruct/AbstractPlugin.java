@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: AbstractPlugin.java,v 1.1 2004/05/13 12:09:40 ia02vond Exp $
+ * @version $Id: AbstractPlugin.java,v 1.2 2004/06/14 20:18:23 ia02vond Exp $
  */
 public abstract class AbstractPlugin implements Plugin {
 
@@ -19,6 +19,23 @@ public abstract class AbstractPlugin implements Plugin {
 	
 	/* propertie string[] list */
 	private HashMap propertieList;
+	
+	private PluginThread pluginThread;
+	
+	public void run(PluginThread pluginThread, PluginEvent event) throws OperationCancelException {
+		this.pluginThread = pluginThread;
+		run(event);
+	}
+	
+	public abstract void run(PluginEvent event) throws OperationCancelException ;
+	
+	/**
+	 * Invoke this method of the plugin has finished its tasks
+	 * so that the application continues with its operation.
+	 */
+	protected void finish() {
+		pluginThread.finish();
+	}
 	
 	/**
 	 * Sends a <code>String</code> message to application. Usually

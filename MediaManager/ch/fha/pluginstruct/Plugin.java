@@ -2,7 +2,12 @@ package ch.fha.pluginstruct;
 
 public interface Plugin {
 	
-	public void run(PluginEvent event) throws OperationCancelException;
+	/**
+	 * @param pluginThread
+	 * @param event
+	 */
+	public void run(PluginThread pluginThread, PluginEvent event)
+		throws OperationCancelException;
 	
 	/**
 	 * @return the identifier of the plugin.
@@ -85,5 +90,4 @@ public interface Plugin {
 	 *                  mounted to this key.
 	 */
 	public void addPropertie(String key, String[] values);
-	
 }

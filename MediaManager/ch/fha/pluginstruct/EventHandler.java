@@ -5,13 +5,15 @@ import java.util.LinkedList;
 
 /**
  * @author ia02vond
- * @version $Id: EventHandler.java,v 1.1 2004/05/13 12:09:40 ia02vond Exp $
+ * @version $Id: EventHandler.java,v 1.2 2004/06/14 20:18:23 ia02vond Exp $
  */
 public final class EventHandler {
 	
 	private String[] events;
 	
 	private LinkedList eventHandlerListeners;
+	
+	private OperationCancelException oce;
 	
 	protected int getEventNumber(String event) {
 		event = event.toLowerCase();
@@ -148,7 +150,7 @@ public final class EventHandler {
 		}
 	}
 
-	protected void fireEvent(
+	protected synchronized void fireEvent(
 			PluginEvent pluginEvent,
 			String event,
 			String condition) throws OperationCancelException {
@@ -165,19 +167,45 @@ public final class EventHandler {
 		pluginEvent.setEventName(event);
 		
 		// fire event
-		try {
-			Node node;
-			for (node=eventListener[e]; node!=null; node=node.next) {
-				Plugin plugin = PluginManager.getContainer().getPlugin(node.pluginId);
-				if (PluginManager.getContainer().isPluginActivated(node.pluginId) &&
-					(condition == null || node.condition == null || condition.equals(node.condition)) ) {
-					plugin.run(pluginEvent);
+		Node node;
+		Plugin plugin = null;
+		for (node=eventListener[e]; node!=null; node=node.next) {
+			plugin = PluginManager.getContainer().getPlugin(node.pluginId);
+			if (PluginManager.getContainer().isPluginActivated(node.pluginId) &&
+				(condition == null || node.condition == null || condition.equals(node.condition)) ) {
+				
+				oce = null;
+				
+				PluginThread pThread = new PluginThread(
+						this,
+						Thread.currentThread(),
+						plugin,
+						pluginEvent);
+				pThread.start();
+				
+				try {
+					wait();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
+				
+				 if (oce != null) {
+					throw oce;
+				}		
 			}
-		} catch (RuntimeException ex) {
-			ex.printStackTrace();
-			// TODO
 		}
+	}
+	
+	public synchronized void finish(
+			Thread applThread,
+			OperationCancelException oce,
+			PluginLogicException ple) {
+		
+		if (ple != null) {
+			ple.show();
+		}
+		this.oce = oce;
+		notify();
 	}
 	
 	protected void addEventHandlerListener(EventHandlerListener listener) {
