@@ -8,7 +8,7 @@ import java.util.Vector;
  * @see <a href="{@docroot}/../../queries.html">Query Examples</a>
  * 
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.7 2004/06/28 12:46:40 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.8 2004/06/28 19:28:05 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
@@ -16,7 +16,7 @@ public abstract class AbstractQuery implements Query {
     // FIELDS
     // --------------------------------
     
-    private Repository repository = DataBus.getRepository();
+    private AbstractRepository repository = DataBus.getRepository();
     private DataSet dSet;
     private int type = INVALID_TYPE;
     private Vector request;

@@ -14,7 +14,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $Id: RepositoryLoader.java,v 1.4 2004/06/19 09:16:44 crac Exp $
+ * @version $Id: RepositoryLoader.java,v 1.5 2004/06/28 19:28:05 crac Exp $
  */
 public class RepositoryLoader implements ContentHandler {
 	
@@ -31,7 +31,7 @@ public class RepositoryLoader implements ContentHandler {
 	 * <code>Repository</code> instances.
 	 * @return array of <code>Repository</code> instances
 	 */
-	public static Repository[] loadRepositories() throws FileNotFoundException {
+	public static AbstractRepository[] loadRepositories() throws FileNotFoundException {
 		RepositoryLoader loader = new RepositoryLoader();
 		return loader.load();
 	}
@@ -39,7 +39,7 @@ public class RepositoryLoader implements ContentHandler {
 	/** private constructor */
 	private RepositoryLoader() {}
 	
-	private Repository[] load() throws FileNotFoundException {
+	private AbstractRepository[] load() throws FileNotFoundException {
 		XMLReader parser = new SAXParser();
 		
 		if ( (new File(XML_FILE)).exists() ) {
@@ -52,7 +52,7 @@ public class RepositoryLoader implements ContentHandler {
 				e.printStackTrace();
 			}
 			
-			return (Repository[])repList.toArray(new Repository[repList.size()]);
+			return (AbstractRepository[])repList.toArray(new AbstractRepository[repList.size()]);
 		} else {
 			throw new InternalError("xml repository configuration file not found");
 		}		
@@ -71,7 +71,7 @@ public class RepositoryLoader implements ContentHandler {
 				try {
 					Class c    = Class.forName(clazz);
 					Object obj = c.newInstance();
-					if (obj instanceof Repository) {
+					if (obj instanceof AbstractRepository) {
 						repList.add(obj);
 					}
 				} catch (ClassNotFoundException e) {

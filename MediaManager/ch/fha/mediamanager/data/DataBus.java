@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.31 2004/06/28 14:00:28 radisli Exp $
+ * @version $Id: DataBus.java,v 1.32 2004/06/28 19:28:05 crac Exp $
  */
 public final class DataBus {
 	
@@ -40,8 +40,8 @@ public final class DataBus {
     //private static User user;
     
     private static MetaData metaData;
-	private static Repository[] repositories;
-	private static Repository   currentRepository;
+	private static AbstractRepository[] repositories;
+	private static AbstractRepository   currentRepository;
     private static Query query;
 	
     // --------------------------------
@@ -72,7 +72,7 @@ public final class DataBus {
      * Connects to the repository and loads its meta data.
      * 
      * @see MetaData
-     * @see Repository#initialize()
+     * @see AbstractRepository#initialize()
      */
     public static void connect() {
         if (currentRepository != null) {
@@ -90,7 +90,7 @@ public final class DataBus {
     /**
      * Disconnects from the repository.
      * 
-     * @see Repository#disconnect()
+     * @see AbstractRepository#disconnect()
      */
     public static void disconnect() {
         if (currentRepository != null) {
@@ -221,7 +221,7 @@ public final class DataBus {
 	 * 
 	 * @return
 	 */
-	public static Repository getRepository() {
+	public static AbstractRepository getRepository() {
 	    return currentRepository;
 	}
 	
@@ -229,7 +229,7 @@ public final class DataBus {
      * 
      * @return
      */
-	public static Repository[] getRepositories() {
+	public static AbstractRepository[] getRepositories() {
 		return repositories;
 	}
 	
@@ -363,7 +363,7 @@ public final class DataBus {
      *      repository was not disconnected in 
      *      advance
 	 */
-	public void setRepository(Repository rep) {
+	public void setRepository(AbstractRepository rep) {
         if (! currentRepository.isConnected()) {
             currentRepository = rep;
         } else {

@@ -11,12 +11,12 @@ import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.MetaField;
 import ch.fha.mediamanager.data.QueryCondition;
-import ch.fha.mediamanager.data.Repository;
+import ch.fha.mediamanager.data.AbstractRepository;
 
 /**
  * Explains how to send a query to the repository.
  * 
- * @see Repository
+ * @see AbstractRepository
  * @see DatabaseQuery
  * @see QueryCondition
  * @see MetaEntity
@@ -25,7 +25,7 @@ import ch.fha.mediamanager.data.Repository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.4 2004/06/28 11:55:40 crac Exp $
+ * @version $Id: TestQuery.java,v 1.5 2004/06/28 19:28:05 crac Exp $
  */
 public class TestQuery {
     

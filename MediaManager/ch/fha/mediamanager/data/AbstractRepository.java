@@ -11,9 +11,9 @@ import java.util.LinkedList;
  * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.17 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: AbstractRepository.java,v 1.1 2004/06/28 19:28:05 crac Exp $
  */
-public abstract class Repository {
+public abstract class AbstractRepository {
     
     // --------------------------------
     // FIELDS

@@ -26,9 +26,9 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.49 2004/06/28 14:26:56 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.50 2004/06/28 19:28:05 crac Exp $
  */
-public final class MckoiRepository extends Repository {
+public final class MckoiRepository extends AbstractRepository {
     
     // --------------------------------
     // FIELDS
@@ -384,7 +384,7 @@ public final class MckoiRepository extends Repository {
     /**
      * Loads all meta information of the repository.
      * 
-     * @see Repository
+     * @see AbstractRepository
      * @see MetaField
      * @see MetaEntity
      * @see MetaData

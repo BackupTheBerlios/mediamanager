@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import ch.fha.mediamanager.data.DataBus;
-import ch.fha.mediamanager.data.Repository;
+import ch.fha.mediamanager.data.AbstractRepository;
 import ch.fha.mediamanager.gui.components.BarBorder;
 
 /**
@@ -18,11 +18,11 @@ import ch.fha.mediamanager.gui.components.BarBorder;
 public class RepositoryConf extends JPanel
 	implements ActionListener {
 	
-	private Repository[] repositories;
+	private AbstractRepository[] repositories;
 	private JPanel currentRepPanel = null;
 	private JComboBox comboBox;
 	
-	public RepositoryConf(Repository[] repositories) {
+	public RepositoryConf(AbstractRepository[] repositories) {
 		this.repositories = repositories;
 		initSwing();
 	}
