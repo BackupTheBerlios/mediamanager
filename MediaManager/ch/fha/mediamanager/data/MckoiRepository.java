@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.47 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.48 2004/06/28 14:18:54 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -736,9 +736,9 @@ public final class MckoiRepository extends Repository {
             ds.remove(el);
         }
         DataBus.logger.info("DataSet deleted.");
-        ds = null;
-        
         fireDataChanged(ds.getMetaEntity());
+        
+        ds = null;
         return null;
     }
     
