@@ -7,16 +7,17 @@ import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.AbstractQuery;
+import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
-import ch.fha.pluginstruct.OperationCancelException;
 import ch.fha.pluginstruct.PluginManager;
+import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.4 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: NewWorkflow.java,v 1.5 2004/06/28 11:23:24 ia02vond Exp $
  */
-public class NewWorkflow implements Workflow {
+public class NewWorkflow implements Workflow, Returnable {
 
 	private MetaEntity metaEntity;
 	private DataElement dataElement;
@@ -28,61 +29,92 @@ public class NewWorkflow implements Workflow {
 		this.pluginManager = PluginManager.getInstance();
 	}
 	
+	private int state;
+	
+	private final static int START = 0;
+	private final static int PRENEW = 1;
+	private final static int INPUTFORMULAR = 2;
+	private final static int PREINSERT = 3;
+	private final static int POSTINSERT = 4;
+	private final static int POSTNEW = 5;
+	private final static int DONE = 6;
+		
+	
 	public void start() {
 		
-		try {
-			pluginManager.fireEvent(
-					new MMPluginEvent(dataElement),
-					"prenew",
-					metaEntity.getName());
-			
-			
-			new InputFormular(dataElement, this, "Neu");
-			
-			
-		} catch (OperationCancelException e) {
-			String message =
-				"Operation 'new " + metaEntity.getName() +
-				" ' was canceled by a plugin.";
-			DataBus.logger.info(message);
-		}
+		state = START;
+		
+		fireReturn(false);
+		
+		// TODO remove tab
 	}
 	
-	public void go(JPanel form, boolean continuee) {
-		if (continuee) {
-			try {
-				pluginManager.fireEvent(
+	public void fireReturn(boolean operationCanceled) {
+		
+		if (!operationCanceled) {
+			
+			switch (state) {
+				case START:
+					
+					state = PRENEW;
+					pluginManager.fireEvent(
+						this,
+						new MMPluginEvent(dataElement),
+						"prenew",
+						metaEntity.getName()); 
+					break;
+					
+				case PRENEW:
+					
+					state = INPUTFORMULAR;
+					new InputFormular(dataElement, this, "Neu");
+					break;
+					
+				case INPUTFORMULAR:
+				
+					state = PREINSERT;
+					pluginManager.fireEvent(
+						this,
 						new MMPluginEvent(dataElement),
 						"preinsert",
 						metaEntity.getName());
-				
-				
-				// insert
-				DataSet set = new DataSet();
-				set.add(dataElement);
-				AbstractQuery req = 
-                    DataBus.getQueryInstance(set, AbstractQuery.INSERT);
-				
-				pluginManager.fireEvent(
+					break;
+					
+				case PREINSERT:
+					
+					// insert
+					DataSet set = new DataSet();
+					set.add(dataElement);
+					AbstractQuery req = 
+	                    DataBus.getQueryInstance(set, AbstractQuery.INSERT);
+					
+					state = POSTINSERT;
+					pluginManager.fireEvent(
+						this,
 						new MMPluginEvent(dataElement),
 						"postinsert",
 						metaEntity.getName());
-				
-				
-				pluginManager.fireEvent(
+					break;
+					
+				case POSTINSERT:
+					
+					state = POSTNEW;
+					pluginManager.fireEvent(
+						this,
 						new MMPluginEvent(dataElement),
 						"postnew",
 						metaEntity.getName());
-				
-				
-			} catch (OperationCancelException e) {
-				String message =
-					"Operation 'new " + metaEntity.getName() +
-					" ' was canceled by a plugin.";
-				DataBus.logger.info(message);
+					break;
+					
+				case POSTNEW:
+					
+					state = DONE;
+					break;
 			}
 		}
-		
-		// TODO remove tab
+	}
+
+	public void go(JPanel form, boolean continuee) {
+		fireReturn(!continuee);
 	}
 }
