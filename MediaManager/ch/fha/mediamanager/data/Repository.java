@@ -1,37 +1,39 @@
 package ch.fha.mediamanager.data;
 
-import javax.swing.JPanel;
-
 /**
- * A Repository holds the data.
+ * A Repository holds all the necessary data.
+ * 
+ * @see AbstractQuery
+ * @see DataSet
+ * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.12 2004/06/25 16:11:39 crac Exp $
+ * @version $Id: Repository.java,v 1.13 2004/06/26 09:57:00 crac Exp $
  */
-public interface Repository {
+public abstract class Repository {
     
-    public DataSet update(DataSet ds);
-    public DataSet insert(DataSet ds);
-    public DataSet delete(DataSet ds);
-    public DataSet load(AbstractQuery qr);
+    abstract protected DataSet update(DataSet ds);
+    abstract protected DataSet insert(DataSet ds);
+    abstract protected DataSet delete(DataSet ds);
+    abstract protected DataSet load(AbstractQuery qr);
     
-    public boolean create(MetaEntity entity, MetaField[] fields);
-    public boolean create(MetaEntity entity);
-    public boolean create(MetaField field);
-    public boolean delete(MetaEntity entity);
-    public boolean delete(MetaField field);
+    abstract protected boolean create(MetaEntity entity, MetaField[] fields);
+    abstract protected boolean create(MetaEntity entity);
+    abstract protected boolean create(MetaField field);
+    abstract protected boolean delete(MetaEntity entity);
+    abstract protected boolean delete(MetaField field);
     
-    public MetaData loadMetaData();
+    abstract protected MetaData loadMetaData();
     
-    public void insertUser(User user);
-    public void deleteUser(User user);
-    public void updateUser(User user);
+    abstract protected void insertUser(User user);
+    abstract protected void deleteUser(User user);
+    abstract protected void updateUser(User user);
     
-    public JPanel getConfPanel();
-    public String getName();
-    public Class getQueryClass();
+    abstract public javax.swing.JPanel getConfPanel();
+    abstract public String getName();
+    abstract protected Class getQueryClass();
     
-    public MetaData initialize();
-    public void connect();
-    public void disconnect();
+    abstract protected MetaData initialize();
+    abstract protected void connect();
+    abstract protected void disconnect();
 }
