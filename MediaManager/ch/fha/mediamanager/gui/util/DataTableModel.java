@@ -3,7 +3,6 @@ package ch.fha.mediamanager.gui.util;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JCheckBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
@@ -19,7 +18,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.12 2004/06/29 11:47:31 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.13 2004/06/29 12:00:31 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -66,14 +65,14 @@ public class DataTableModel extends AbstractTableModel
     			}
     		}
         } else {
-            // Create one element with default values
+            // Create one empty element
             metaFields = tmp.getMetaFields();
             
             elements = new DataElement[1];
             elements[0] = tmp;
             data = new Object[1][metaFields.length];
             for (int j = 0; j < metaFields.length; j++) {
-                data[0][j] = metaFields[j].getDefaultValue();
+                data[0][j] = new String();
             }
         }
 	}
