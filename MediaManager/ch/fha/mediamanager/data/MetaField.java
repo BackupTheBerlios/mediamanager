@@ -7,17 +7,17 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.7 2004/06/19 11:04:41 crac Exp $
+ * @version $Id: MetaField.java,v 1.8 2004/06/19 14:42:08 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
-	public final static int PK = 0;
-    public final static int USERID = 1;
-    public final static int INT = 2;
-    public final static int VARCHAR = 3;
-    public final static int TEXT = 4;
-    public final static int BOOLEAN = 5;
-    public final static int LIST = 6;
+	public final static int PK = 1;
+    public final static int USERID = 2;
+    public final static int INT = 3;
+    public final static int VARCHAR = 4;
+    public final static int TEXT = 5;
+    public final static int BOOLEAN = 6;
+    public final static int LIST = 7;
     
     /* Used for creation of hashCode */
     private final static int PRIME = 13;
@@ -33,6 +33,7 @@ public final class MetaField implements Cloneable {
     private boolean hidden;
     private boolean mandatory;
     private MetaEntity entity;
+    private Object defaultValue;
     
     // --------------------------------
     // CONSTRUCTORS
@@ -68,7 +69,7 @@ public final class MetaField implements Cloneable {
     /**
      * 
      * @param f
-     * @return
+     * @return Returns true if both MetaFields are equal.
      */
     public boolean equals(MetaField f) {
         return (identifier.equals(f.identifier) 
@@ -77,7 +78,7 @@ public final class MetaField implements Cloneable {
     
     /**
      * 
-     * @return
+     * @return Returns the hashCode.
      */
     public int hashCode() {
         return PRIME*entity.hashCode() + identifier.hashCode();
@@ -102,7 +103,7 @@ public final class MetaField implements Cloneable {
     // --------------------------------
     
     /**
-     * Get the value of type
+     * Gets the value of type.
      * 
      * @return the value of type
      */
@@ -111,7 +112,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of length
+     * Gets the value of length.
      * 
      * @return the value of length
      */
@@ -120,7 +121,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of name
+     * Gets the value of name.
      * 
      * @return the value of name
      */
@@ -129,7 +130,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of identifier
+     * Gets the value of identifier.
      * 
      * @return the value of identifier
      */
@@ -138,7 +139,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of hidden
+     * Gets the value of hidden.
      * 
      * @return the value of hidden
      */
@@ -147,7 +148,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of mandatory
+     * Gets the value of mandatory.
      * 
      * @return the value of mandatory
      */
@@ -156,7 +157,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Get the value of entity
+     * Gets the value of entity.
      * 
      * @return the value of entity
      */
@@ -164,12 +165,20 @@ public final class MetaField implements Cloneable {
         return entity;
     }
     
+    /**
+     * 
+     * @return
+     */
+    public Object getDefaultValue() {
+        return defaultValue;   
+    }
+    
     // --------------------------------
     // MUTATORS
     // --------------------------------
     
     /**
-     * Set the value of type
+     * Sets the value of type.
      * 
      * @param value
      */
@@ -178,7 +187,7 @@ public final class MetaField implements Cloneable {
     }
 
     /**
-     * Set the value of length
+     * Sets the value of length.
      * 
      * @param value
      */
@@ -187,7 +196,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Set the value of name
+     * Sets the value of name.
      * 
      * @param value
      */
@@ -196,7 +205,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Set the value of identifier
+     * Sets the value of identifier.
      * 
      * @param value
      */
@@ -205,7 +214,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Set the value of hidden
+     * Sets the value of hidden.
      * 
      * @param value
      */
@@ -214,7 +223,7 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Set the value of mandatory
+     * Sets the value of mandatory.
      * 
      * @param value
      */
@@ -223,11 +232,20 @@ public final class MetaField implements Cloneable {
     }
     
     /**
-     * Set the value of entity
+     * Sets the value of entity.
      * 
      * @param value
      */
     public void setEntity(MetaEntity value) {
         entity = value;
+    }
+    
+    /**
+     * Sets the default value.
+     * 
+     * @param value
+     */
+    public void setDefaultValue(Object value) {
+        defaultValue = value;   
     }
 }
