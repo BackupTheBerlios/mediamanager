@@ -25,7 +25,7 @@ import ch.fha.mediamanager.data.Repository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.3 2004/06/27 16:13:57 crac Exp $
+ * @version $Id: TestQuery.java,v 1.4 2004/06/28 11:55:40 crac Exp $
  */
 public class TestQuery {
     
@@ -65,7 +65,7 @@ public class TestQuery {
         
         // delete example:
         /*MetaEntity ent = new MetaEntity("Test");
-        Field field = new Field("TestId", ent, new Integer(0));
+        Field field = DataBus.getPKField(ent);
         QueryCondition qc = 
             new QueryCondition(
                 field, 
@@ -84,8 +84,7 @@ public class TestQuery {
         }*/
         
         // update example (1):
-        /*DataElement el = DataBus.getDefaultElement("Lied");
-        Field f = el.getPKField();
+        /*Field f = DataBus.getPKField("Test");
         QueryCondition qc = 
             new QueryCondition(
                 f, 
@@ -109,7 +108,7 @@ public class TestQuery {
         }*/
         
         // update example (2):
-        /*Field field = new Field("TestId", ent, new Integer(0));
+        /*Field field = DataBus.getPKField("Test");
         QueryCondition qc = 
             new QueryCondition(
                 field, 
@@ -152,11 +151,9 @@ public class TestQuery {
             DataBus.getQueryInstance(set, AbstractQuery.INSERT);
         ds = qr.run();*/
         
-        // query example: return all with id > 0
-        //MetaEntity ent = new MetaEntity("Test");
-        DataElement tmp = DataBus.getDefaultElement("Test");
-        Field field = tmp.getPKField();
-        //Field field = new Field("LiedId", ent, new Integer(0));
+        // query example: return all with PK > 0
+        MetaEntity ent = new MetaEntity("Test");
+        Field field = DataBus.getPKField(ent);
         QueryCondition qc = 
             new QueryCondition(
                 field, 
