@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: Container.java,v 1.2 2004/05/14 09:40:58 ia02vond Exp $
+ * @version $Id: Container.java,v 1.3 2004/05/18 08:26:30 ia02vond Exp $
  */
 public final class Container {
 	
@@ -179,14 +179,18 @@ public final class Container {
 			PluginStruct struct;
 			
 			writer.write("<?xml version=\"1.0\"?>");
+			writer.newLine();
 			writer.write("<pluginlist>");
+			writer.newLine();
 			while (it.hasNext()) {
 				struct = (PluginStruct)pluginList.get(it.next());;
 				String id = struct.plugin.getIdentifier();
 				String activated = "" + struct.activated;
-				writer.write ("<plugin id=\""+id+"\" active=\""+activated+"\" />");
+				writer.write ("  <plugin id=\""+id+"\" active=\""+activated+"\" />");
+				writer.newLine();
 			}
 			writer.write("</pluginlist>");
+			writer.newLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
