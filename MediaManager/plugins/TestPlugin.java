@@ -8,7 +8,7 @@ import ch.fha.pluginstruct.OperationCancelException;
 
 /**
  * @author ia02vond
- * @version $Id: TestPlugin.java,v 1.2 2004/06/21 12:31:05 radisli Exp $
+ * @version $Id: TestPlugin.java,v 1.3 2004/06/23 11:32:14 ia02vond Exp $
  */
 public class TestPlugin extends MMPlugin {
 

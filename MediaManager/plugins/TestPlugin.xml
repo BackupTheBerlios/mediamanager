@@ -13,8 +13,8 @@
   </dependency>
 
   <mount>
-    <onEvent id="postvalidate"/>
-    <onEvent id="applicationexit" cond="movies"/>
+    <onEvent id="predelete"/>
+<!--    <onEvent id="applicationexit" cond="movies"/> -->
   </mount>
 
   <prop key="key1" value="1.Value"/>
