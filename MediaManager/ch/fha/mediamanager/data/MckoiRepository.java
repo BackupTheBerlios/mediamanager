@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.48 2004/06/28 14:18:54 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.49 2004/06/28 14:26:56 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -720,6 +720,7 @@ public final class MckoiRepository extends Repository {
         if ((ds.isEmpty()) || (ds == null))
             throw new IllegalArgumentException();
         
+        MetaEntity entity = ds.getMetaEntity();
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
@@ -736,7 +737,7 @@ public final class MckoiRepository extends Repository {
             ds.remove(el);
         }
         DataBus.logger.info("DataSet deleted.");
-        fireDataChanged(ds.getMetaEntity());
+        fireDataChanged(entity);
         
         ds = null;
         return null;
