@@ -1,13 +1,15 @@
 package ch.fha.mediamanager.data;
 
 /**
+ * 
+ * 
  * @author crac
- * @version $Id: Field.java,v 1.2 2004/06/05 23:23:35 crac Exp $
+ * @version $Id: Field.java,v 1.3 2004/06/11 12:36:30 crac Exp $
  */
 public class Field {
 	
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 	
 	private MetaField meta;
@@ -18,6 +20,8 @@ public class Field {
     // --------------------------------
     
     /**
+     * 
+     * @see MetaEntity
      * 
      * @param name
      * @param entity
@@ -30,6 +34,8 @@ public class Field {
     
     /**
      * 
+     * @see MetaEntity
+     * 
      * @param id
      * @param entity
      */
@@ -38,29 +44,37 @@ public class Field {
     }
     
     // --------------------------------
+    // OPERATIONS
+    // --------------------------------
+    
+    // --------------------------------
     // ACCESSORS
     // --------------------------------
 
     /**
-     * Get the value of meta
+     * Returns a copy of <code>MetaField</code> instead 
+     * of the reference to avoid that it gets mutated 
+     * from outside.
      * 
-     * @return the value of meta
+     * @see MetaField
+     * 
+     * @return
      */
     public MetaField getMetaField() {
-        return meta;
+        return (MetaField) meta.clone();
     }
     
     /**
-     * Get the value of value
+     * Returns the value of the field.
      * 
-     * @return the value of value
+     * @return
      */
     public Object getValue() {
         return value;
     }
     
     /**
-     * 
+     * Returns the entity the field belongs to.
      * 
      * @return
      */
@@ -69,6 +83,7 @@ public class Field {
     }
     
     /**
+     * Returns the field's id.
      * 
      * @return
      */
@@ -81,7 +96,12 @@ public class Field {
     // --------------------------------
     
     /**
-     * Set the value of meta
+     * Sets the meta information of the field.
+     * 
+     * TODO: Do we need this or should it not be possible
+     * to change the meta information?
+     * 
+     * @see MetaField
      * 
      * @param value
      */
@@ -90,15 +110,11 @@ public class Field {
     }
     
     /**
-     * Set the value of value
+     * Sets the value of the field.
      * 
      * @param value
      */
     public void setValue(Object value) {
         this.value = value;
     }
-    
-    // --------------------------------
-    // OPERATIONS
-    // --------------------------------
 }

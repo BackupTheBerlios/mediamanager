@@ -7,9 +7,9 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.3 2004/06/11 11:54:15 crac Exp $
+ * @version $Id: MetaField.java,v 1.4 2004/06/11 12:36:14 crac Exp $
  */
-public class MetaField {
+public final class MetaField implements Cloneable {
 	
 	public static int PK = 0;
     public static int USERID = 1;
@@ -60,6 +60,20 @@ public class MetaField {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public Object clone() {
+        MetaField f;
+        try {
+            f = (MetaField) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError();   
+        }
+        return f;
+    }
     
     // --------------------------------
     // ACCESSORS
