@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.16 2004/06/28 14:00:49 radisli Exp $
+//$Id: MainFrame.java,v 1.17 2004/06/29 13:01:50 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -229,7 +229,11 @@ public class MainFrame extends JFrame implements
 	public void connect() {
 		setStatusText("Wird verbunden ...", false);
 		mainActionListener.fireAction(KeyPointEvent.PRE_CONNECT);
-		mainActionListener.fireAction(KeyPointEvent.CONNECT);
+		new Thread(new Runnable() {
+			public void run() {
+				mainActionListener.fireAction(KeyPointEvent.CONNECT);
+			}
+		}).start();
 	}
 
 	/**
@@ -238,7 +242,11 @@ public class MainFrame extends JFrame implements
 	public void disconnect() {
 		setStatusText("Wird getrennt ...", false);
 		mainActionListener.fireAction(KeyPointEvent.PRE_DISCONNECT);
-		mainActionListener.fireAction(KeyPointEvent.DISCONNECT);
+		new Thread(new Runnable() {
+			public void run() {
+				mainActionListener.fireAction(KeyPointEvent.DISCONNECT);
+			}
+		}).start();
 	}
 	
 	/**
@@ -354,10 +362,9 @@ public class MainFrame extends JFrame implements
 
 	public void runAction(KeyPointEvent e) {
 		int kpe = e.getKeyPointEvent();
-		
 		if(kpe == KeyPointEvent.POST_CONNECT) {
 			statePanel.setConnectionStatus(true);
-			removeStatusText();
+			setStatusText("Verbunden!", true);
 		} else if(kpe == KeyPointEvent.CONNECT) {
 			DataBus.connect();
 			mainTabPanel.connect();
@@ -366,7 +373,7 @@ public class MainFrame extends JFrame implements
 			removeStatusText();
 		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 			statePanel.setConnectionStatus(false);
-			removeStatusText();
+			setStatusText("Getrennt!", true);
 		} else if(kpe == KeyPointEvent.DISCONNECT) {
 			DataBus.disconnect();
 			mainTabPanel.disconnect();
