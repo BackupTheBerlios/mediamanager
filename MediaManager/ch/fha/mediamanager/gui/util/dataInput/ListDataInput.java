@@ -12,7 +12,7 @@ import ch.fha.mediamanager.data.Field;
  * @see DataInput
  * 
  * @author ia02vond, crac
- * @version $Id: ListDataInput.java,v 1.2 2004/06/28 20:32:18 crac Exp $
+ * @version $Id: ListDataInput.java,v 1.3 2004/06/29 09:32:00 crac Exp $
  */
 public class ListDataInput extends AbstractDataInput
 	implements ActionListener {
@@ -23,14 +23,17 @@ public class ListDataInput extends AbstractDataInput
 		super(field);
 		
 		comboBox = new JComboBox();
-		
+		comboBox.addItem(field.getValue());
+        
 		setValue(field.getValue(), false);
         
         String[] str = 
             (String[]) field.getMetaField().getDefaultValue();
 		
         for (int i = 0; i < str.length; i++) {
-        	comboBox.addItem(str[i]);
+            if (! str[i].equals(field.getValue())) {
+                comboBox.addItem(str[i]);
+            }
         }
         
 		comboBox.addActionListener(this);
