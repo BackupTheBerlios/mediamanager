@@ -11,7 +11,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.1 2004/06/17 14:27:26 ia02vond Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.2 2004/06/22 08:39:21 ia02vond Exp $
  */
 public class DeleteWorkflow implements Workflow {
 
@@ -19,9 +19,9 @@ public class DeleteWorkflow implements Workflow {
 	private MetaEntity  metaEntity;
 	private PluginManager pluginManager;
 	
-	public DeleteWorkflow(MetaEntity metaEntity, DataElement dataElement) {
+	public DeleteWorkflow(DataElement dataElement) {
 		this.dataElement = dataElement;
-		this.metaEntity  = metaEntity;
+		this.metaEntity  = dataElement.getMetaEntity();
 		this.pluginManager = PluginManager.getInstance();
 	}
 	
