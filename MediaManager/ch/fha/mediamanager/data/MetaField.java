@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.19 2004/06/30 22:11:59 crac Exp $
+ * @version $Id: MetaField.java,v 1.20 2004/07/01 15:37:19 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -194,7 +194,7 @@ public final class MetaField implements Cloneable {
      * 
      * @return The value of hidden
      */
-    public boolean getHidden() {
+    public boolean isHidden() {
         return hidden;
     }
     
@@ -203,7 +203,7 @@ public final class MetaField implements Cloneable {
      * 
      * @return the value of mandatory
      */
-    public boolean getMandatory() {
+    public boolean isMandatory() {
         return mandatory;
     }
     

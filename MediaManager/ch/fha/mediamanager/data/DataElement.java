@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.23 2004/07/01 11:30:40 crac Exp $
+ * @version $Id: DataElement.java,v 1.24 2004/07/01 15:37:19 crac Exp $
  */
 public final class DataElement {
 	
@@ -216,7 +216,7 @@ public final class DataElement {
         while(it.hasNext()) {
             Field tmp = (Field) it.next();
             MetaField mf = tmp.getMetaField();
-            if ((! mf.getHidden()) && (mf.getType() != MetaField.PK)) {
+            if ((! mf.isHidden()) && (mf.getType() != MetaField.PK)) {
             	vec.add((MetaField) tmp.getMetaField());
             }
         }

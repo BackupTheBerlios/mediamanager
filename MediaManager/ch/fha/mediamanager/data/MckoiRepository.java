@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.58 2004/07/01 09:12:31 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.59 2004/07/01 15:37:19 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -219,8 +219,8 @@ public final class MckoiRepository extends AbstractRepository {
            insertField.setInt(4, field.getType());
            insertField.setInt(5, field.getLength());
            insertField.setString(6, defaultValue);
-           insertField.setInt(7, (field.getHidden() == true)? 1: 0);
-           insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
+           insertField.setInt(7, (field.isHidden() == true)? 1: 0);
+           insertField.setInt(8, (field.isMandatory() == true)? 1: 0);
            
            MetaField pk = null;
            
