@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.13 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: DataBus.java,v 1.14 2004/06/21 13:55:59 crac Exp $
  */
 public final class DataBus {
 	
@@ -137,7 +137,7 @@ public final class DataBus {
      */
     public DataElement getDefaultElement(MetaEntity e) {
         Set set = metaData.getMetaFields(e);
-        DataElement el = new DataElement();
+        DataElement el = new DataElement(e);
         java.util.Iterator it = set.iterator();
         
         while (it.hasNext()) {

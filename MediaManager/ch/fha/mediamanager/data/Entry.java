@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * @author luca
- * @version $Id: Entry.java,v 1.1 2004/06/21 12:56:26 crac Exp $
+ * @version $Id: Entry.java,v 1.2 2004/06/21 13:55:59 crac Exp $
  */
 public final class Entry implements Cloneable {
     
@@ -20,6 +20,12 @@ public final class Entry implements Cloneable {
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    
+    /**
+     * 
+     * 
+     */
+    public Entry() {}
     
     /**
      * 
@@ -99,5 +105,13 @@ public final class Entry implements Cloneable {
      */
     protected void setId(int id) {
         entryId = id;
+    }
+    
+    /**
+     * 
+     * @param user
+     */
+    public void setOwner(User user) {
+        owner = user;
     }
 }
