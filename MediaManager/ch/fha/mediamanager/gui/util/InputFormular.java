@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +23,7 @@ import ch.fha.mediamanager.workflow.Workflow;
 
 /**
  * @author ia02vond
- * @version $Id: InputFormular.java,v 1.4 2004/06/25 06:45:13 radisli Exp $
+ * @version $Id: InputFormular.java,v 1.5 2004/06/27 13:51:52 radisli Exp $
  */
 public class InputFormular extends JPanel implements
 	ActionListener
@@ -54,20 +55,22 @@ public class InputFormular extends JPanel implements
 		GridBagLayout gridbag = new GridBagLayout();
 		gridBagHolderPanel.setLayout(gridbag);
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 5, 0);
+		c.anchor = GridBagConstraints.NORTH;
 
 		JLabel jl;
 		JComponent cp;
 		
-		for (int i=0; i<field.length; i++) {
+		for (int i = 0; i < field.length; i++) {
 			DataInput input = DataInputFactory.create(field[i]);
-			if (input != null) {
+			if(input != null) {
 				c.weightx = labelWidth;
 				c.gridwidth = 1;
 				jl = input.getLabel();
 				gridbag.setConstraints(jl, c);
 				gridBagHolderPanel.add(jl);
-				
+
 				c.weightx = inputWidth;
 				c.gridwidth = GridBagConstraints.REMAINDER;
 				cp = input.getInputComponent();
