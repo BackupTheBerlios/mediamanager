@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.13 2004/06/23 14:13:18 crac Exp $
+ * @version $Id: MetaField.java,v 1.14 2004/06/24 13:12:04 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -271,5 +271,13 @@ public final class MetaField implements Cloneable {
      */
     public void setDefaultValue(Object value) {
         defaultValue = value;   
+    }
+    
+    /**
+     * 
+     * @param id
+     */
+    protected void setId(int id) {
+        this.id = id;
     }
 }
