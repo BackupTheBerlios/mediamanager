@@ -15,6 +15,6 @@
   </mount>
 
   <prop key="command" value="xmms"/>
-  <prop key="metafieldname" value="Kommentar"/>
+  <prop key="metafieldname" value="Pfad"/>
 
 </plugin>

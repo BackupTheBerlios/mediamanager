@@ -41,8 +41,8 @@ public class CDDBPlugin extends MMPlugin
 		"TrackNr",
 		"Titel",
 		"Beschreibung",
-		"Länge",
-		"Künstler" };
+		"L\u00e4nge",
+		"K\u00fcnstler" };
 	
 	/* DefaultTableModel */
 	private DefaultTableModel CDTableModel = new DefaultTableModel(CDColumnNames, 0) {
@@ -75,7 +75,7 @@ public class CDDBPlugin extends MMPlugin
 	private JButton refreshButton = new JButton("CDDB Suchen");
 	private JButton okButton = new JButton("Weiter");
 	private JButton cancelButton = new JButton("Abbrechen");
-	private JButton skipButton = new JButton("Überspringen");
+	private JButton skipButton = new JButton("\u00dcberspringen");
 	
 	/* CDDB */
 	private CDDBRecord[] rec = null;
@@ -154,8 +154,8 @@ public class CDDBPlugin extends MMPlugin
 			fdb = new FreeDB();
 		} catch (IOException ex){
 			message(
-				"Es traten Probleme mit der FreeDB Verbindung" +
-				"auf. Vergewissern sie sich, dass sie mit dem" +
+				"Es traten Probleme mit der FreeDB Verbindung\n" +
+				"auf. Vergewissern sie sich, dass sie mit dem\n" +
 				"Internet verbunden sind.");
 		}
 		CDTable.setAutoCreateColumnsFromModel(true);
@@ -280,7 +280,7 @@ public class CDDBPlugin extends MMPlugin
 	
 	private boolean store() {
 		if (CDTable.getSelectedRowCount() == 0) {
-			message("Es wurde keine CD ausgewählt.");
+			message("Es wurde keine CD ausgew\u00e4hlt.");
 			return false;
 		} else {
 		

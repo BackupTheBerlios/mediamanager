@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.55 2004/06/29 21:08:15 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.56 2004/06/30 10:15:21 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -1049,11 +1049,11 @@ public final class MckoiRepository extends AbstractRepository {
         top.add(panel);
         
         // bottom
-        JButton restore = new JButton("default");
+        JButton restore = new JButton("Standard");
         restore.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (e.getActionCommand().equals("default")) {
+                    if (e.getActionCommand().equals("Standard")) {
                         mckoiSettings.restoreDefaults();
                         dataCache.setText(mckoiSettings.getDataCache());
                         logPath.setText(mckoiSettings.getLogPath());
@@ -1068,11 +1068,11 @@ public final class MckoiRepository extends AbstractRepository {
                 }
             });
         
-        JButton save = new JButton("save");
+        JButton save = new JButton("Speichern");
         save.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (e.getActionCommand().equals("save")) {
+                    if (e.getActionCommand().equals("Speichern")) {
                         mckoiSettings.setDataCache(dataCache.getText());
                         mckoiSettings.setLogPath(logPath.getText());
                         mckoiSettings.setLogFile(logFile.getText());
