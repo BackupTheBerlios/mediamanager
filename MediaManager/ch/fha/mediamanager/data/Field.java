@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.4 2004/06/19 14:41:30 crac Exp $
+ * @version $Id: Field.java,v 1.5 2004/06/20 12:05:01 crac Exp $
  */
 public class Field {
 	
@@ -51,6 +51,14 @@ public class Field {
     public Field(MetaField field, Object value) {
          this.meta = field;
          this.value = value;
+    }
+    
+    /**
+     * 
+     * @param field
+     */
+    public Field(MetaField field) {
+         this(field, null);
     }
     
     // --------------------------------
