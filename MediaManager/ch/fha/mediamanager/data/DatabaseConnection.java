@@ -29,7 +29,7 @@ import java.util.Properties;
  * in your java application.</p>
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.1 2004/05/20 14:40:43 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.2 2004/05/27 12:36:59 crac Exp $
  */
 public class DatabaseConnection {
     
@@ -67,10 +67,10 @@ public class DatabaseConnection {
     /**
      * Configurates the database connection.
      *
-     * @throws LogicException
+     * @throws RuntimeException
      *         if an error occurs
      */
-    public DatabaseConnection() throws LogicException {
+    public DatabaseConnection() throws RuntimeException {
         configureDatabaseConnection();
     }
     
@@ -83,11 +83,11 @@ public class DatabaseConnection {
      * @return       a <code>ResultSet</code> object that contains the data 
      *               produced by the given query. It's never <code>null</code>
      * 
-     * @throws       LogicException
+     * @throws       RuntimeException
      *               if a database access error ccurs of the given SQL statement
      *               produces anything other than a single <code>ResultSet</code>
      */
-    public ResultSet executeQuery(String sql) throws LogicException {
+    public ResultSet executeQuery(String sql) throws RuntimeException {
         try {
             Statement stmt = connection.createStatement();
             return stmt.executeQuery(sql);
@@ -96,7 +96,7 @@ public class DatabaseConnection {
                 System.out.println ("[error while executing query '" + sql + "']");
                 e.printStackTrace();
             }
-            throw new LogicException("Erroneous database query.");
+            throw new RuntimeException("Erroneous database query.");
         }
     }
     
@@ -111,11 +111,11 @@ public class DatabaseConnection {
      *              or <code>DELETE</code> statements, or <code>0</code> for SQL
      *              statements that return nothing
      * 
-     * @throws      LogicException
+     * @throws      RuntimeException
      *              if a database access error occurs of the given SQL statement
      *              produces a <code>ResultSet</code>
      */
-    public int executeUpdate(String sql) throws LogicException {
+    public int executeUpdate(String sql) throws RuntimeException {
         try {
             Statement stmt = connection.createStatement();
             return stmt.executeUpdate(sql);
@@ -124,7 +124,7 @@ public class DatabaseConnection {
                 System.out.println ("[error while executing update '" + sql + "']");
                 e.printStackTrace();
             }
-            throw new LogicException("Erroneous database query.");
+            throw new RuntimeException("Erroneous database query.");
         }
     }
     
@@ -137,10 +137,10 @@ public class DatabaseConnection {
      * 
      * @return the next primarykey
      * 
-     * @throws LogicException
+     * @throws RuntimeException
      *         if a database access error occurs
      */
-    public int getNextPrimaryKey(String entityName) throws LogicException {
+    public int getNextPrimaryKey(String entityName) throws RuntimeException {
         ResultSet result = executeQuery("select max(id) as max from " + entityName + ";");
         
         try {
@@ -151,7 +151,7 @@ public class DatabaseConnection {
                 System.out.println ("[error while getting next primary key]");
                 e.printStackTrace();
             }
-            throw new LogicException("Fehlerhafte Datenbank Anfrage");
+            throw new RuntimeException("Fehlerhafte Datenbank Anfrage");
         }
     }
     
@@ -181,10 +181,10 @@ public class DatabaseConnection {
      * @return       a new default <code>PreparedStatement</code> object
      *               containing the pre-compiled SQL statement
      *  
-     * @exception    LogicException
+     * @exception    RuntimeException
      *               if a database access error occurs
      */
-    public PreparedStatement prepareStatement(String query) throws LogicException {
+    public PreparedStatement prepareStatement(String query) throws RuntimeException {
         try {
             return connection.prepareStatement(query);
         } catch (SQLException e) {
@@ -192,7 +192,7 @@ public class DatabaseConnection {
                 System.out.println ("[error while preparing statement '" + query + "']");
                 e.printStackTrace();
             }
-            throw new LogicException("Erroneous database query.");
+            throw new RuntimeException("Erroneous database query.");
         }
     }
 
@@ -205,10 +205,10 @@ public class DatabaseConnection {
      *   <li>connect to database
      * </ol>
      * 
-     * @throws LogicException
+     * @throws RuntimeException
      *         if an error occurs while connecting to the database
      */
-    public void connect() throws LogicException {
+    public void connect() throws RuntimeException {
         boolean error = false;
 
         // start mysql-server
@@ -259,7 +259,7 @@ public class DatabaseConnection {
         }
     
         if (error) {
-            throw new LogicException("Beim Verbinden mit der Datenbank ist ein Fehler aufgetreten.");
+            throw new RuntimeException("Beim Verbinden mit der Datenbank ist ein Fehler aufgetreten.");
         }
     }
 
@@ -268,13 +268,13 @@ public class DatabaseConnection {
      * Loads the database configuration from the propertie file. If none's found
      * a new one will be created according to the default database configuration.
      * 
-     * @throws LogicException
+     * @throws RuntimeException
      *         if an error occurs
      * 
      * @see    #createDefaultDatabaseConfiguration
      * @see    #loadDatabaseConfiguration 
      */
-    private void configureDatabaseConnection() throws LogicException {
+    private void configureDatabaseConnection() throws RuntimeException {
         File file = new File(DB_CONF_FILE_NAME);
     
         if (!file.exists()) {
@@ -289,11 +289,11 @@ public class DatabaseConnection {
      * 
      * @param file    a <code>File</code> object representing the database configuration file
      * 
-     * @throws LogicException
+     * @throws RuntimeException
      *         if an @see IOException is thrown while creating a new default
      *         database configuration file
      */
-    private void createDefaultDatabaseConfiguration(File file) throws LogicException {
+    private void createDefaultDatabaseConfiguration(File file) throws RuntimeException {
         try {
             DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
@@ -320,18 +320,18 @@ public class DatabaseConnection {
                 System.out.println ("[error while creating file: " + DB_CONF_FILE_NAME + "]");
                 e.printStackTrace();
             }
-            throw new LogicException("Error while creating db config file '" + DB_CONF_FILE_NAME + "'.");
+            throw new RuntimeException("Error while creating db config file '" + DB_CONF_FILE_NAME + "'.");
         }
     }
 
     /**
      * Loads the database configuration from the dbconf ini-file.
      * 
-     * @throws LogicException
+     * @throws RuntimeException
      *         if an @see IOException is thrown while loading from the
      *         database connection file
      */
-    private void loadDatabaseConfiguration() throws LogicException {
+    private void loadDatabaseConfiguration() throws RuntimeException {
         try {
             DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream(DB_CONF_FILE_NAME)));
 
@@ -357,7 +357,7 @@ public class DatabaseConnection {
                 System.out.println ("[error while reading from file: " + DB_CONF_FILE_NAME + "]");
                 e.printStackTrace();
             }
-            throw new LogicException("Error while reading db config file.");
+            throw new RuntimeException("Error while reading db config file.");
         }
     }
 }
