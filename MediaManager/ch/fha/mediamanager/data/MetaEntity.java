@@ -1,10 +1,14 @@
 package ch.fha.mediamanager.data;
 
 /**
+ * Holds meta information about an entity.
+ * 
+ * <p>It is immutable.
+ * 
  * @author crac
- * @version $Id: MetaEntity.java,v 1.2 2004/06/11 11:29:57 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.3 2004/06/11 11:53:24 crac Exp $
  */
-public class MetaEntity implements Cloneable {
+public final class MetaEntity {
 	
     // --------------------------------
     // FIELDS
@@ -40,21 +44,6 @@ public class MetaEntity implements Cloneable {
     // OPERATIONS
     // --------------------------------
     
-    /**
-     * 
-     * @return
-     */
-    public Object clone() {
-        MetaEntity e;
-        try {
-            e = (MetaEntity) super.clone();
-        } catch (CloneNotSupportedException c) {
-            throw new InternalError();
-        }
-        
-        return e;
-    }
-    
     // --------------------------------
     // ACCESSORS
     // --------------------------------
@@ -75,27 +64,5 @@ public class MetaEntity implements Cloneable {
      */
     public String getIdentifier() {
         return identifier;
-    }
-    
-    // --------------------------------
-    // MUTATORS
-    // --------------------------------
-    
-    /**
-     * Set the value of name
-     * 
-     * @param value
-     */
-    public void setName(String value) {
-        name = value;
-    }
-    
-    /**
-     * Set the value of identifier
-     * 
-     * @param value
-     */
-    public void setIdentifier(String value) {
-        identifier = value;
-    }
+    }    
 }
