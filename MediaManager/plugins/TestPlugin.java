@@ -3,18 +3,17 @@ package plugins;
 
 import ch.fha.mediamanager.plugin.MMPlugin;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
-import ch.fha.pluginstruct.OperationCancelException;
 
 
 /**
  * @author ia02vond
- * @version $Id: TestPlugin.java,v 1.3 2004/06/23 11:32:14 ia02vond Exp $
+ * @version $Id: TestPlugin.java,v 1.4 2004/06/28 12:00:31 ia02vond Exp $
  */
 public class TestPlugin extends MMPlugin {
 
-	public void run(MMPluginEvent event) throws OperationCancelException {
+	public boolean run(MMPluginEvent event) {
 		System.out.println ("Hallo, ich bin ein Plugin.");
-		finish();
+		return true;
 	}
 
 	public void addPropertie(String key, String[] values) {
