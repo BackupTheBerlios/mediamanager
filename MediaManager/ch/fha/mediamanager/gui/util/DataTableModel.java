@@ -18,7 +18,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.14 2004/06/29 12:48:12 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.15 2004/06/29 13:02:16 ia02vond Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -27,6 +27,8 @@ public class DataTableModel extends AbstractTableModel
 	private MetaField[] metaFields;
 	private DataElement[] elements;
 	private Object[][] data;
+	
+	private boolean empty = true;
 	
 	public DataTableModel(MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
@@ -64,6 +66,9 @@ public class DataTableModel extends AbstractTableModel
     				data[i][k] = elements[i].getField(metaFields[k]).getValue();
     			}
     		}
+    		
+    		empty = false;
+    		
         } else {
             // Create one empty element
             metaFields = tmp.getMetaFields();
@@ -74,6 +79,8 @@ public class DataTableModel extends AbstractTableModel
             for (int j = 0; j < metaFields.length; j++) {
                 data[0][j] = new String();
             }
+            
+            empty = true;
         }
 	}
 	
@@ -90,7 +97,7 @@ public class DataTableModel extends AbstractTableModel
 	}
 
 	public Class getColumnClass(int columnIndex) {
-		if (metaFields[columnIndex].getType() == MetaField.BOOLEAN) {
+		if (!empty && metaFields[columnIndex].getType() == MetaField.BOOLEAN) {
 			return Boolean.class;
 		} else {
 			return String.class;
