@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $Id: PluginLoader.java,v 1.1 2004/05/13 12:09:40 ia02vond Exp $
+ * @version $Id: PluginLoader.java,v 1.2 2004/05/14 09:40:58 ia02vond Exp $
  */
 public final class PluginLoader extends AbstractPlugin
 	implements ContentHandler {
@@ -64,9 +64,7 @@ public final class PluginLoader extends AbstractPlugin
 						dep.pluginId + "' V" + dep.version + ". Dieses kann jedoch " +
 						"nicht gefunden werden. Das Plugin wird deshalb deaktiviert.";
 					
-					PluginManager.getInOut().message(message);
-					
-					PluginManager.getContainer().removePlugin(getIdentifier());
+					throw new PluginLogicException(this, message);
 				}
 			} catch (RuntimeException e) {
 				throw new PluginLogicException(this, "unknown plugin runtime exception", e);

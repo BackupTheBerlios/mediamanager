@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: Container.java,v 1.1 2004/05/13 12:09:40 ia02vond Exp $
+ * @version $Id: Container.java,v 1.2 2004/05/14 09:40:58 ia02vond Exp $
  */
 public final class Container {
 	
@@ -20,7 +20,7 @@ public final class Container {
 	
 	/** Root path of the plugins.*/
 	public final static String PLUGIN_DIR = 
-		"xml" + File.separator;
+		"plugins" + File.separator;
 	
 	
 	/** Hashmap of all plugins. */
@@ -56,6 +56,7 @@ public final class Container {
 		} else {
 			PluginStruct struct = new PluginStruct(plugin, activated);
 			pluginList.put(identifier, struct);
+			storeActivities();
 			return true;
 		}
 	}
@@ -97,8 +98,25 @@ public final class Container {
 	protected void setPluginActivity(String identifier, boolean activated) {
 		Object obj = pluginList.get(identifier);
 		if (obj != null) {
-			((PluginStruct)obj).activated = activated;
+			PluginStruct struct = (PluginStruct) obj;
+			if (!struct.deprecated) {
+				struct.activated = activated;
+			} else {
+				struct.activated = false;
+			}
 			storeActivities();
+		} else {
+			throw new IllegalArgumentException("plugin '"+identifier+"' does not exist");
+		}
+	}
+	
+
+	protected void setPluginAsDeprecated(String identifier) {
+		Object obj = pluginList.get(identifier);
+		if (obj != null) {
+			PluginStruct struct = (PluginStruct) obj;
+			struct.activated = false;
+			struct.deprecated = true;
 		} else {
 			throw new IllegalArgumentException("plugin '"+identifier+"' does not exist");
 		}
@@ -112,7 +130,17 @@ public final class Container {
 	protected boolean isPluginActivated(String identifier) {
 		Object obj = pluginList.get(identifier);
 		if (obj != null) {
-			return ((PluginStruct)obj).activated;
+			PluginStruct struct = (PluginStruct) obj;
+			return struct.deprecated ? false : struct.activated;
+		} else {
+			throw new IllegalArgumentException("plugin '"+identifier+"' does not exist");
+		}
+	}
+	
+	protected boolean isPluginDeprecated(String identifier) {
+		Object obj = pluginList.get(identifier);
+		if (obj != null) {
+			return ((PluginStruct)obj).deprecated;
 		} else {
 			throw new IllegalArgumentException("plugin '"+identifier+"' does not exist");
 		}
@@ -179,9 +207,11 @@ public final class Container {
 	private class PluginStruct {
 		Plugin plugin;
 		boolean activated;
+		boolean deprecated;
 		public PluginStruct(Plugin plugin, boolean activated) {
 			this.plugin = plugin;
 			this.activated = activated;
+			this.deprecated = false;
 		}
 	}
 	
