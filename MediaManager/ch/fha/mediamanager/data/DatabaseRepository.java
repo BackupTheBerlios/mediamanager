@@ -1,10 +1,13 @@
 package ch.fha.mediamanager.data;
 
+import java.sql.ResultSet;
+import java.util.Vector;
+
 /**
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.2 2004/05/21 17:45:28 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.3 2004/05/21 18:09:01 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -53,6 +56,7 @@ public class DatabaseRepository implements Repository {
         // entities
         for(int i = 0; i < tmp.size(); i++) {
             if (tmp.elementAt(i) instanceof QueryCondition) {
+                QueryCondition qc = (QueryCondition) tmp.elementAt(i);
                 query += (qc.getEntity()).getName();
                 if (tmp.size() > 1 && i + 1 < tmp.size()) {
                     query += ",";
@@ -72,9 +76,7 @@ public class DatabaseRepository implements Repository {
                 // TODO
                 
                 ds.add(e);
-            } else {
-                throw new LogicException("No such data found in database.");
-            }
+            } 
         } catch (Exception e) {
             throw new LogicException("Error while loading DataSet from database.");
         }
@@ -130,9 +132,11 @@ public class DatabaseRepository implements Repository {
         
         for(int i = 0; i < tmp.size(); i++) {
             if (tmp.elementAt(i) instanceof QueryCondition) {
-                output += createConditionStatement(tmp.elementAt(i));
+                output += createConditionStatement((QueryCondition) tmp.elementAt(i));
             } else {
-                switch(tmp.elementAt(i)) {
+                
+                Integer t = (Integer) tmp.elementAt(i);
+                switch(t.intValue()) {
                     case(QueryRequest.OR):
                         output += " OR ";
                         break;

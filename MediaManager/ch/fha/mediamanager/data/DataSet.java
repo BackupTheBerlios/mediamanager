@@ -6,8 +6,16 @@ import java.util.HashMap;
 /**
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.1 2004/05/20 14:40:43 crac Exp $
+ * @version $Id: DataSet.java,v 1.2 2004/05/21 18:08:42 crac Exp $
  */
 public class DataSet {
     private Map dSet = new HashMap();
+    
+    /**
+     * 
+     * @param e
+     */
+    public void add(DataElement e) {
+        // TODO
+    }
 }
