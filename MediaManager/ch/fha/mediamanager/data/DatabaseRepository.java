@@ -1,18 +1,28 @@
 package ch.fha.mediamanager.data;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
 import java.sql.ResultSet;
 
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.16 2004/06/15 12:30:05 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.17 2004/06/16 09:54:57 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -22,6 +32,9 @@ public final class DatabaseRepository implements Repository {
     
     private DatabaseConnection dbConnection;
     private final String name = "Mckoi Database Repository";
+    
+    private static final String file = "conf" + File.separator + 
+        "mckoi_repository.ini";
     
     // --------------------------------
     // CONSTRUCTORS
@@ -48,21 +61,11 @@ public final class DatabaseRepository implements Repository {
     
     /**
      * 
-     * @return
+     * @param user
+     * @param pwd
      */
-    public JPanel getConfPanel() {
-        // text field for username
+    public void saveConfig(String user, String pwd) {
         
-        // text field for password
-        return null;   
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public String getName() {
-        return name;
     }
     
     /**
@@ -295,5 +298,60 @@ public final class DatabaseRepository implements Repository {
         }
         
         return output;
+    }
+    
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public JPanel getConfPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        
+        // left
+        JPanel p1 = new JPanel();
+        p1.setLayout(new GridLayout(2,1));
+        p1.add(new JLabel("Benutzername"));
+        p1.add(new JLabel("Passwort"));
+        
+        // right
+        final JTextField user = new JTextField("username");
+        final JPasswordField pwd = new JPasswordField("password");
+        
+        JPanel p2 = new JPanel();
+        p2.setLayout(new GridLayout(2,1));
+        p2.add(user);
+        p2.add(pwd);
+        
+        // bottom
+        JButton save = new JButton("save");
+        save.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getActionCommand().equals("save")) {
+                        String passwd = 
+                            pwd.getPassword().toString();
+                        saveConfig(user.getText(), passwd);
+                    }
+                }
+            });
+        
+        panel.add(p1, BorderLayout.EAST);
+        panel.add(p2, BorderLayout.CENTER);
+        panel.add(save, BorderLayout.SOUTH);
+        
+        return panel;
     }
 }
