@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.40 2004/06/26 15:01:58 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.41 2004/06/27 09:39:05 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -545,7 +545,7 @@ public final class MckoiRepository extends Repository {
                         case (MetaField.PK):
                             insert.setInt(i, getNextPK(
                                 ds.getMetaEntity().getName(),
-                                ds.getPKField())
+                                ds.getPKFieldname())
                             );
                             break;
                         case (MetaField.BOOLEAN):
