@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.5 2004/06/20 12:05:01 crac Exp $
+ * @version $Id: Field.java,v 1.6 2004/06/20 22:47:46 crac Exp $
  */
 public class Field {
 	
@@ -18,6 +18,7 @@ public class Field {
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    
     
     /**
      * 
@@ -36,12 +37,12 @@ public class Field {
      * 
      * @see MetaEntity
      * 
-     * @param id
+     * @param name
      * @param entity
      */
-    public Field(String id, MetaEntity entity) {
-    	this(id, entity, null);
-    }
+    /*public Field(String name, MetaEntity entity) {
+    	this(name, entity, null);
+    }*/
     
     /**
      * 
@@ -101,12 +102,21 @@ public class Field {
     }
     
     /**
-     * Returns the field's id.
+     * Returns the name of the field.
      * 
      * @return
      */
     public String getName() {
-    	return meta.getIdentifier();
+    	return meta.getName();
+    }
+    
+    /**
+     * Returns the identifier of the field.
+     * 
+     * @return
+     */
+    public String getIdentifier() {
+        return meta.getIdentifier();   
     }
     
     // --------------------------------
