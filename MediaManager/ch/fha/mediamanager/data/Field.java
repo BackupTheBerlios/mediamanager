@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.11 2004/06/28 14:12:20 crac Exp $
+ * @version $Id: Field.java,v 1.12 2004/06/28 19:24:05 crac Exp $
  */
 public class Field {
 	
@@ -14,6 +14,7 @@ public class Field {
 	
 	private MetaField meta;
     private Object value;
+    private Object tmpValue = null; 
     
     // --------------------------------
     // CONSTRUCTORS
@@ -86,43 +87,54 @@ public class Field {
      * 
      * @see MetaField
      * 
-     * @return
+     * @return Returns its meta data
      */
     public MetaField getMetaField() {
         return (MetaField) meta.clone();
     }
     
     /**
-     * Returns the value of the field.
      * 
-     * @return
+     * 
+     * @return Returns the value of the field
      */
     public Object getValue() {
         return value;
     }
     
     /**
-     * Returns the entity the field belongs to.
      * 
-     * @return
+     * @return Returns temporary value of 
+     *      the field
+     */
+    public Object getTmpValue() {
+        return tmpValue;
+    }
+    
+    /**
+     * 
+     * 
+     * @return Returns the entity the field 
+     *      belongs to
      */
     public MetaEntity getMetaEntity() {
     	return meta.getMetaEntity();
     }
     
     /**
-     * Returns the name of the field.
      * 
-     * @return
+     * 
+     * @return Returns the name of the field
      */
     public String getName() {
     	return meta.getName();
     }
     
     /**
-     * Returns the identifier of the field.
      * 
-     * @return
+     * 
+     * @return Returns the identifier of the 
+     *      field
      */
     public String getIdentifier() {
         return meta.getIdentifier();   
@@ -153,5 +165,14 @@ public class Field {
      */
     public void setValue(Object value) {
         this.value = value;
+    }
+    
+    /**
+     * Sets the temporary value.
+     * 
+     * @param value
+     */
+    public void setTmpValue(Object value) {
+        this.tmpValue = value;
     }
 }
