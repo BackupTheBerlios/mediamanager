@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -14,6 +15,7 @@ import javax.swing.JTable;
 
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
+import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.mediamanager.workflow.DeleteWorkflow;
@@ -26,7 +28,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.10 2004/06/29 08:23:44 crac Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.11 2004/06/29 12:12:18 crac Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener, Returnable {
@@ -163,7 +165,15 @@ public class DataTablePopupMenu extends JPopupMenu
 					}
 				}
 			}
-			editMI.setEnabled(table.getSelectedRowCount() == 1);
+            if (table.getSelectedRowCount() == 1) {
+                DataElement el = getSelectedDataElement();
+                Field pk = el.getPKField();
+                if ((pk.getValue() == null) || (pk.getValue().equals(""))) {
+                    editMI.setEnabled(false);
+                } else {
+                    editMI.setEnabled(true);
+                }
+            }
 			deleteMI.setEnabled(table.getSelectedRowCount() > 0);
 			
 			show(e.getComponent(), e.getX(), e.getY());
