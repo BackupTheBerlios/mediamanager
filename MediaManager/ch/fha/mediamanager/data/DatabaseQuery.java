@@ -5,9 +5,9 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: DatabaseQuery.java,v 1.1 2004/06/25 16:04:33 crac Exp $
+ * @version $Id: DatabaseQuery.java,v 1.2 2004/06/25 16:23:38 crac Exp $
  */
-public class DatabaseQuery extends AbstractQuery {
+public final class DatabaseQuery extends AbstractQuery {
     
     // --------------------------------
     // CONSTRUCTORS
