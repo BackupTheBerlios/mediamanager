@@ -1,4 +1,4 @@
-//$Id: StdTabPanel.java,v 1.7 2004/06/23 11:53:13 ia02vond Exp $
+//$Id: StdTabPanel.java,v 1.8 2004/06/23 13:34:42 ia02vond Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -8,6 +8,7 @@ import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 import ch.fha.mediamanager.gui.util.DataTableModel;
+import ch.fha.mediamanager.gui.util.DataTablePopupMenu;
 
 public class StdTabPanel extends JPanel {
 	
@@ -21,6 +22,7 @@ public class StdTabPanel extends JPanel {
 		
 		table = new JTable(new DataTableModel(metaEntity));
 		add(new JScrollPane(table), BorderLayout.CENTER);
+		table.addMouseListener(new DataTablePopupMenu(table, metaEntity));
 		
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton exit = new JButton("Exit");
