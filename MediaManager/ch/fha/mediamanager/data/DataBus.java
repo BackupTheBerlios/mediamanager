@@ -6,7 +6,7 @@ import java.util.Set;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.1 2004/06/05 16:26:56 crac Exp $
+ * @version $Id: DataBus.java,v 1.2 2004/06/05 18:24:42 crac Exp $
  */
 public class DataBus {
 	
@@ -14,7 +14,7 @@ public class DataBus {
     // ATTRIBUTES
     // --------------------------------
 	
-	private static Set metaFields;
+	private static MetaData metaData;
 	private static Repository repository;
 	
     // --------------------------------
@@ -35,7 +35,7 @@ public class DataBus {
      */
     public static void initialize() {
     	repository = new DatabaseRepository();
-        metaFields = repository.loadMetaData();
+        metaData = repository.loadMetaData();
     }
 	
     // --------------------------------
@@ -54,9 +54,25 @@ public class DataBus {
 	 * 
 	 * @return
 	 */
-	public Set getMetaFields() {
-		return metaFields;
+	public MetaData getMetaData() {
+		return metaData;
 	}
+    
+    /**
+     * 
+     * @return
+     */
+    public Set getMetaFields() {
+    	return metaData.getFields();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Set getMetaEntities() {
+    	return metaData.getEntities();
+    }
 	
     // --------------------------------
     // MUTATORS
