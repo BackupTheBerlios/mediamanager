@@ -1,10 +1,13 @@
 package ch.fha.mediamanager.workflow;
 
+import javax.swing.JPanel;
+
 import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.gui.MainFrame;
 import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.OperationCancelException;
@@ -12,7 +15,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: EditWorkflow.java,v 1.3 2004/06/23 14:21:47 ia02vond Exp $
+ * @version $Id: EditWorkflow.java,v 1.4 2004/06/23 17:03:41 ia02vond Exp $
  */
 public class EditWorkflow implements Workflow {
 	
@@ -35,31 +38,7 @@ public class EditWorkflow implements Workflow {
 					metaEntity.getIdentifier());
 			
 			
-			new InputFormular(dataElement);
-			
-			
-			pluginManager.fireEvent(
-					new MMPluginEvent(dataElement),
-					"preupdate",
-					metaEntity.getIdentifier());
-			
-			
-			// update
-			DataSet set = new DataSet();
-			set.add(dataElement);
-			QueryRequest req = new QueryRequest(set, QueryRequest.UPDATE);
-			
-			
-			pluginManager.fireEvent(
-					new MMPluginEvent(dataElement),
-					"postupdate",
-					metaEntity.getIdentifier());
-			
-			
-			pluginManager.fireEvent(
-					new MMPluginEvent(dataElement),
-					"postedit",
-					metaEntity.getIdentifier());
+			new InputFormular(dataElement, this);
 			
 			
 		} catch (OperationCancelException e) {
@@ -68,5 +47,42 @@ public class EditWorkflow implements Workflow {
 				" ' was canceled by a plugin.";
 			DataBus.logger.info(message);
 		}
+	}
+	
+	public void go(JPanel form, boolean continuee) {
+		if (continuee) {
+			try {
+				pluginManager.fireEvent(
+						new MMPluginEvent(dataElement),
+						"preupdate",
+						metaEntity.getIdentifier());
+				
+				
+				// update
+				DataSet set = new DataSet();
+				set.add(dataElement);
+				QueryRequest req = new QueryRequest(set, QueryRequest.UPDATE);
+				
+				pluginManager.fireEvent(
+						new MMPluginEvent(dataElement),
+						"postupdate",
+						metaEntity.getIdentifier());
+				
+				
+				pluginManager.fireEvent(
+						new MMPluginEvent(dataElement),
+						"postedit",
+						metaEntity.getIdentifier());
+				
+				
+			} catch (OperationCancelException e) {
+				String message =
+					"Operation 'edit " + metaEntity.getIdentifier() +
+					" ' was canceled by a plugin.";
+				DataBus.logger.info(message);
+			}
+		}
+		
+		// TODO remove tab
 	}
 }
