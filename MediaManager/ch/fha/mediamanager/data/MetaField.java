@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.6 2004/06/14 13:48:40 crac Exp $
+ * @version $Id: MetaField.java,v 1.7 2004/06/19 11:04:41 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -18,6 +18,9 @@ public final class MetaField implements Cloneable {
     public final static int TEXT = 4;
     public final static int BOOLEAN = 5;
     public final static int LIST = 6;
+    
+    /* Used for creation of hashCode */
+    private final static int PRIME = 13;
     
     // --------------------------------
     // FIELDS
@@ -61,6 +64,24 @@ public final class MetaField implements Cloneable {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     * @param f
+     * @return
+     */
+    public boolean equals(MetaField f) {
+        return (identifier.equals(f.identifier) 
+                && entity.equals(f.getEntity()));   
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int hashCode() {
+        return PRIME*entity.hashCode() + identifier.hashCode();
+    }
     
     /**
      * 

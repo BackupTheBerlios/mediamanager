@@ -6,7 +6,7 @@ package ch.fha.mediamanager.data;
  * <p>It is immutable.
  * 
  * @author crac
- * @version $Id: MetaEntity.java,v 1.3 2004/06/11 11:53:24 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.4 2004/06/19 11:04:41 crac Exp $
  */
 public final class MetaEntity {
 	
@@ -43,6 +43,23 @@ public final class MetaEntity {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     * @param e
+     * @return
+     */
+    public boolean equals(MetaEntity e) {
+        return (identifier.equals(e.identifier));   
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int hashCode() {
+        return identifier.hashCode();   
+    }
     
     // --------------------------------
     // ACCESSORS
