@@ -1,4 +1,4 @@
-//$Id: ModificationPanel.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
+//$Id: ModificationPanel.java,v 1.4 2004/06/27 20:31:24 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -8,7 +8,7 @@ import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 
 public class ModificationPanel extends JPanel {
-	private JButton exit, loadTabs, loadConfig;
+	private JButton exit, loadConfig;
 	
 	public ModificationPanel() {
 		MainFrame mainWindow = MainFrame.getInstance();
@@ -16,21 +16,22 @@ public class ModificationPanel extends JPanel {
 		setLayout(new BorderLayout());
 		setBorder(MainFrame.b);
 		
-		JPanel modPanel = new JPanel(new GridLayout(3, 1));
-		loadTabs = new JButton("Load Tabs");
-		loadTabs.setActionCommand("tabs");
-		loadTabs.addActionListener(mainActionListener);
-		loadConfig = new JButton("Load Config");
+		JPanel modPanel = new JPanel();
+		modPanel.setLayout(new BoxLayout(modPanel, BoxLayout.Y_AXIS));
+		loadConfig = new JButton("Einstellungen");
 		loadConfig.setActionCommand("config");
 		loadConfig.addActionListener(mainActionListener);
-		exit = new JButton("Exit");
+		loadConfig.setAlignmentX(Component.CENTER_ALIGNMENT);
+		exit = new JButton("Beenden");
 		exit.setActionCommand("exit");
 		exit.addActionListener(mainActionListener);
+		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		modPanel.add(loadTabs);
 		modPanel.add(loadConfig);
+		modPanel.add(Box.createVerticalGlue());
 		modPanel.add(exit);
-
-		add(modPanel, BorderLayout.NORTH);
+		modPanel.setBorder(new BarBorder("Tools"));
+	
+		add(modPanel, BorderLayout.CENTER);
 	}
 }
