@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -24,16 +25,13 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.2 2004/06/19 14:16:16 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.3 2004/06/20 22:43:37 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
     // --------------------------------
     // FIELDS
     // --------------------------------
-    
-    private DatabaseConnection dbConnection = 
-        new DatabaseConnection();
     
     private static final String name = "Mckoi SQL DB Repository";
     
@@ -42,6 +40,9 @@ public final class MckoiRepository implements Repository {
     
     private DatabaseSettings settings = 
         new DatabaseSettings(file);
+    
+    private DatabaseConnection dbConnection = 
+        new DatabaseConnection(settings);
     
     // --------------------------------
     // CONSTRUCTORS
@@ -60,8 +61,9 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      */
-    public void initialize() {
+    public MetaData initialize() {
         connect();
+        return loadMetaData();
     }
     
     /**
@@ -113,8 +115,9 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
-     * Loads all meta information from repository.
+     * Loads all meta information of the repository.
      * 
+     * @see Repository
      * @see MetaField
      * @see MetaEntity
      * @see MetaData
@@ -123,23 +126,54 @@ public final class MckoiRepository implements Repository {
      * @return
      */
     public MetaData loadMetaData() {
+        MetaData data = new MetaData();
+        
         try {
             String sql = 
-                "SELECT * FROM Fld, Fldtype, Users, Ent " +
-                "WHERE Fld.UserId = Users.UUID AND " +
-                "Fld.FldFldtypeId = Fldtype.FldtypeId AND " +
-                "Fld.FldEntId = Ent.EntId;";
+                "SELECT * FROM Fld " +
+                "LEFT JOIN Fldtype ON Fld.FldFldtypeId = Fldtype.FldtypeId " +
+                "LEFT JOIN Ent ON Fld.FldEntId = Ent.EntId;";
             ResultSet result = 
                 dbConnection.executeQuery(sql);
                 
-            if (result.next()) {
-               
+            while (result.next()) {
+                MetaEntity me = 
+                    new MetaEntity(result.getString("EntName"));
+                MetaField mf = 
+                    new MetaField(result.getString("FldName"), me);
+                
+                mf.setHidden(
+                    result.getInt("FldHidden") == 0 ? false: true
+                );
+                mf.setLength(result.getInt("FldLength"));
+                mf.setMandatory(
+                    result.getInt("FldMandatory") == 0 ? false: true
+                );
+                mf.setType(result.getInt("FldtypeId"));
+                
+                switch(mf.getType()) {
+                    case(MetaField.VARCHAR):
+                    case(MetaField.TEXT):
+                        mf.setDefaultValue(result.getString("FldDefault"));
+                        break;
+                    case(MetaField.DATE):
+                        break;
+                    case(MetaField.INT):
+                        mf.setDefaultValue(
+                            new Integer(result.getInt("FldDefault"))
+                        );
+                        break;
+                }
+                data.addEntity(me);
+                data.addField(mf);
+                System.out.println("MD added: " + mf.toString());
             }
         } catch (Exception e) {
-            DataBus.logger.fatal("Could not load meta data.");
-            throw new InternalError("Could not load meta data.");
+            DataBus.logger.fatal("Could not load MetaData.");
+            throw new InternalError("Could not load MetaData.");
         }
-        return null;
+        DataBus.logger.info("MetaData loaded.");
+        return data;
     }
 
     /**
@@ -197,6 +231,11 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
+     * Retrieves a <code>DataSet</code> according to the 
+     * defined <code>QueryRequest</code> from the repository.
+     * 
+     * @see DataSet
+     * @see QueryRequest
      * 
      * @param ds
      * @return 
@@ -217,23 +256,38 @@ public final class MckoiRepository implements Repository {
         }
         
         query += createRequestStatement(qr);
-        System.out.println(query);
+        DataBus.logger.debug(query);
         
-        /*try {   
+        try {   
             ResultSet result = 
                 dbConnection.executeQuery(query);
+            ResultSetMetaData rsmd = result.getMetaData();
             
             while (result.next()) {
                 DataElement e = new DataElement();
                 
-                //
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    MetaData metaData = DataBus.getMetaData();
+                    MetaField mf = new MetaField(
+                        rsmd.getColumnLabel(i), 
+                        new MetaEntity(rsmd.getTableName(i))
+                    );
+                    // only if known to MetaData
+                    if (metaData.contains(mf)) {
+                        Field field = new Field(mf);
+                        field.setValue(result.getObject(mf.getName()));
+                        e.add(field);
+                    } else {
+                        DataBus.logger.debug("Field not in MetaData: " + mf.toString());   
+                    }
+                }
                 
                 ds.add(e);
             } 
         } catch (Exception e) {
-            DataBus.logger.error("Data could not be loaded.");
-        }*/
-        
+            DataBus.logger.error("DataSet could not be loaded.");
+        }
+        DataBus.logger.debug("DataSet loaded.");
         return ds;
     }
     
