@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.21 2004/06/18 13:09:18 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.22 2004/06/19 08:34:52 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -69,6 +69,7 @@ public final class DatabaseRepository implements Repository {
      *
      */
     public void disconnect() {
+        dbConnection.disconnect();
         dbConnection = null;
     }
     

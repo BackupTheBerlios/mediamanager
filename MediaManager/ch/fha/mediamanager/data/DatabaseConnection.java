@@ -17,7 +17,7 @@ import java.sql.Statement;
  * @see DatabaseSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.4 2004/06/19 08:30:05 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.5 2004/06/19 08:34:52 crac Exp $
  */
 public class DatabaseConnection {
     
@@ -159,7 +159,19 @@ public class DatabaseConnection {
             throw new RuntimeException("Erroneous database query.");
         }
     }
-
+    
+    /**
+     * 
+     *
+     */
+    public void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            DataBus.logger.warn("Database could not be disconnected.");
+            throw new RuntimeException("Database could not be disconnected.");
+        }
+    }
 
     /**
      * Connects to the database in three steps:
