@@ -1,11 +1,13 @@
 package ch.fha.mediamanager.data;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.3 2004/05/21 18:02:01 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.4 2004/05/22 10:50:26 crac Exp $
  */
 public class QueryRequest {
     
@@ -22,8 +24,10 @@ public class QueryRequest {
     // --------------------------------
 
     private DataSet dSet;
+    
     private int type;
     private Vector request;
+    private Set entitySet = new HashSet(5);
     
     // --------------------------------
     // CONSTRUCTORS
@@ -57,6 +61,17 @@ public class QueryRequest {
      * @param vec
      */
     private void parse(Vector vec) {
+        
+        // create entitySet
+        for(int i = 0; i < vec.size(); i++) {
+            if (vec.elementAt(i) instanceof QueryCondition) {
+                DataEntity tmp = 
+                    ((QueryCondition) vec.elementAt(i)).getEntity();
+                
+                if (! entitySet.contains(tmp))  entitySet.add(tmp);
+            }
+        }
+        
         // TODO
     }
     
@@ -97,6 +112,14 @@ public class QueryRequest {
      */
     public Vector getVector() {
         return request;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Set getEntities() {
+        return entitySet;
     }
     
     // --------------------------------

@@ -1,13 +1,15 @@
 package ch.fha.mediamanager.data;
 
 import java.sql.ResultSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 /**
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.3 2004/05/21 18:09:01 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.4 2004/05/22 10:50:26 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -54,17 +56,14 @@ public class DatabaseRepository implements Repository {
         String query = "SELECT * FROM ";
         
         // entities
-        for(int i = 0; i < tmp.size(); i++) {
-            if (tmp.elementAt(i) instanceof QueryCondition) {
-                QueryCondition qc = (QueryCondition) tmp.elementAt(i);
-                query += (qc.getEntity()).getName();
-                if (tmp.size() > 1 && i + 1 < tmp.size()) {
-                    query += ",";
-                }
-            }
+        Set entities = qr.getEntities();
+        Iterator it = entities.iterator();
+        while (it.hasNext()) {
+            query += ((DataEntity) it.next()).getName();
         }
         
         query += createRequestStatement(qr);
+        //System.out.println(query);
         
         try {   
             ResultSet result = 
@@ -93,7 +92,7 @@ public class DatabaseRepository implements Repository {
      * @return 
      */
     private String createConditionStatement(QueryCondition qc) {
-        String comp = (qc.getEntity()).getName() + "." + (qc.getEntity()).getName();
+        String comp = (qc.getEntity()).getName() + "." + (qc.getField()).getName();
         
         switch(qc.getComparator()) {
             case(QueryCondition.EQUALS):
@@ -128,7 +127,8 @@ public class DatabaseRepository implements Repository {
      */
     private String createRequestStatement(QueryRequest qr) {
         Vector tmp = qr.getVector();
-        String output = "";
+        
+        String output = (tmp.size() > 0) ? " WHERE ": "";
         
         for(int i = 0; i < tmp.size(); i++) {
             if (tmp.elementAt(i) instanceof QueryCondition) {
