@@ -41,6 +41,7 @@ public class VarcharDataInput extends AbstractDataInput
 	
 	private void setValue(Object value, boolean fireEvent) {
 		field.setValue(value);
+        ch.fha.mediamanager.data.DataBus.logger.info(value.toString());
 		textField.setText(value.toString());
 		if (fireEvent) fireDataInputChanged();
 	}
@@ -50,6 +51,7 @@ public class VarcharDataInput extends AbstractDataInput
 	}
 
 	public void insertUpdate(DocumentEvent e) {}
+    
 	public void removeUpdate(DocumentEvent e) {}
 
 }

@@ -42,6 +42,7 @@ public class TextDataInput extends AbstractDataInput
 	
 	public void setValue(Object value, boolean fireEvent) {
 		field.setValue(value);
+        ch.fha.mediamanager.data.DataBus.logger.info(value.toString());
 		textArea.setText(value.toString());
 		if (fireEvent) fireDataInputChanged();
 	}
