@@ -23,7 +23,7 @@ import ch.fha.mediamanager.workflow.Workflow;
 
 /**
  * @author ia02vond
- * @version $Id: InputFormular.java,v 1.5 2004/06/27 13:51:52 radisli Exp $
+ * @version $Id: InputFormular.java,v 1.6 2004/06/28 14:53:44 radisli Exp $
  */
 public class InputFormular extends JPanel implements
 	ActionListener
@@ -87,6 +87,7 @@ public class InputFormular extends JPanel implements
 		gridBagHolderPanel.add(MainFrame.ep);
 	
 		JScrollPane sp = new JScrollPane(gridBagHolderPanel);
+		sp.setBorder(null);
 		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.add(sp, BorderLayout.CENTER);
