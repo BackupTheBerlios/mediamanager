@@ -14,7 +14,7 @@ import java.util.Properties;
  * Database settings.
  * 
  * @author luca
- * @version $Id: ConnectionSettings.java,v 1.1 2004/06/23 12:01:05 crac Exp $
+ * @version $Id: ConnectionSettings.java,v 1.2 2004/06/24 15:20:02 crac Exp $
  */
 public final class ConnectionSettings {
     
@@ -109,7 +109,7 @@ public final class ConnectionSettings {
             outProp.setProperty("user", user);
             outProp.setProperty("password", password);
 
-            outProp.store(output, "database configuration");
+            outProp.store(output, "connection configuration");
             output.close();
             
             DataBus.logger.info("Db config file written.");

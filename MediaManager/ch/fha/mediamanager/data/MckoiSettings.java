@@ -12,7 +12,7 @@ import java.util.Properties;
 
 /**
  * @author luca
- * @version $Id: MckoiSettings.java,v 1.2 2004/06/24 11:19:00 crac Exp $
+ * @version $Id: MckoiSettings.java,v 1.3 2004/06/24 15:20:02 crac Exp $
  */
 public class MckoiSettings {
     
@@ -118,7 +118,7 @@ public class MckoiSettings {
             outProp.setProperty("maximum_worker_threads", workerThreads);
             outProp.setProperty("debug_level", logLevel);
 
-            outProp.store(output, "database configuration");
+            outProp.store(output, "mckoi configuration");
             output.close();
             
             DataBus.logger.info("Mckoi config file written.");
