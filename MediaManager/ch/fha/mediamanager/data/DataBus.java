@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.9 2004/06/19 10:02:23 crac Exp $
+ * @version $Id: DataBus.java,v 1.10 2004/06/19 14:42:48 crac Exp $
  */
 public class DataBus {
 	
@@ -125,6 +125,31 @@ public class DataBus {
      */
     public static Logger getLogger(String pkg) {
         return Logger.getLogger(pkg);
+    }
+    
+    /**
+     * Creates a <code>DataElement</code> based on the 
+     * definition of a <code>MetaEntitiy</code>. The 
+     * fields are filled with their default values.
+     * 
+     * @see DataElement
+     * @see MetaData
+     * 
+     * @param e
+     * @return
+     */
+    public DataElement getDefaultElement(MetaEntity e) {
+        Set set = metaData.getFields(e);
+        DataElement el = new DataElement();
+        java.util.Iterator it = set.iterator();
+        
+        while (it.hasNext()) {
+            MetaField mf = (MetaField) it.next();
+            Field f = new Field(mf, mf.getDefaultValue());
+            el.add(f);
+        }
+        
+        return el;
     }
 	
     // --------------------------------
