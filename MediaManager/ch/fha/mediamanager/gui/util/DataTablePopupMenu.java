@@ -15,19 +15,22 @@ import javax.swing.JTable;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
+import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.mediamanager.workflow.DeleteWorkflow;
 import ch.fha.mediamanager.workflow.EditWorkflow;
 import ch.fha.mediamanager.workflow.NewWorkflow;
 import ch.fha.pluginstruct.Plugin;
+import ch.fha.pluginstruct.PluginEvent;
 import ch.fha.pluginstruct.PluginEventObserver;
 import ch.fha.pluginstruct.PluginManager;
+import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.8 2004/06/25 16:22:03 crac Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.9 2004/06/28 21:09:50 ia02vond Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
-	implements MouseListener, ActionListener {
+	implements MouseListener, ActionListener, Returnable {
 
 	private JTable table;
 	private DataTableModel model;
@@ -134,18 +137,31 @@ public class DataTablePopupMenu extends JPopupMenu
 					
 	
 	private void checkPopupMenu(MouseEvent e) {
+		PluginManager manager = PluginManager.getInstance();
 		if (e.isPopupTrigger()) {
 			if (table.getSelectedRowCount() == 0) {
 				for (int i=0; i<pluginMI.length; i++) {
-					pluginMI[i].setEnabled(pmid[i].norow);
+					if (manager.isPluginActivated(pmid[i].identifier)) {
+						pluginMI[i].setEnabled(pmid[i].norow);
+					} else {
+						pluginMI[i].setEnabled(false);
+					}
 				}
 			} else if (table.getSelectedRowCount() == 1) {
 				for (int i=0; i<pluginMI.length; i++) {
-					pluginMI[i].setEnabled(pmid[i].singlerow);
+					if (manager.isPluginActivated(pmid[i].identifier)) {
+						pluginMI[i].setEnabled(pmid[i].singlerow);
+					} else {
+						pluginMI[i].setEnabled(false);
+					}
 				}
 			} else {
 				for (int i=0; i<pluginMI.length; i++) {
-					pluginMI[i].setEnabled(pmid[i].multirow);
+					if (manager.isPluginActivated(pmid[i].identifier)) {
+						pluginMI[i].setEnabled(pmid[i].multirow);
+					} else {
+						pluginMI[i].setEnabled(false);
+					}
 				}
 			}
 			editMI.setEnabled(table.getSelectedRowCount() == 1);
@@ -163,22 +179,49 @@ public class DataTablePopupMenu extends JPopupMenu
 
 		} else if (source == editMI) {
 			
-			int index = sortDecorator.getRowSortIndex(table.getSelectedRow());
-			DataElement element = model.getDataElement(index);
+			DataElement element = getSelectedDataElement();
 			
 			new EditWorkflow(element).start();
 		
 		} else if (source == deleteMI) {
 			
-			DataSet set = new DataSet();
-			int selected[] = table.getSelectedRows();
-			
-			for (int i=0; i<selected.length; i++) {
-				int index = sortDecorator.getRowSortIndex(selected[i]);
-				set.add(model.getDataElement(index));
-			}
+			DataSet set = getSelectedDataSet();
 				
 			new DeleteWorkflow(set).start();
+			
+		} else {
+			
+			for (int i=0; i<pluginMI.length; i++) {
+				if (source == pluginMI[i]) {
+					
+					switch (table.getSelectedRowCount()) {
+						case 0:
+							PluginManager.getInstance().fireEvent(
+									this,
+									new MMPluginEvent(),
+									"norow",
+									metaEntity.getName(),
+									pmid[i].plugin);
+							break;
+						case 1:
+							PluginManager.getInstance().fireEvent(
+									this,
+									new MMPluginEvent(getSelectedDataElement()),
+									"singlerow",
+									metaEntity.getName(),
+									pmid[i].plugin);
+							break;
+						default:
+							PluginManager.getInstance().fireEvent(
+									this,
+									new MMPluginEvent(getSelectedDataSet()),
+									"multirow",
+									metaEntity.getName(),
+									pmid[i].plugin);
+						break;
+					}
+				}
+			}
 		}
 	}
 	
@@ -202,5 +245,27 @@ public class DataTablePopupMenu extends JPopupMenu
 		public boolean singlerow;
 		public boolean multirow;
 	}
+
+
+	public void fireReturn(boolean operationCanceled) {}
 	
+	private DataSet getSelectedDataSet() {
+		DataSet set = new DataSet();
+		int selected[] = table.getSelectedRows();
+		
+		for (int i=0; i<selected.length; i++) {
+			int index = sortDecorator.getRowSortIndex(selected[i]);
+			set.add(model.getDataElement(index));
+		}
+		return set;
+	}
+	
+	private DataElement getSelectedDataElement() {
+		int index = sortDecorator.getRowSortIndex(table.getSelectedRow());
+		if (index != -1) {
+			return model.getDataElement(index);
+		}
+		return null;
+	}
+		
 }
