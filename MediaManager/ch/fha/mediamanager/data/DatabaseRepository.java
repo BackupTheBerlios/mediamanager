@@ -10,7 +10,7 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.13 2004/06/14 13:22:11 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.14 2004/06/14 13:33:51 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -68,6 +68,7 @@ public final class DatabaseRepository implements Repository {
      * @see MetaEntity
      * @see MetaData
      * 
+     * @throws InterError if meta data could not be loaded.
      * @return
      */
     public MetaData loadMetaData() {
