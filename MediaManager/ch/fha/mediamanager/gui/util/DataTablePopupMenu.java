@@ -20,22 +20,29 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.3 2004/06/23 13:51:34 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.4 2004/06/23 20:45:44 ia02vond Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener {
 
 	private JTable table;
 	private DataTableModel model;
+	private SortDecorator sortDecorator;
 	private MetaEntity metaEntity;
 	private PluginManager manager;
 	
 	private JMenuItem newMI, editMI, deleteMI, emptyMI;
 	private JMenu pluginM;
 	
-	public DataTablePopupMenu(JTable table, DataTableModel model, MetaEntity metaEntity) {
+	public DataTablePopupMenu(
+			JTable table,
+			DataTableModel model,
+			SortDecorator sortDecorator,
+			MetaEntity metaEntity) {
+		
 		this.table = table;
 		this.model = model;
+		this.sortDecorator = sortDecorator;
 		this.metaEntity = metaEntity;
 		
 		initMenu();
@@ -82,7 +89,8 @@ public class DataTablePopupMenu extends JPopupMenu
 
 		} else if (source == editMI) {
 			
-			DataElement element = model.getDataElement(table.getSelectedRow());
+			int index = sortDecorator.getRowSortIndex(table.getSelectedRow());
+			DataElement element = model.getDataElement(index);
 			
 			new EditWorkflow(element).start();
 		
@@ -90,8 +98,10 @@ public class DataTablePopupMenu extends JPopupMenu
 			
 			DataSet set = new DataSet();
 			int selected[] = table.getSelectedRows();
+			
 			for (int i=0; i<selected.length; i++) {
-				set.add(model.getDataElement(selected[i]));
+				int index = sortDecorator.getRowSortIndex(selected[i]);
+				set.add(model.getDataElement(index));
 			}
 				
 			new DeleteWorkflow(set).start();
