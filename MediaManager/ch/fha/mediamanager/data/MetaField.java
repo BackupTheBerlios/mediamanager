@@ -1,8 +1,13 @@
 package ch.fha.mediamanager.data;
 
 /**
+ * Holds meta information about an entity field.
+ * 
+ * @see MetaEntity
+ * @see MetaData
+ * 
  * @author crac
- * @version $Id: MetaField.java,v 1.1 2004/06/05 14:12:48 crac Exp $
+ * @version $Id: MetaField.java,v 1.2 2004/06/11 11:29:57 crac Exp $
  */
 public class MetaField {
 	
@@ -10,13 +15,14 @@ public class MetaField {
     public static int USERID = 1;
     public static int INT = 2;
     public static int VARCHAR = 3;
-    public static int BOOLEAN = 4;
-	
+    public static int TEXT = 4;
+    public static int BOOLEAN = 5;
+    
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
     
-	private int type;
+    private int type;
     private int length;
     private String name;
     private String identifier;
@@ -34,9 +40,9 @@ public class MetaField {
      * @param entity
      */
     public MetaField(String id, MetaEntity entity) {
-    	this.identifier = id;
-    	this.name = id;
-    	this.entity = entity;
+        this.identifier = id;
+        this.name = id;
+        this.entity = entity;
     }
     
     /**
@@ -46,10 +52,14 @@ public class MetaField {
      * @param entity
      */
     public MetaField(String id, String name, MetaEntity entity) {
-    	this.identifier = id;
-    	this.name = name;
-    	this.entity = entity;
+        this.identifier = id;
+        this.name = name;
+        this.entity = entity;
     }
+    
+    // --------------------------------
+    // OPERATIONS
+    // --------------------------------
     
     // --------------------------------
     // ACCESSORS
@@ -115,7 +125,7 @@ public class MetaField {
      * @return the value of entity
      */
     public MetaEntity getEntity() {
-        return entity;
+        return (MetaEntity) entity.clone();
     }
     
     // --------------------------------
@@ -182,6 +192,6 @@ public class MetaField {
      * @param value
      */
     public void setEntity(MetaEntity value) {
-        entity = value;
+        entity = (MetaEntity) value.clone();
     }
 }

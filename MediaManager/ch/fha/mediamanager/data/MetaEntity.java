@@ -2,12 +2,12 @@ package ch.fha.mediamanager.data;
 
 /**
  * @author crac
- * @version $Id: MetaEntity.java,v 1.1 2004/06/05 14:12:48 crac Exp $
+ * @version $Id: MetaEntity.java,v 1.2 2004/06/11 11:29:57 crac Exp $
  */
-public class MetaEntity {
+public class MetaEntity implements Cloneable {
 	
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 	
 	private String name;
@@ -34,6 +34,25 @@ public class MetaEntity {
     public MetaEntity(String id, String name) {
     	this.identifier = id;
     	this.name = name;
+    }
+    
+    // --------------------------------
+    // OPERATIONS
+    // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public Object clone() {
+        MetaEntity e;
+        try {
+            e = (MetaEntity) super.clone();
+        } catch (CloneNotSupportedException c) {
+            throw new InternalError();
+        }
+        
+        return e;
     }
     
     // --------------------------------
