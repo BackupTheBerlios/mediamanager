@@ -1,4 +1,4 @@
-//$Id: StatePanel.java,v 1.5 2004/06/28 14:01:45 radisli Exp $
+//$Id: StatePanel.java,v 1.6 2004/06/29 13:03:24 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -124,11 +124,12 @@ public class StatePanel extends JPanel {
 		}
 		
 		public void runAction(KeyPointEvent e) {
-			if(e.getKeyPointEvent() == KeyPointEvent.PRE_CONNECT) {
+			int kpe = e.getKeyPointEvent();
+			if(kpe == KeyPointEvent.PRE_CONNECT || kpe == KeyPointEvent.PRE_DISCONNECT) {
 				col = connecting;
-			} else if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
+			} else if(kpe == KeyPointEvent.POST_CONNECT) {
 				col = connected;
-			} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
+			} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 				col = disconnected;
 			}
 			repaint();

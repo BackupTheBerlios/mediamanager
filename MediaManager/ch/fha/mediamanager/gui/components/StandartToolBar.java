@@ -1,4 +1,4 @@
-//$Id: StandartToolBar.java,v 1.5 2004/06/28 14:01:18 radisli Exp $
+//$Id: StandartToolBar.java,v 1.6 2004/06/29 13:03:24 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.event.ActionEvent;
@@ -18,6 +18,7 @@ public class StandartToolBar extends AbstractToolBar implements
 	private final static String disconnectStr = "Verbindung trennen";
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/iconnect.gif");
+	private final static ImageIcon connectingImage = new ImageIcon("images/iconnecting.gif");
 	private final static ImageIcon disconnectImage = new ImageIcon("images/idisconnect.gif");
 
 
@@ -61,10 +62,13 @@ public class StandartToolBar extends AbstractToolBar implements
 	}
 
 	public void runAction(KeyPointEvent e) {
-		if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
+		int kpe = e.getKeyPointEvent();
+		if(kpe == KeyPointEvent.PRE_CONNECT || kpe == KeyPointEvent.PRE_DISCONNECT) {
+			connect.setIcon(connectingImage);
+		} else if(kpe == KeyPointEvent.POST_CONNECT) {
 			connect.setIcon(disconnectImage);
 			connect.setToolTip(disconnectStr);
-		} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
+		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 			connect.setIcon(connectImage);
 			connect.setToolTip(connectStr);
 		}		
