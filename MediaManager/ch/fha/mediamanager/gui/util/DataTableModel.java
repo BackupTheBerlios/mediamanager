@@ -26,6 +26,10 @@ public class DataTableModel extends AbstractTableModel {
 	
 	public DataTableModel(MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
+		refresh();
+	}
+	
+	public void refresh() {
 		Field field = new Field("TestId", metaEntity, new Integer(0));
 		QueryCondition qc = 
 		    new QueryCondition(
