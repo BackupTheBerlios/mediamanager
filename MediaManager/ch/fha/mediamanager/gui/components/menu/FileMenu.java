@@ -1,4 +1,4 @@
-//$Id: FileMenu.java,v 1.4 2004/06/28 14:01:50 radisli Exp $
+//$Id: FileMenu.java,v 1.5 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components.menu;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class FileMenu extends JMenu implements
 		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 		setText("File");
 		
-		connectState = new JMenuItem("Verbinden");
+		connectState = new JMenuItem(MainFrame.connectStrShort);
 		connect();
 		connectState.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -52,7 +52,7 @@ public class FileMenu extends JMenu implements
 	}
 	
 	private void connect() {
-		connectState.setText("Verbinden");
+		connectState.setText(MainFrame.connectStrShort);
 		connectState.setMnemonic(KeyEvent.VK_V);
 		connectState.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_V, KeyEvent.CTRL_MASK));
@@ -66,7 +66,7 @@ public class FileMenu extends JMenu implements
 	 */
 	public void runAction(KeyPointEvent e) {
 		if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
-			connectState.setText("Trennen");
+			connectState.setText(MainFrame.disconnectStrShort);
 			connectState.setMnemonic(KeyEvent.VK_T);
 			connectState.setAccelerator(KeyStroke.getKeyStroke(
 	                KeyEvent.VK_T, KeyEvent.CTRL_MASK));

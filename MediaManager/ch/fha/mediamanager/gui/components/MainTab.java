@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.12 2004/06/29 13:03:17 radisli Exp $
+//$Id: MainTab.java,v 1.13 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -17,9 +17,6 @@ import ch.fha.mediamanager.gui.framework.*;
 public class MainTab extends JPanel implements
 	KeyPointListener
 {
-	// Tool Tips which is displayed in the <code>StatePanel</code> too
-	private final static String connectStr = "Zum Server verbinden";
-	private final static String disconnectStr = "Verbindung trennen";
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
 	private final static ImageIcon connectingImage = new ImageIcon("images/connecting.gif");
@@ -52,9 +49,9 @@ public class MainTab extends JPanel implements
 					}
 				}
 			} ,
-			"Zum Server verbinden");
+			MainFrame.connectStr);
 		topButtonPanel.add(topButton);
-		topLabel = new RenderedJLabel("Verbinden");
+		topLabel = new RenderedJLabel(MainFrame.connectStrShort);
 		topLabel.setFont(MainFrame.titleFont);
 		topButtonPanel.add(topLabel);
 		basePanel.add(topButtonPanel);
@@ -91,16 +88,20 @@ public class MainTab extends JPanel implements
 	 */
 	public void runAction(KeyPointEvent e) {
 		int kpe = e.getKeyPointEvent();
-		if(kpe == KeyPointEvent.PRE_CONNECT || kpe == KeyPointEvent.PRE_DISCONNECT) {
+		if(kpe == KeyPointEvent.PRE_CONNECT) {
 			topButton.setIcon(connectingImage);
+			topLabel.setText(MainFrame.connectingStr);
 		} else if(kpe == KeyPointEvent.POST_CONNECT) {
 			topButton.setIcon(disconnectImage);
-			topButton.setToolTipText(disconnectStr);
-			topLabel.setText("Trennen");
+			topButton.setToolTipText(MainFrame.disconnectStr);
+			topLabel.setText(MainFrame.disconnectStrShort);
+		} else if(kpe == KeyPointEvent.PRE_DISCONNECT) {
+			topButton.setIcon(connectingImage);
+			topLabel.setText(MainFrame.disconnectingStr);
 		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 			topButton.setIcon(connectImage);
-			topButton.setToolTipText(connectStr);
-			topLabel.setText("Verbinden");
+			topButton.setToolTipText(MainFrame.connectStr);
+			topLabel.setText(MainFrame.connectStrShort);
 		}
 	}
 

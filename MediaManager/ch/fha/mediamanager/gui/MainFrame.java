@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.19 2004/06/29 13:34:39 radisli Exp $
+//$Id: MainFrame.java,v 1.20 2004/06/29 14:07:05 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -68,6 +68,16 @@ public class MainFrame extends JFrame implements
 	private static final String WINDOW_X_POS = "windowXPos";
 	private static final String WINDOW_Y_POS = "windowYPos";
 	private static final String SCREEN_MODE = "screenMode";
+
+	// Tool Tips which is displayed in the <code>StatePanel</code> too
+	public final static String connectStr = "Zum Server verbinden";
+	public final static String disconnectStr = "Verbindung trennen";
+	public final static String connectStrShort = "Verbinden";
+	public final static String disconnectStrShort = "Trennen";
+	public final static String connectingStr = "Wird verbunden ...";
+	public final static String disconnectingStr = "Wird getrennt ...";
+	public final static String connectedStr = "Verbunden!";
+	public final static String disconnectedStr = "Getrennt!";
 	
 	// Private to prevent instantiation.
 	private MainFrame() {}
@@ -300,10 +310,13 @@ public class MainFrame extends JFrame implements
 		String[] options = {"Ja", "Nein"};
 		if(option("Wollen Sie wirklich beenden?", options) == 0) {
 			exiting = true;
+			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 			if(getConnectionStatus()) {
 				disconnect();
+			} else {
+				// calls system.exit(0);
+				mainActionListener.fireAction(KeyPointEvent.WINDOW_FINAL_EXIT);
 			}
-			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 		}
 	}
 

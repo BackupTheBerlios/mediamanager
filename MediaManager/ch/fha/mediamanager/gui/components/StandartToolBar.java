@@ -1,4 +1,4 @@
-//$Id: StandartToolBar.java,v 1.6 2004/06/29 13:03:24 radisli Exp $
+//$Id: StandartToolBar.java,v 1.7 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.event.ActionEvent;
@@ -13,9 +13,6 @@ public class StandartToolBar extends AbstractToolBar implements
 	KeyPointListener
 {
 	private ToolBarButton connect;
-	// Tool Tips which is displayed in the <code>StatePanel</code> too
-	private final static String connectStr = "Zum Server verbinden";
-	private final static String disconnectStr = "Verbindung trennen";
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/iconnect.gif");
 	private final static ImageIcon connectingImage = new ImageIcon("images/iconnecting.gif");
@@ -38,7 +35,7 @@ public class StandartToolBar extends AbstractToolBar implements
 					}
 				},
 				null,
-				connectStr);
+				MainFrame.connectStr);
 		addToolbarElement("images/iconfig.gif",
 				mainActionListener,
 				"config",
@@ -67,10 +64,10 @@ public class StandartToolBar extends AbstractToolBar implements
 			connect.setIcon(connectingImage);
 		} else if(kpe == KeyPointEvent.POST_CONNECT) {
 			connect.setIcon(disconnectImage);
-			connect.setToolTip(disconnectStr);
+			connect.setToolTip(MainFrame.disconnectStr);
 		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 			connect.setIcon(connectImage);
-			connect.setToolTip(connectStr);
+			connect.setToolTip(MainFrame.connectStr);
 		}		
 	}
 }
