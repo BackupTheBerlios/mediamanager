@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.33 2004/06/25 16:24:00 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.34 2004/06/25 17:06:03 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -126,35 +126,22 @@ public final class MckoiRepository implements Repository {
     *
     * @param entity
     * @param fields
+    * 
     * @return Returns true if the entity and its field 
     *     have been created
     */
    public boolean create(MetaEntity entity, MetaField[] fields) {
        if ((entity == null) || (fields == null))
            throw new IllegalArgumentException();
-       // TODO
-       String create = "CREATE TABLE " + entity.getName();
-       
-       insertEntity = 
-           dbConnection.prepareStatement("INSERT INTO Ent " +
-               "(EntId, EntName) VALUES (?, ?);");
-       
-       try {
-           entity.setId(getNextPK("Ent", "EntId"));
-            
-           dbConnection.getConnection().setAutoCommit(false);
-            
-           insertEntity.setInt(1, entity.getId());
-           insertEntity.setString(2, entity.getName());
-           insertEntity.execute();
-            
-           dbConnection.executeQuery(create);
-            
-           dbConnection.getConnection().commit();
-       } catch (SQLException e) {
-           DataBus.logger.warn("Entity " + entity.getName() + 
-               " not created.");
-           return false;
+
+       if (create(entity)) {
+           for (int i = 0; i < fields.length; i++) {
+               if (! create(fields[i])) {
+                   delete(entity);
+                   return false;
+               }
+           }
+           return true;
        }
        
        return false;
@@ -181,8 +168,8 @@ public final class MckoiRepository implements Repository {
            
            insertEntity.setInt(1, entity.getId());
            insertEntity.setString(2, entity.getName());
-           insertEntity.execute();
            
+           insertEntity.execute();
            dbConnection.executeQuery(createEntity);
            
            dbConnection.getConnection().commit();
@@ -194,6 +181,7 @@ public final class MckoiRepository implements Repository {
        
        DataBus.logger.info("Entity " + entity.getName() + 
            " created.");
+       DataBus.getMetaData().addEntity(entity);
        return true;
    }
    
@@ -277,6 +265,7 @@ public final class MckoiRepository implements Repository {
        }      
        DataBus.logger.info("Field " + field.getIdentifier() + 
            " created.");
+       DataBus.getMetaData().addField(field);
        return true;
    }
    
@@ -309,6 +298,7 @@ public final class MckoiRepository implements Repository {
                || (entity.getName().equals("Fld"))
                || (entity.getName().equals("Fldtype"))
                || (entity.getName().equals("Ent"))
+               || (entity.getId() == 0)
            ) {
            throw new IllegalArgumentException();
        }
@@ -337,6 +327,7 @@ public final class MckoiRepository implements Repository {
        
        DataBus.logger.info("Entity " + entity.getName() +
            " deleted.");
+       DataBus.getMetaData().remove(entity);
        return true;
    }
    
@@ -374,6 +365,7 @@ public final class MckoiRepository implements Repository {
        }
        DataBus.logger.info("Field " + field.getIdentifier() + 
            " deleted.");
+       DataBus.getMetaData().remove(field);
        return true;
    }
     
