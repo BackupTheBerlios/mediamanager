@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.3 2004/06/20 22:43:37 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.4 2004/06/20 22:48:07 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -166,7 +166,7 @@ public final class MckoiRepository implements Repository {
                 }
                 data.addEntity(me);
                 data.addField(mf);
-                System.out.println("MD added: " + mf.toString());
+                DataBus.logger.debug("MetaField added: " + mf.toString());
             }
         } catch (Exception e) {
             DataBus.logger.fatal("Could not load MetaData.");
