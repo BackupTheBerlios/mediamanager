@@ -1,5 +1,6 @@
 package ch.fha.mediamanager.data;
 
+import java.io.FileNotFoundException;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -9,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.5 2004/06/10 20:07:02 crac Exp $
+ * @version $Id: DataBus.java,v 1.6 2004/06/18 12:37:13 ia02vond Exp $
  */
 public class DataBus {
 	
@@ -30,7 +31,8 @@ public class DataBus {
     }
     
     private static MetaData metaData;
-	private static Repository repository;
+	private static Repository[] repositories;
+	private static Repository   currentRepository;
 	
     // --------------------------------
     // CONSTRUCTORS
@@ -50,8 +52,17 @@ public class DataBus {
      * @see MetaData
      */
     public static void initialize() {
-        repository = new DatabaseRepository();
-        metaData = repository.loadMetaData();
+    	try {
+    	repositories = RepositoryLoader.loadRepositories();
+    	} catch (FileNotFoundException e) {
+    		throw new InternalError("no repository found");
+    	}
+        if (repositories != null) {
+        	currentRepository = repositories[0];
+        } else {
+        	throw new InternalError("no repository found");
+        }
+        // TODO metaData = currentRepository.loadMetaData();
     }
 	
     // --------------------------------
@@ -63,7 +74,11 @@ public class DataBus {
 	 * @return
 	 */
 	public static Repository getRepository() {
-	    return repository;
+	    return currentRepository;
+	}
+	
+	public static Repository[] getRepositories() {
+		return repositories;
 	}
 	
 	/**
@@ -107,6 +122,6 @@ public class DataBus {
 	 * @param repository
 	 */
 	public void setRepository(Repository rep) {
-	    repository = rep;
+	    currentRepository = rep;
 	}
 }
