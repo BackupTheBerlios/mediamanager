@@ -204,7 +204,7 @@ public class Composition implements Serializable, Comparable, Externalizable
     */
     public void setRecordingYear (int year) {
         GregorianCalendar cal = new GregorianCalendar();
-        cal.set(year, cal.JANUARY, 1);
+        cal.set(year, GregorianCalendar.JANUARY, 1);
         setRecordingDate(cal.getTime());
     }
 
@@ -217,7 +217,7 @@ public class Composition implements Serializable, Comparable, Externalizable
         if (recordingDate == null) return 0;
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(recordingDate);
-        return cal.get(cal.YEAR);
+        return cal.get(GregorianCalendar.YEAR);
     }
 
 
