@@ -13,20 +13,22 @@ import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.gui.MainFrame;
 import ch.fha.mediamanager.gui.util.dataInput.DataInput;
+import ch.fha.mediamanager.workflow.Workflow;
 
 /**
  * @author ia02vond
- * @version $Id: InputFormular.java,v 1.1 2004/06/23 14:21:32 ia02vond Exp $
+ * @version $Id: InputFormular.java,v 1.2 2004/06/23 16:54:35 ia02vond Exp $
  */
 public class InputFormular extends JPanel
 	implements ActionListener {
 	
 	private DataElement element;
-	
+	private Workflow workflow;
 	private JButton okB, cancelB;
 	
-	public InputFormular(DataElement element) {
+	public InputFormular(DataElement element, Workflow workflow) {
 		this.element = element;
+		this.workflow = workflow;
 		
 		initInputFields();
 		
@@ -64,7 +66,9 @@ public class InputFormular extends JPanel
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source == okB) {
+			workflow.go(this, true);
 		} else if (source == cancelB) {
+			workflow.go(this, false);
 		}
 	}
 	
