@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.19 2004/06/28 12:43:43 crac Exp $
+ * @version $Id: DataElement.java,v 1.20 2004/06/28 15:25:06 crac Exp $
  */
 public class DataElement {
 	
@@ -107,6 +107,26 @@ public class DataElement {
             str += ((Field) it.next()).toString() + "\n";
         }
         return str;
+    }
+    
+    /**
+     * Checks if a requested Field is available.
+     * 
+     * @param name
+     * @return Returns true, if the field exists
+     */
+    public boolean hasField(String name) {
+        MetaField mf = new MetaField(name, entity);
+        java.util.Iterator it = fields.iterator();
+        
+        while(it.hasNext()) {
+            Field tmp = (Field) it.next();
+            if ((tmp != null) && (tmp.getMetaField().equals(mf))) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     // --------------------------------
@@ -213,7 +233,8 @@ public class DataElement {
     
     /**
      * 
-     * @return
+     * @return Returns the Primary Key field 
+     *      of the element
      */
     public Field getPKField() {
         Field[] fields = getFields();
@@ -237,6 +258,10 @@ public class DataElement {
     }
     
     /**
+     * Changes a field of the set to the new value. 
+     * If it is not already in the set, it gets added.
+     * 
+     * @see #setField(Field)
      * 
      * @param field
      * @param value
