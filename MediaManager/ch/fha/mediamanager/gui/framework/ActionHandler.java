@@ -1,4 +1,4 @@
-//$Id: ActionHandler.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
+//$Id: ActionHandler.java,v 1.3 2004/06/21 07:29:09 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import ch.fha.mediamanager.gui.MainFrame;
 public class ActionHandler implements 
 	ActionListener
 {
-	HashMap map = new HashMap();
+	LinkedList list = new LinkedList();
 	
 	/**
 	 * Adds a <code>KeyPointListener</code> to the <code>map</code> list.
@@ -24,11 +24,9 @@ public class ActionHandler implements
 	 * crossings of keypoints. 
 	 * 
 	 * @param l is the <code>KeyPointListener</code> to add.
-	 * @param e is the <code>KeyPointEvent</code> which belongs to
-	 *        the <code>KeyPointListener</code>.
 	 */
-	public void addActionListener(KeyPointListener l, KeyPointEvent e){
-		map.put(l, e);
+	public void addActionListener(KeyPointListener l) {
+		list.add(l);
 	}
 
 	/**
@@ -38,8 +36,8 @@ public class ActionHandler implements
 	 * 
 	 * @param l is the <code>KeyPointListener</code> to remove.
 	 */
-	public void removeModelChangeListener(KeyPointListener l){
-		map.remove((Object)l);
+	public void removeModelChangeListener(KeyPointListener l) {
+		list.remove(l);
 	}
 	
 	/**
@@ -50,16 +48,10 @@ public class ActionHandler implements
 	 * @param fireKey is a predefined keypoint-action.
 	 */
 	public void fireAction(int fireKey) {
-		Set s = map.keySet();
-		Iterator it = s.iterator();
-		Object obj;
-		KeyPointEvent e;
+		Iterator it = list.iterator();
+		KeyPointEvent e = new KeyPointEvent(fireKey);
 		while(it.hasNext()) {
-			obj = it.next();
-			e = (KeyPointEvent)map.get(obj);
-			if(e.alertOnKey == fireKey) {
-				((KeyPointListener)obj).runAction(e);
-			}
+			((KeyPointListener)it.next()).runAction(e);
 		}
 	}
 
