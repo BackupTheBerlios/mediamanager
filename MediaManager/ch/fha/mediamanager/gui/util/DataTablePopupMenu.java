@@ -28,7 +28,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.11 2004/06/29 12:12:18 crac Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.12 2004/06/29 13:35:29 ia02vond Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener, Returnable {
@@ -140,7 +140,7 @@ public class DataTablePopupMenu extends JPopupMenu
 	private void checkPopupMenu(MouseEvent e) {
 		PluginManager manager = PluginManager.getInstance();
 		if (e.isPopupTrigger()) {
-			if (table.getSelectedRowCount() == 0) {
+			if (table.getSelectedRowCount() == 0 || model.isEmpty()) {
 				for (int i=0; i<pluginMI.length; i++) {
 					if (manager.isPluginActivated(pmid[i].identifier)) {
 						pluginMI[i].setEnabled(pmid[i].norow);
@@ -148,7 +148,7 @@ public class DataTablePopupMenu extends JPopupMenu
 						pluginMI[i].setEnabled(false);
 					}
 				}
-			} else if (table.getSelectedRowCount() == 1) {
+			} else if (table.getSelectedRowCount() == 1 && !model.isEmpty()) {
 				for (int i=0; i<pluginMI.length; i++) {
 					if (manager.isPluginActivated(pmid[i].identifier)) {
 						pluginMI[i].setEnabled(pmid[i].singlerow);
@@ -165,17 +165,24 @@ public class DataTablePopupMenu extends JPopupMenu
 					}
 				}
 			}
-            if (table.getSelectedRowCount() == 1) {
-                DataElement el = getSelectedDataElement();
-                Field pk = el.getPKField();
-                if ((pk.getValue() == null) || (pk.getValue().equals(""))) {
+			if (table.getSelectedRowCount() == 0) {
+				editMI.setEnabled(false);
+				deleteMI.setEnabled(false);
+				
+			} else if (table.getSelectedRowCount() == 1) {
+                if (model.isEmpty()) {
                     editMI.setEnabled(false);
                 } else {
                     editMI.setEnabled(true);
                 }
             }
-			deleteMI.setEnabled(table.getSelectedRowCount() > 0);
-			
+            if (table.getSelectedRowCount() > 0) {
+            	if (model.isEmpty()) {
+            		deleteMI.setEnabled(false);
+            	} else {
+            		deleteMI.setEnabled(true);
+            	}
+            }
 			show(e.getComponent(), e.getX(), e.getY());
 		}
 	}
