@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.8 2004/06/22 13:35:44 crac Exp $
+ * @version $Id: TestQuery.java,v 1.9 2004/06/22 17:31:40 crac Exp $
  */
 public class TestQuery {
     
@@ -26,6 +26,25 @@ public class TestQuery {
         DataBus.loadRepository();
         
         DataSet ds = null;
+        
+        // delete example:
+        /*MetaEntity ent = new MetaEntity("Test");
+        Field field = new Field("TestId", ent, new Integer(0));
+        QueryCondition qc = 
+            new QueryCondition(
+                field, 
+                QueryCondition.EQUALS, 
+                new Integer(1)
+            );
+        Vector vec = new Vector();
+        vec.add(qc);
+        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        DataSet set = qr.run();
+        
+        if ((set != null) && (set.size() == 1)) {
+            qr = new QueryRequest(set, QueryRequest.DELETE);
+            ds = qr.run();
+        }*/
         
         // update example:
         /*MetaEntity ent = new MetaEntity("Test");
@@ -61,7 +80,7 @@ public class TestQuery {
         DataSet set = new DataSet();
         set.add(el);
         QueryRequest qr = new QueryRequest(set, QueryRequest.INSERT);
-        DataSet ds = qr.run();*/
+        ds = qr.run();*/
         
         // query example: return all with id > 0
         MetaEntity ent = new MetaEntity("Test");

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.10 2004/06/22 14:32:15 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.11 2004/06/22 17:31:40 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -319,26 +319,17 @@ public final class MckoiRepository implements Repository {
         if ((ds.isEmpty()) || (ds == null))
             throw new IllegalArgumentException();
         
-        String sql = "DELETE FROM " + ds.getMetaEntity().getName() + 
-            " WHERE ?=?";
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
             DataElement el = (DataElement) it.next();
             
-            java.sql.PreparedStatement delete = 
-                dbConnection.prepareStatement(sql);
+            String query = "DELETE FROM " + 
+                ds.getMetaEntity().getName() + " WHERE " +
+				el.getPKField().getName() + "=" + 
+				el.getPKField().getValue() + ";";
             
-            try {
-                delete.setString(1, el.getPKField().getName());
-                delete.setObject(2, (Integer) el.getPKField().getValue());
-                System.out.println(delete);
-                delete.executeUpdate();
-            } catch (SQLException e) {
-                DataBus.logger.fatal("DataElement not deleted.");
-                e.printStackTrace();
-                throw new InternalError();
-            }
+            dbConnection.executeUpdate(query);
             DataBus.logger.info("DataElement deleted.");
             deleteEntry(el.getEntry());
             ds.remove(el);
@@ -532,17 +523,7 @@ public final class MckoiRepository implements Repository {
         String sql = "DELETE FROM Entry WHERE EntryId=" + 
             entry.getId() + ";";
         
-        java.sql.PreparedStatement delete = 
-            dbConnection.prepareStatement(sql);
-        
-        try {
-            delete.executeQuery();
-        } catch (SQLException e) {
-            DataBus.logger.fatal("Entry not deleted.");
-            e.printStackTrace();
-            throw new InternalError();
-        }
-        
+        dbConnection.executeUpdate(sql);
         DataBus.logger.info("Entry deleted.");
     }
     

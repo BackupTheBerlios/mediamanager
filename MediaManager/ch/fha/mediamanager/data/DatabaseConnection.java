@@ -17,7 +17,7 @@ import java.sql.Statement;
  * @see DatabaseSettings
  * 
  * @author ia02vond, crac
- * @version $Id: DatabaseConnection.java,v 1.7 2004/06/21 21:41:52 crac Exp $
+ * @version $Id: DatabaseConnection.java,v 1.8 2004/06/22 17:31:40 crac Exp $
  */
 public final class DatabaseConnection {
     
@@ -218,7 +218,19 @@ public final class DatabaseConnection {
             throw new RuntimeException("Database connection problem.");
         }
     }
+    
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
 
+    /**
+     * 
+     * @return
+     */
+    protected Connection getConnection() {
+        return connection;
+    }
+    
     // --------------------------------
     // MUTATORS
     // --------------------------------
@@ -227,7 +239,7 @@ public final class DatabaseConnection {
      * 
      * @param settings
      */
-    public void setSettings(DatabaseSettings settings) {
+    protected void setSettings(DatabaseSettings settings) {
         this.settings = settings;   
     }
 }
