@@ -4,11 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+
+import com.mckoi.util.HashMapList;
 
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
@@ -16,11 +21,13 @@ import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.workflow.DeleteWorkflow;
 import ch.fha.mediamanager.workflow.EditWorkflow;
 import ch.fha.mediamanager.workflow.NewWorkflow;
+import ch.fha.pluginstruct.Plugin;
+import ch.fha.pluginstruct.PluginEventObserver;
 import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.4 2004/06/23 20:45:44 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.5 2004/06/23 22:55:06 ia02vond Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener {
@@ -33,6 +40,9 @@ public class DataTablePopupMenu extends JPopupMenu
 	
 	private JMenuItem newMI, editMI, deleteMI, emptyMI;
 	private JMenu pluginM;
+	private JMenuItem[] pluginMI;
+	
+	private PluginMenuItemData[] pmid;
 	
 	public DataTablePopupMenu(
 			JTable table,
@@ -63,17 +73,84 @@ public class DataTablePopupMenu extends JPopupMenu
 		
 		addSeparator();
 		
-		emptyMI = new JMenuItem("<leer>");
-		emptyMI.setEnabled(false);
-		
-		
 		pluginM = new JMenu("Plugins");
-		pluginM.add(emptyMI);
+		
+		// get plugin list
+		HashMap map = new HashMap();
+		iterateEvent(map, "norow");
+		iterateEvent(map, "singlerow");
+		iterateEvent(map, "multirow");
+		
+		pmid = new PluginMenuItemData[map.size()];
+		Iterator it = map.keySet().iterator();
+		for (int i=0; i<pmid.length && it.hasNext(); i++) {
+			String key = it.next().toString();
+			pmid[i] = (PluginMenuItemData)map.get(key);
+		}
+		
+		pluginMI = new JMenuItem[pmid.length];
+		
+		for (int i=0; i<pmid.length; i++) {
+			pluginMI[i] = new JMenuItem(pmid[i].name);
+			pluginMI[i].addActionListener(this);
+			pluginM.add(pluginMI[i]);
+		}
+		
+		if (pluginM.getMenuComponentCount() == 0) {		
+			emptyMI = new JMenuItem("<leer>");
+			emptyMI.setEnabled(false);
+			pluginM.add(emptyMI);
+		}
+		
 		add(pluginM);
 	}
 	
+	private void iterateEvent(HashMap map, String event) {
+		Iterator it = PluginManager.getInstance().getPluginIterator(event);
+		while (it.hasNext()) {
+			PluginEventObserver peo = (PluginEventObserver)it.next();
+			if (peo.condition == null ||
+				peo.condition.equals("") || peo.condition.equals(metaEntity.getIdentifier())) {
+				
+				PluginMenuItemData pmid;
+				
+				if (map.containsKey(peo.plugin.getIdentifier())) {
+					pmid = (PluginMenuItemData)map.get(peo.plugin.getIdentifier());
+				} else {
+					pmid = new PluginMenuItemData();
+					pmid.plugin     = peo.plugin;
+					pmid.name       = peo.plugin.getName();
+					pmid.identifier = peo.plugin.getIdentifier();
+					map.put(peo.plugin.getIdentifier(), pmid);
+				}
+						
+				if (event.equals("norow")) {
+					pmid.norow = true;
+				} else if (event.equals("singlerow")) {
+					pmid.singlerow = true;
+				} else if (event.equals("multirow")) {
+					pmid.multirow = true;
+				}
+			}
+		}
+	}
+					
+	
 	private void checkPopupMenu(MouseEvent e) {
 		if (e.isPopupTrigger()) {
+			if (table.getSelectedRowCount() == 0) {
+				for (int i=0; i<pluginMI.length; i++) {
+					pluginMI[i].setEnabled(pmid[i].norow);
+				}
+			} else if (table.getSelectedRowCount() == 1) {
+				for (int i=0; i<pluginMI.length; i++) {
+					pluginMI[i].setEnabled(pmid[i].singlerow);
+				}
+			} else {
+				for (int i=0; i<pluginMI.length; i++) {
+					pluginMI[i].setEnabled(pmid[i].multirow);
+				}
+			}
 			editMI.setEnabled(table.getSelectedRowCount() == 1);
 			deleteMI.setEnabled(table.getSelectedRowCount() > 0);
 			
@@ -120,5 +197,13 @@ public class DataTablePopupMenu extends JPopupMenu
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	
+	private class PluginMenuItemData {
+		public Plugin plugin;
+		public String name;
+		public String identifier;
+		public boolean norow;
+		public boolean singlerow;
+		public boolean multirow;
+	}
 	
 }
