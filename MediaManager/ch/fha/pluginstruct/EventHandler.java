@@ -5,15 +5,13 @@ import java.util.LinkedList;
 
 /**
  * @author ia02vond
- * @version $Id: EventHandler.java,v 1.3 2004/06/23 22:55:39 ia02vond Exp $
+ * @version $Id: EventHandler.java,v 1.4 2004/06/28 11:25:33 ia02vond Exp $
  */
 public final class EventHandler {
 	
 	private String[] events;
 	
 	private LinkedList eventHandlerListeners;
-	
-	private OperationCancelException oce;
 	
 	protected int getEventNumber(String event) {
 		event = event.toLowerCase();
@@ -150,10 +148,11 @@ public final class EventHandler {
 		}
 	}
 
-	protected synchronized void fireEvent(
+	protected void fireEvent(
+			Returnable returnable,
 			PluginEvent pluginEvent,
 			String event,
-			String condition) throws OperationCancelException {
+			String condition) {
 
 		// validate parameter
 		int e = getEventNumber(event);
@@ -167,46 +166,77 @@ public final class EventHandler {
 		pluginEvent.setEventName(event);
 		
 		// fire event
-		Node node;
-		Plugin plugin = null;
-		for (node=eventListener[e]; node!=null; node=node.next) {
-			plugin = PluginManager.getContainer().getPlugin(node.pluginId);
-			if (PluginManager.getContainer().isPluginActivated(node.pluginId) &&
-				(condition == null || node.condition == null || condition.equals(node.condition)) ) {
+		fireNode = new Node(null, null);
+		fireNode.next = eventListener[e];
+		firePluginEvent = pluginEvent;
+		fireCondition = condition;
+		fireState = RUNNING;
+		fireReturnable = returnable;
+
+		fireNext();
+	}
+	
+	private Node fireNode;
+	private PluginEvent firePluginEvent;
+	private String fireCondition;
+	private int fireState;
+	private Returnable fireReturnable;
+	
+	private final static int RUNNING  = 1;
+	private final static int CANCELED = 2;
+	private final static int WAITING  = 3;
+	private final static int DONE     = 0;
+
+	public void fireNext() {
+		if (fireNode != null) {
+			fireNode = fireNode.next;
+			if (fireNode != null) {
+				Plugin plugin = PluginManager.getContainer().getPlugin(fireNode.pluginId);
+				if (PluginManager.getContainer().isPluginActivated(fireNode.pluginId) &&
+						(fireCondition == null || fireNode.condition == null || fireCondition.equals(fireNode.condition)) ) {
+					
+					boolean continuee;
+					
+					try {
+						
+						continuee = plugin.run(firePluginEvent, this);
+						
+					} catch (RuntimeException e) {
+						new PluginLogicException(plugin, "unknown plugin runtime exception", e).show();
+						continuee = true;
+					}
+					
+					if (continuee) {
+						fireNext();
+					} else {
+						fireState = WAITING;
+					}
 				
-				oce = null;
-				
-				PluginThread pThread = new PluginThread(
-						this,
-						Thread.currentThread(),
-						plugin,
-						pluginEvent);
-				pThread.start();
-				
-				try {
-					wait();
-				} catch (Exception e1) {
-					e1.printStackTrace();
+				} else {
+					fireNext();
 				}
-				
-				 if (oce != null) {
-					throw oce;
-				}		
+			} else {
+				System.out.println("set firestate = done (z. 219)");
+				fireState = DONE;
+				fireReturnable.fireReturn(false);
 			}
+		} else {
+			System.out.println("set firestate = done (z. 223)");
+			fireState = DONE;
+			fireReturnable.fireReturn(false);
 		}
 	}
 	
-	public synchronized void finish(
-			Thread applThread,
-			OperationCancelException oce,
-			PluginLogicException ple) {
-		
-		if (ple != null) {
-			ple.show();
-		}
-		this.oce = oce;
-		notify();
+	public void finish() {
+		fireState = RUNNING;
+		fireNext();
 	}
+					
+	public void cancelOperation() {
+		fireState = CANCELED;
+		fireReturnable.fireReturn(true);
+	}
+		
 	
 	protected void addEventHandlerListener(EventHandlerListener listener) {
 		eventHandlerListeners.add(listener);

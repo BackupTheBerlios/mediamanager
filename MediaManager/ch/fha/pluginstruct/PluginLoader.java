@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * @author ia02vond
- * @version $Id: PluginLoader.java,v 1.3 2004/06/14 20:18:23 ia02vond Exp $
+ * @version $Id: PluginLoader.java,v 1.4 2004/06/28 11:25:33 ia02vond Exp $
  */
 public final class PluginLoader extends AbstractPlugin
 	implements ContentHandler {
@@ -255,18 +255,21 @@ public final class PluginLoader extends AbstractPlugin
 		}
 	}
 	
-	public void run(PluginThread pluginThread, PluginEvent event) throws OperationCancelException {
+	public boolean run(PluginEvent event, EventHandler eventHandler) {
 		try {
 			Plugin ap = load();
 			if (ap != null) {
-				ap.run(pluginThread, event);
+				return ap.run(event, eventHandler);
+			} else {
+				return true;
 			}
 		} catch (PluginLogicException e) {
 			e.show();
+			return true;
 		}
 	}
 	
-	public void run(PluginEvent event) throws OperationCancelException {
+	public boolean run(PluginEvent event) {
 		throw new UnsupportedOperationException();
 	}
 	

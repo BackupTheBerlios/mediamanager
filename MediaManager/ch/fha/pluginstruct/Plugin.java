@@ -6,8 +6,7 @@ public interface Plugin {
 	 * @param pluginThread
 	 * @param event
 	 */
-	public void run(PluginThread pluginThread, PluginEvent event)
-		throws OperationCancelException;
+	public boolean run(PluginEvent event, EventHandler eventHandler);
 	
 	/**
 	 * @return the identifier of the plugin.

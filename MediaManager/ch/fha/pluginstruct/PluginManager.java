@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.5 2004/06/23 13:37:55 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.6 2004/06/28 11:25:33 ia02vond Exp $
  */
 public final class PluginManager {
 	
@@ -93,13 +93,14 @@ public final class PluginManager {
 	 *         the event.
 	 */
 	public void fireEvent(
+			Returnable returnable,
 			PluginEvent pluginEvent,
 			String event,
-			String condition) throws OperationCancelException {
+			String condition) {
 		
 		if (!initialized) throw new IllegalStateException("not initialized");
 		
-		eventHandler.fireEvent(pluginEvent, event, condition);
+		eventHandler.fireEvent(returnable, pluginEvent, event, condition);
 	}
 	
 	/**

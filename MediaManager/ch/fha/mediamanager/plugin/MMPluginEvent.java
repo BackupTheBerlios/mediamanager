@@ -1,11 +1,12 @@
 package ch.fha.mediamanager.plugin;
 
 import ch.fha.mediamanager.data.DataElement;
+import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.pluginstruct.*;
 
 /**
  * @author ia02vond
- * @version $Id: MMPluginEvent.java,v 1.2 2004/06/17 14:29:35 ia02vond Exp $
+ * @version $Id: MMPluginEvent.java,v 1.3 2004/06/28 11:24:45 ia02vond Exp $
  */
 public class MMPluginEvent extends PluginEvent {
 	
@@ -21,4 +22,9 @@ public class MMPluginEvent extends PluginEvent {
 	public DataElement getDataElement() {
 		return dataElement;
 	}
+	
+	public MetaEntity getMetaEntity() {
+		return dataElement.getMetaEntity();
+	}
+
 }

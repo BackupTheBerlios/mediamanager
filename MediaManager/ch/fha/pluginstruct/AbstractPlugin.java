@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: AbstractPlugin.java,v 1.2 2004/06/14 20:18:23 ia02vond Exp $
+ * @version $Id: AbstractPlugin.java,v 1.3 2004/06/28 11:25:33 ia02vond Exp $
  */
 public abstract class AbstractPlugin implements Plugin {
 
@@ -19,22 +19,26 @@ public abstract class AbstractPlugin implements Plugin {
 	
 	/* propertie string[] list */
 	private HashMap propertieList;
+
+	private EventHandler eventHandler;
 	
-	private PluginThread pluginThread;
-	
-	public void run(PluginThread pluginThread, PluginEvent event) throws OperationCancelException {
-		this.pluginThread = pluginThread;
-		run(event);
+	public boolean run(PluginEvent event, EventHandler eventHandler){
+		this.eventHandler = eventHandler;
+		return run(event);
 	}
 	
-	public abstract void run(PluginEvent event) throws OperationCancelException ;
+	public abstract boolean run(PluginEvent event);
 	
 	/**
 	 * Invoke this method of the plugin has finished its tasks
 	 * so that the application continues with its operation.
 	 */
 	protected void finish() {
-		pluginThread.finish();
+		eventHandler.finish();
+	}
+	
+	protected void cancelOperation() {
+		eventHandler.cancelOperation();
 	}
 	
 	/**
