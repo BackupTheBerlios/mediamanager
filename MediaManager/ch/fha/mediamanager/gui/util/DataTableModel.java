@@ -19,7 +19,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.8 2004/06/28 14:10:45 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.9 2004/06/28 14:18:31 ia02vond Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -31,6 +31,7 @@ public class DataTableModel extends AbstractTableModel
 	
 	public DataTableModel(MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
+		DataBus.getRepository().addRepositoryListener(this);
 		refresh();
 	}
 	
@@ -110,6 +111,7 @@ public class DataTableModel extends AbstractTableModel
 	}
 
 	public void dataChanged(MetaEntity metaEntity) {
+		System.out.println("dataChanged vom Schnäbichätscher *************");
 		if (metaEntity.equals(this.metaEntity)) {
 			refresh();
 			fireTableChanged(new TableModelEvent(this));
