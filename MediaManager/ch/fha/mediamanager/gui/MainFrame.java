@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.10 2004/06/24 14:58:43 crac Exp $
+//$Id: MainFrame.java,v 1.11 2004/06/25 06:47:13 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -30,6 +30,7 @@ public class MainFrame extends JFrame implements
 	private StatePanel statePanel;
 	private ActionHandler mainActionListener = new ActionHandler();
 	private MainMenuBar menuBar;
+	private JPanel coverPanel = null;
 	
 	// Singleton reference
 	private static MainFrame instance = null;
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame implements
 				prefs.getInt(WINDOW_HEIGHT, defaultWindowHeight));
 		setLocation(prefs.getInt(WINDOW_X_POS, defaultWindowXPos), 
 					prefs.getInt(WINDOW_Y_POS, defaultWindowYPos));
-		Image icon = Toolkit.getDefaultToolkit().getImage("images/Icon.jpg");
+		Image icon = Toolkit.getDefaultToolkit().getImage("images/icon.gif");
 		setIconImage(icon);
 		
 		// Menu-Bar
@@ -152,6 +153,27 @@ public class MainFrame extends JFrame implements
 		mainPanelHolder.add(panel, BorderLayout.CENTER);
 		repaint();
 		setVisible(true);
+	}
+	
+	/**
+	 * Covers the showed panel by the <code>panel</code>. The old one will be saved
+	 * and can be restored by the <code>removeCoverPanel</code> method.
+	 *
+	 * @param panel which should cover the active panel
+	 */
+	public void loadCoverPanel(JPanel panel) {
+		coverPanel = (JPanel)mainPanelHolder.getComponent(0);
+		loadMainPanel(panel);
+	}
+	
+	/**
+	 * Restores the panel which was covered by the <code>loadCoverPanel</code> method
+	 */
+	public void removeCoverPanel() {
+		if(coverPanel != null) {
+			loadMainPanel(coverPanel);
+			coverPanel = null;
+		}
 	}
 	
 	/** Loads the standart <code>mainTabPanel</code> */
