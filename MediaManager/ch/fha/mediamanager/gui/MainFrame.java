@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.12 2004/06/27 13:18:45 crac Exp $
+//$Id: MainFrame.java,v 1.13 2004/06/27 19:36:17 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -99,8 +99,8 @@ public class MainFrame extends JFrame implements
 		JPanel windowHolder = new JPanel(new BorderLayout());
 
 		// Tool-Bar
-		// standartToolBar = new StandartToolBar();
-		// cp.add(standartToolBar, BorderLayout.NORTH);
+		standartToolBar = new StandartToolBar();
+		cp.add(standartToolBar, BorderLayout.NORTH);
 		
 		JPanel modificationPanel = new ModificationPanel();
 		windowHolder.add(modificationPanel, BorderLayout.WEST);
