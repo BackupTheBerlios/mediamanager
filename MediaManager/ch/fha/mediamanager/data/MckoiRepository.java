@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.42 2004/06/27 10:05:11 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.43 2004/06/27 22:30:28 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -217,10 +217,7 @@ public final class MckoiRepository extends Repository {
            insertField.setInt(3, field.getEntity().getId());
            insertField.setInt(4, field.getType());
            insertField.setInt(5, field.getLength());
-           insertField.setString(
-               6,
-               defaultValue
-           ); // ?
+           insertField.setString(6, defaultValue);
            insertField.setInt(7, (field.getHidden() == true)? 1: 0);
            insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
            
@@ -541,6 +538,7 @@ public final class MckoiRepository extends Repository {
                     Field field = fields[i-1];
                     MetaField metaField = field.getMetaField();
                     
+                    int value;
                     switch (metaField.getType()) {
                         case (MetaField.PK):
                             insert.setInt(i, getNextPK(
@@ -549,22 +547,32 @@ public final class MckoiRepository extends Repository {
                             );
                             break;
                         case (MetaField.BOOLEAN):
+                            if (fields[i-1].getValue().toString().equals("true")) {
+                                value = 1;
+                            } else {
+                                value = 0;
+                            }
+                            insert.setInt(i, value);
+                            break;
                         case (MetaField.INT):
-                            insert.setObject(
-                                i,
-                                (Integer) field.getValue()
+                            value = Integer.parseInt(
+                                fields[i-1].getValue().toString()
                             );
+                            insert.setInt(i, value);
                             break;
                         case (MetaField.LIST):
                         case (MetaField.TEXT):
                         case (MetaField.VARCHAR):
                             insert.setString(
                                 i,
-                                (String) field.getValue()
+                                field.getValue().toString()
                             );
                             break;
                         case (MetaField.DATE):
-                            insert.setDate(i,(Date) field.getValue());
+                            insert.setDate(
+                                i,
+                                (Date) field.getValue()
+                            );
                             break;
                         case (MetaField.TIMESTAMP):
                             insert.setTimestamp(
@@ -584,7 +592,7 @@ public final class MckoiRepository extends Repository {
         }
         
         DataBus.logger.debug("DataSet inserted.");   
-        return null;
+        return ds;
     }
     
     /**
@@ -624,21 +632,37 @@ public final class MckoiRepository extends Repository {
                 for (int i = 1; i <= fields.length; i++) {
                     MetaField metaField = fields[i-1].getMetaField();
                     
+                    int value;
                     switch (metaField.getType()) {
-                        case (MetaField.PK):
                         case (MetaField.BOOLEAN):
+                            boolean tmp;
+                            if (fields[i-1].getValue().toString().equals("true")) {
+                                value = 1;
+                                tmp = true;
+                            } else {
+                                value = 0;
+                                tmp = false;
+                            }
+                            update.setInt(i, value);
+                            fields[i-1].setValue(new Boolean(tmp));
+                            break;
+                        case (MetaField.PK):
                         case (MetaField.INT):
-                            update.setObject(
-                                i,
-                                (Integer) fields[i-1].getValue()
+                            value = Integer.parseInt(
+                                fields[i-1].getValue().toString()
                             );
+                            update.setInt(i, value);
+                            fields[i-1].setValue(new Integer(value));
                             break;
                         case (MetaField.LIST):
                         case (MetaField.TEXT):
                         case (MetaField.VARCHAR):
                             update.setString(
                                 i,
-                                (String) fields[i-1].getValue()
+                                fields[i-1].getValue().toString()
+                            );
+                            fields[i-1].setValue(
+                                fields[i-1].getValue().toString()
                             );
                             break;
                         case (MetaField.DATE):
@@ -646,11 +670,17 @@ public final class MckoiRepository extends Repository {
                                 i,
                                 (Date) fields[i-1].getValue()
                             );
+                            fields[i-1].setValue(
+                                (Date) fields[i-1].getValue()
+                            );
                             break;
                         case (MetaField.TIMESTAMP):
                             update.setTimestamp(
                                  i,
                                  (Timestamp) fields[i-1].getValue()
+                            );
+                            fields[i-1].setValue(
+                                (Timestamp) fields[i-1].getValue()
                             );
                             break;
                     }
@@ -664,7 +694,7 @@ public final class MckoiRepository extends Repository {
             DataBus.logger.debug("DataElement updated.");
         }
         DataBus.logger.debug("DataSet updated.");
-        return null;
+        return ds;
     }
     
     /**
