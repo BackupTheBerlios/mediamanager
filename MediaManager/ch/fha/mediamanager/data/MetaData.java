@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.12 2004/06/25 17:05:40 crac Exp $
+ * @version $Id: MetaData.java,v 1.13 2004/06/25 17:15:49 crac Exp $
  */
 public final class MetaData {
     
@@ -96,7 +96,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public java.util.Iterator entityIterator() {
+    protected java.util.Iterator entityIterator() {
     	return metaEntities.iterator();
     }
     
@@ -104,7 +104,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public java.util.Iterator fieldIterator() {
+    protected java.util.Iterator fieldIterator() {
     	return metaFields.iterator();
     }
     
@@ -117,7 +117,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public boolean isEmpty() {
+    protected boolean isEmpty() {
     	return hasEntities() && hasFields();
     }
     
@@ -125,7 +125,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public boolean hasEntities() {
+    protected boolean hasEntities() {
     	return metaEntities.isEmpty();
     }
     
@@ -133,7 +133,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public boolean hasFields() {
+    protected boolean hasFields() {
     	return metaFields.isEmpty();
     }
     
@@ -149,7 +149,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public int fieldSize() {
+    protected int fieldSize() {
     	return metaFields.size();
     }
     
@@ -161,7 +161,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public Set getEntities() {
+    protected Set getEntities() {
     	return metaEntities;
     }
     
@@ -169,7 +169,7 @@ public final class MetaData {
      * 
      * @return
      */
-    public Set getFields() {
+    protected Set getFields() {
     	return metaFields;
     }
     
@@ -179,7 +179,7 @@ public final class MetaData {
      * @return Returns true if the specified 
      *      <code>MetaEntity</code> is available
      */
-    public boolean contains(MetaEntity e) {
+    protected boolean contains(MetaEntity e) {
         java.util.Iterator it = entityIterator();
         while (it.hasNext()) {
             MetaEntity tmp = (MetaEntity) it.next();
@@ -196,7 +196,7 @@ public final class MetaData {
      * @return Returns true if the specified 
      *      <code>MetaField</code> is available
      */
-    public boolean contains(MetaField f) {
+    protected boolean contains(MetaField f) {
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
@@ -212,7 +212,7 @@ public final class MetaData {
      * @param name
      * @return Returns requested <code>MetaEntity</code>
      */
-    public MetaEntity getMetaEntity(String name) {
+    protected MetaEntity getMetaEntity(String name) {
         if (name == null)
             throw new IllegalArgumentException();
         
@@ -233,7 +233,7 @@ public final class MetaData {
      * @return Returns the <code>MetaField</code> with 
      *      the specified name of the <code>MetaEntity</code> 
      */
-    public MetaField getMetaField(String name, MetaEntity e) {
+    protected MetaField getMetaField(String name, MetaEntity e) {
         if ((name == null) || (e == null)) 
             throw new IllegalArgumentException();
         
@@ -252,7 +252,7 @@ public final class MetaData {
      * @param f
      * @return
      */
-    public MetaField getMetaField(MetaField f) {
+    protected MetaField getMetaField(MetaField f) {
         return getMetaField(f.getName(), f.getEntity());   
     }
     
@@ -262,7 +262,7 @@ public final class MetaData {
      * @param field
      * @return
      */
-    public MetaField getMetaField(String entity, String field) {
+    protected MetaField getMetaField(String entity, String field) {
         return getMetaField(field, new MetaEntity(entity));
     }
     
@@ -272,7 +272,7 @@ public final class MetaData {
      * @return Returns all <code>MetaField</code>s of 
      *      a <code>MetaEntity</code>
      */
-    public Set getMetaFields(MetaEntity e) {
+    protected Set getMetaFields(MetaEntity e) {
         Set set = new java.util.HashSet();
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
