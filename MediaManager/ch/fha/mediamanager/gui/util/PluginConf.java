@@ -35,8 +35,7 @@ public class PluginConf extends JPanel
 	
 	public PluginConf() {
 		// Registeres event which is called when the <code>PluginsTab</code> is shown
-		MainFrame.getInstance().getMainActionListener().addActionListener(
-				this, new KeyPointEvent(KeyPointEvent.CONFIG_PANEL_LOAD, ""));
+		MainFrame.getInstance().getMainActionListener().addActionListener(this);
 		
 		
 		manager = PluginManager.getInstance();
@@ -109,7 +108,6 @@ public class PluginConf extends JPanel
 	 *  
 	 * @param e is a <code>KeyPointEvent</code> which contains:
 	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
-	 *          - additional string parameter
 	 */
 	public void runAction(KeyPointEvent e) {
 		if(e.getKeyPointEvent() == KeyPointEvent.CONFIG_PANEL_LOAD) {
