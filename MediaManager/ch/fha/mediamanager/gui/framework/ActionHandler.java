@@ -1,4 +1,4 @@
-//$Id: ActionHandler.java,v 1.3 2004/06/21 07:29:09 radisli Exp $
+//$Id: ActionHandler.java,v 1.4 2004/06/21 08:39:02 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import java.util.*;
@@ -61,7 +61,8 @@ public class ActionHandler implements
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
 		MainFrame mainWindow = MainFrame.getInstance();
-		
+		mainWindow.removeStatusText();
+
 		if(s.equals("exit")) {			// Closes the windows
 			mainWindow.dispatchEvent(new WindowEvent(mainWindow, WindowEvent.WINDOW_CLOSING));
 		} else if(s.equals("tabs")) {	// Loads the default TabPanel
