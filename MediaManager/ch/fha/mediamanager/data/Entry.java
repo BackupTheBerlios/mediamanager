@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * @author luca
- * @version $Id: Entry.java,v 1.2 2004/06/21 13:55:59 crac Exp $
+ * @version $Id: Entry.java,v 1.3 2004/06/22 09:24:50 crac Exp $
  */
 public final class Entry implements Cloneable {
     
@@ -13,8 +13,10 @@ public final class Entry implements Cloneable {
     // --------------------------------
     
     private int entryId = 0;
-    private Timestamp creation = new Timestamp(System.currentTimeMillis());
-    private Timestamp edit = new Timestamp(System.currentTimeMillis());
+    private Timestamp creation = 
+        new Timestamp(System.currentTimeMillis());
+    private Timestamp edit = 
+        new Timestamp(System.currentTimeMillis());
     private User owner = null;
     
     // --------------------------------
@@ -98,6 +100,14 @@ public final class Entry implements Cloneable {
     // --------------------------------
     // MUTATORS
     // --------------------------------
+    
+    /**
+     * 
+     * @param stamp
+     */
+    protected void setEdit(Timestamp stamp) {
+        edit = stamp;
+    }
     
     /**
      * 
