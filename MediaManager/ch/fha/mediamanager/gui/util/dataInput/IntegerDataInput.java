@@ -4,7 +4,6 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.event.DocumentEvent;
 
 import ch.fha.mediamanager.data.Field;
 
@@ -30,6 +29,8 @@ public class IntegerDataInput extends AbstractDataInput
 		setValue(field.getValue(), false);
 		
 		textField.setText(field.getValue().toString());
+        
+        textField.addCaretListener(this);
 	}
 	
 	public void setValue(Object value) {
@@ -56,17 +57,10 @@ public class IntegerDataInput extends AbstractDataInput
 		} else {
 			intval = new Integer(0);
 		}
-		
-		field.setTmpValue(value);
+
+		field.setTmpValue(intval);
 		if (fireEvent) fireDataInputChanged();
 	}
-
-	public void changedUpdate(DocumentEvent e) {
-		
-	}
-
-	public void insertUpdate(DocumentEvent e) {}
-	public void removeUpdate(DocumentEvent e) {}
 
 	public void caretUpdate(CaretEvent e) {
 		setValue(textField.getText(), true);		

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.52 2004/06/29 07:21:15 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.53 2004/06/29 08:14:56 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -673,11 +673,7 @@ public final class MckoiRepository extends AbstractRepository {
                             break;
                         case (MetaField.PK):
                         case (MetaField.INT):
-                            value = Integer.parseInt(
-                                fields[i-1].getValue().toString()
-                            );
-                            update.setInt(i, value);
-                            fields[i-1].setValue(new Integer(value));
+                            update.setObject(i, fields[i-1].getValue());
                             break;
                         case (MetaField.LIST):
                         case (MetaField.TEXT):
