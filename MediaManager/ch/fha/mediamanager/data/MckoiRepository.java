@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.15 2004/06/23 12:09:26 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.16 2004/06/23 12:17:53 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -762,7 +762,7 @@ public final class MckoiRepository implements Repository {
             new JTextField(mckoiSettings.getLogPath());
         panel.add(logPath);
         
-        panel.add(new JLabel("Ignore Gross- Kleinschreibung"));
+        panel.add(new JLabel("Ignoriere Gross- Kleinschreibung"));
         final JTextField ignoreCase = 
             new JTextField(mckoiSettings.getIgnoreCase());
         panel.add(ignoreCase);
@@ -801,6 +801,14 @@ public final class MckoiRepository implements Repository {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getActionCommand().equals("default")) {
                         mckoiSettings.restoreDefaults();
+                        dataCache.setText(mckoiSettings.getDataCache());
+                        logPath.setText(mckoiSettings.getLogPath());
+                        logLevel.setText(mckoiSettings.getLogLevel());
+                        entryCache.setText(mckoiSettings.getEntryCache());
+                        workerThreads.setText(mckoiSettings.getWorkerThreads());
+                        dbPath.setText(mckoiSettings.getDbPath());
+                        readOnly.setText(mckoiSettings.getReadOnly());
+                        ignoreCase.setText(mckoiSettings.getIgnoreCase());
                         panel.repaint();
                     }
                 }
