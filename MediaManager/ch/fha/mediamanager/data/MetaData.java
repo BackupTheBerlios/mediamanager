@@ -11,9 +11,9 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.3 2004/06/10 20:07:02 crac Exp $
+ * @version $Id: MetaData.java,v 1.4 2004/06/11 12:08:26 crac Exp $
  */
-public class MetaData {
+public final class MetaData {
     
     // --------------------------------
     // FIELDS
@@ -76,18 +76,23 @@ public class MetaData {
     }
     
     /**
+     * Returns true if no entities and no fields 
+     * are available.
+     * 
+     * @see #hasEntities()
+     * @see #hasFields()
      * 
      * @return
      */
     public boolean isEmpty() {
-    	return entityIsEmpty() && fieldIsEmpty();
+    	return hasEntities() && hasFields();
     }
     
     /**
      * 
      * @return
      */
-    public boolean entityIsEmpty() {
+    public boolean hasEntities() {
     	return metaEntities.isEmpty();
     }
     
@@ -95,7 +100,7 @@ public class MetaData {
      * 
      * @return
      */
-    public boolean fieldIsEmpty() {
+    public boolean hasFields() {
     	return metaFields.isEmpty();
     }
     
@@ -133,25 +138,5 @@ public class MetaData {
      */
     public Set getFields() {
     	return metaFields;
-    }
-    
-    // --------------------------------
-    // MUTATORS
-    // --------------------------------
-    
-    /**
-     * 
-     * @param fields
-     */
-    public void setFields(Set fields) {
-    	this.metaFields = fields;
-    }
-    
-    /**
-     * 
-     * @param entities
-     */
-    public void setEntities(Set entities) {
-    	this.metaEntities = entities;
     }
 }
