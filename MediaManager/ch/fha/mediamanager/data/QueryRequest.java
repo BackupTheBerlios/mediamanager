@@ -7,15 +7,15 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.5 2004/05/22 13:01:27 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.6 2004/05/25 07:36:12 crac Exp $
  */
 public class QueryRequest {
     
     // TODO: has to be auto-loaded from config
     private Repository repository = new DatabaseRepository();
     
-    public static final int OR = 0;          // +
-    public static final int AND = 1;         // *
+    public static final int OR = 0;           // +
+    public static final int AND = 1;          // *
     public static final int BRACE_OPEN = 3;   // (
     public static final int BRACE_CLOSE = 4;  // )
     
