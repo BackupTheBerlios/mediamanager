@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<plugin name="CDDB Plugin" version="1_0" reqversion="1_0">
+
+  <source>plugins.cddb.CDDBPlugin</source>
+
+  <description>
+    Mit dem CDDB Plugin können zu einer beliebigen Musik CD
+    die entsprechen Daten über Interpret, Album etc. automatisch
+    über das Internet abgerufen werden.
+  </description>
+
+  <mount>
+    <onEvent id="prenew"/>
+  </mount>
+
+</plugin>
