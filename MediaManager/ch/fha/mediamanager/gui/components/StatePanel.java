@@ -1,9 +1,11 @@
-//$Id: StatePanel.java,v 1.4 2004/06/27 12:48:53 crac Exp $
+//$Id: StatePanel.java,v 1.5 2004/06/28 14:01:45 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
 import javax.swing.*;
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.KeyPointEvent;
+import ch.fha.mediamanager.gui.framework.KeyPointListener;
 
 /**
  * Statuspanel
@@ -13,12 +15,11 @@ import ch.fha.mediamanager.gui.*;
  * @author Roman Rietmann
  */
 public class StatePanel extends JPanel {
-	// Default color for connected state
-	private final static Color connected = Color.GREEN;
-	// Default color for disconnected state
-	private final static Color disconnected = Color.RED;
 	// Font type for the status text
 	private static final Font statusFont = new Font("arial", Font.PLAIN, 12);
+	
+	// Connection status
+	private static boolean isConnected = false;
 	
 	private static boolean showStatePermanent;
 	private JLabel statusTextLabel = new JLabel();
@@ -49,12 +50,8 @@ public class StatePanel extends JPanel {
 	 * 
 	 * @param isConnected sets the connection status to true / false
 	 */
-	public void setConnectionStatus(boolean isConnected) {
-		if(isConnected) {
-			connection.setColor(connected);
-		} else {
-			connection.setColor(disconnected);
-		}
+	public void setConnectionStatus(boolean b) {
+		isConnected = b;
 	}
 	
 	/**
@@ -63,7 +60,7 @@ public class StatePanel extends JPanel {
 	 * @return connection state
 	 */
 	public boolean getConnectionStatus() {
-		return connection.getColor().equals(connected);
+		return isConnected;
 	}
 	
 	/**
@@ -100,26 +97,19 @@ public class StatePanel extends JPanel {
 	/**
 	 * A symbol which shows the connection state
 	 */
-	public class Connection extends JPanel {
+	public static class Connection extends JPanel implements 
+		KeyPointListener
+	{
+		// Default color for connected state
+		private final static Color connected = Color.GREEN;
+		// Default color for connecting state
+		private final static Color connecting = Color.BLUE;
+		// Default color for disconnected state
+		private final static Color disconnected = Color.RED;
 		private Color col = disconnected;
 		
-		/**
-		 * Sets the color of the rectangle
-		 * 
-		 * @param col color of the rectangle
-		 */
-		public void setColor(Color col) {
-			this.col = col;
-			repaint();
-		}
-		
-		/**
-		 * Gets the color of the rectangle
-		 * 
-		 * @return color of the rectangle
-		 */
-		public Color getColor() {
-			return col;
+		public Connection() {
+			MainFrame.getInstance().getMainActionListener().addActionListener(this);
 		}
 		
 		/**
@@ -131,6 +121,17 @@ public class StatePanel extends JPanel {
 			g.fillRect(0, 0, 12, 12);
 			g.setColor(Color.BLACK);
 			g.drawRect(0, 0, 12, 12);
+		}
+		
+		public void runAction(KeyPointEvent e) {
+			if(e.getKeyPointEvent() == KeyPointEvent.PRE_CONNECT) {
+				col = connecting;
+			} else if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
+				col = connected;
+			} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
+				col = disconnected;
+			}
+			repaint();
 		}
 	}
 }

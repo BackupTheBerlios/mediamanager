@@ -1,4 +1,4 @@
-//$Id: FileMenu.java,v 1.3 2004/06/21 08:40:24 radisli Exp $
+//$Id: FileMenu.java,v 1.4 2004/06/28 14:01:50 radisli Exp $
 package ch.fha.mediamanager.gui.components.menu;
 
 import javax.swing.*;
@@ -65,12 +65,12 @@ public class FileMenu extends JMenu implements
 	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
 	 */
 	public void runAction(KeyPointEvent e) {
-		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
+		if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
 			connectState.setText("Trennen");
 			connectState.setMnemonic(KeyEvent.VK_T);
 			connectState.setAccelerator(KeyStroke.getKeyStroke(
 	                KeyEvent.VK_T, KeyEvent.CTRL_MASK));
-		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
+		} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
 			connect();
 		}
 	}

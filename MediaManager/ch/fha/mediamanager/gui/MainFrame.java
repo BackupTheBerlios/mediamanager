@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.15 2004/06/28 11:49:43 radisli Exp $
+//$Id: MainFrame.java,v 1.16 2004/06/28 14:00:49 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -21,6 +21,7 @@ import ch.fha.mediamanager.gui.framework.*;
  * @author Roman Rietmann
  */
 public class MainFrame extends JFrame implements
+	KeyPointListener,
 	Savable,
 	InOut
 {
@@ -127,6 +128,7 @@ public class MainFrame extends JFrame implements
 				myWindowClosing(e);
 			}
 		});
+		mainActionListener.addActionListener(this);
 	}
 	
 	/** 
@@ -225,22 +227,18 @@ public class MainFrame extends JFrame implements
 	 * 
 	 */
 	public void connect() {
-		statePanel.setConnectionStatus(true);
-		setStatusText("Wird verbunden ...", true);
-		mainActionListener.fireAction(KeyPointEvent.CONNECTING);
-		DataBus.connect();
-		mainTabPanel.connect();
+		setStatusText("Wird verbunden ...", false);
+		mainActionListener.fireAction(KeyPointEvent.PRE_CONNECT);
+		mainActionListener.fireAction(KeyPointEvent.CONNECT);
 	}
 
 	/**
      * 
 	 */
 	public void disconnect() {
-		statePanel.setConnectionStatus(false);
-		setStatusText("Wird getrennt ...", true);
-		mainActionListener.fireAction(KeyPointEvent.DISCONNECTING);
-		DataBus.disconnect();
-		mainTabPanel.disconnect();
+		setStatusText("Wird getrennt ...", false);
+		mainActionListener.fireAction(KeyPointEvent.PRE_DISCONNECT);
+		mainActionListener.fireAction(KeyPointEvent.DISCONNECT);
 	}
 	
 	/**
@@ -352,5 +350,26 @@ public class MainFrame extends JFrame implements
 			e.getMessage(),
 			"Fehler",
 			JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void runAction(KeyPointEvent e) {
+		int kpe = e.getKeyPointEvent();
+		
+		if(kpe == KeyPointEvent.POST_CONNECT) {
+			statePanel.setConnectionStatus(true);
+			removeStatusText();
+		} else if(kpe == KeyPointEvent.CONNECT) {
+			DataBus.connect();
+			mainTabPanel.connect();
+		} else if(kpe == KeyPointEvent.DISCONNECT_ERROR ||
+				kpe == KeyPointEvent.CONNECT_ERROR) {
+			removeStatusText();
+		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
+			statePanel.setConnectionStatus(false);
+			removeStatusText();
+		} else if(kpe == KeyPointEvent.DISCONNECT) {
+			DataBus.disconnect();
+			mainTabPanel.disconnect();
+		}
 	}
 }

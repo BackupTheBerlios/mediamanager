@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.10 2004/06/21 08:40:58 radisli Exp $
+//$Id: MainTab.java,v 1.11 2004/06/28 14:00:58 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -22,6 +22,7 @@ public class MainTab extends JPanel implements
 	private final static String disconnectStr = "Verbindung trennen";
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
+	private final static ImageIcon connectingImage = new ImageIcon("images/connecting.gif");
 	private final static ImageIcon disconnectImage = new ImageIcon("images/disconnect.gif");
 
 	private NavButton topButton;
@@ -58,7 +59,7 @@ public class MainTab extends JPanel implements
 		topButtonPanel.add(topLabel);
 		basePanel.add(topButtonPanel);
 		
-		ImageIcon prefsImage = new ImageIcon("images/prefs.gif");
+		ImageIcon prefsImage = new ImageIcon("images/config.gif");
 		NavButton middleButton = new NavButton(prefsImage,
 				mainActionListener, "Haupteinstellungen ver\u00e4ndern");
 		middleButton.setActionCommand("config");
@@ -89,11 +90,15 @@ public class MainTab extends JPanel implements
 	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
 	 */
 	public void runAction(KeyPointEvent e) {
-		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
+		if(e.getKeyPointEvent() == KeyPointEvent.PRE_CONNECT) {
+			topButton.setIcon(connectingImage);
+		} else if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
 			topButton.setIcon(disconnectImage);
 			topButton.setToolTipText(disconnectStr);
 			topLabel.setText("Trennen");
-		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
+		} else if(e.getKeyPointEvent() == KeyPointEvent.PRE_DISCONNECT) {
+			topButton.setIcon(connectingImage);
+		} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
 			topButton.setIcon(connectImage);
 			topButton.setToolTipText(connectStr);
 			topLabel.setText("Verbinden");
@@ -107,7 +112,7 @@ public class MainTab extends JPanel implements
 		MouseListener
 	{
 		// Button dimension
-		private final Dimension d = new Dimension(52, 52);
+		private final Dimension d = new Dimension(66, 66);
 		
 		/**
 		 * Creates a button contains image <code>img</code>, shows

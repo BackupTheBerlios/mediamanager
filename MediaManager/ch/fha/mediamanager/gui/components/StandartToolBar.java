@@ -1,4 +1,4 @@
-//$Id: StandartToolBar.java,v 1.4 2004/06/28 11:01:57 radisli Exp $
+//$Id: StandartToolBar.java,v 1.5 2004/06/28 14:01:18 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.event.ActionEvent;
@@ -61,10 +61,10 @@ public class StandartToolBar extends AbstractToolBar implements
 	}
 
 	public void runAction(KeyPointEvent e) {
-		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
+		if(e.getKeyPointEvent() == KeyPointEvent.POST_CONNECT) {
 			connect.setIcon(disconnectImage);
 			connect.setToolTip(disconnectStr);
-		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
+		} else if(e.getKeyPointEvent() == KeyPointEvent.POST_DISCONNECT) {
 			connect.setIcon(connectImage);
 			connect.setToolTip(connectStr);
 		}		
