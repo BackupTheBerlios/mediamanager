@@ -12,7 +12,7 @@ import java.util.Properties;
 
 /**
  * @author luca
- * @version $Id: MckoiSettings.java,v 1.1 2004/06/23 12:00:09 crac Exp $
+ * @version $Id: MckoiSettings.java,v 1.2 2004/06/24 11:19:00 crac Exp $
  */
 public class MckoiSettings {
     
@@ -23,6 +23,7 @@ public class MckoiSettings {
     /* Mckoi SQL Database default settings */
     private static final String DB_DATA_PATH = "./data";
     private static final String DB_LOG_PATH = "./data/log";
+    private static final String DB_LOG_FILE = "debug.log";
     private static final String DB_IGNORE_CASE_SENSITIV = "disabled";
     private static final String DB_READ_ONLY = "disabled";
     private static final String DB_DATA_CACHE = "1048576";
@@ -32,6 +33,7 @@ public class MckoiSettings {
     
     private String  dbPath = "",
                     logPath = "",
+                    logFile = "",
                     ignoreCase = "",
                     readOnly = "",
                     dataCache = "",
@@ -76,6 +78,7 @@ public class MckoiSettings {
             
             dbPath          = property.getProperty("database_path");
             logPath         = property.getProperty("log_path");
+            logFile         = property.getProperty("debug_log_file");
             ignoreCase      = property.getProperty("ignore_case_for_identifiers");
             readOnly        = property.getProperty("read_only");
             dataCache       = property.getProperty("data_cache_size");
@@ -107,6 +110,7 @@ public class MckoiSettings {
 
             outProp.setProperty("database_path", dbPath);
             outProp.setProperty("log_path", logPath);
+            outProp.setProperty("debug_log_file", logFile);
             outProp.setProperty("ignore_case_for_identifiers", ignoreCase);
             outProp.setProperty("read_only", readOnly);
             outProp.setProperty("data_cache_size", dataCache);
@@ -130,6 +134,7 @@ public class MckoiSettings {
     protected void restoreDefaults() {
         dbPath = DB_DATA_PATH;
         logPath = DB_LOG_PATH;
+        logFile = DB_LOG_FILE;
         ignoreCase = DB_IGNORE_CASE_SENSITIV;
         readOnly = DB_READ_ONLY;
         dataCache = DB_DATA_CACHE;
@@ -210,6 +215,14 @@ public class MckoiSettings {
      * 
      * @return
      */
+    protected String getLogFile() {
+        return logFile;
+    }
+    
+    /**
+     * 
+     * @return
+     */
     protected String getWorkerThreads() {
         return workerThreads;
     }
@@ -273,6 +286,14 @@ public class MckoiSettings {
 	protected void setLogPath(String logPath) {
 		this.logPath = logPath;
 	}
+    
+    /**
+     * 
+     * @param logFile
+     */
+    protected void setLogFile(String logFile) {
+        this.logFile = logFile;
+    }
 	
     /**
      * 
