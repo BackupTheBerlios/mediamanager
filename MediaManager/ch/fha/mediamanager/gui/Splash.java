@@ -12,7 +12,7 @@ import javax.swing.JWindow;
 
 /**
  * @author ia02vond
- * @version $Id: Splash.java,v 1.4 2004/06/21 08:03:09 radisli Exp $
+ * @version $Id: Splash.java,v 1.5 2004/06/24 14:16:17 radisli Exp $
  */
 public class Splash extends JWindow {
 
@@ -29,7 +29,7 @@ public class Splash extends JWindow {
 	
 	private final static Color BORDER_COLOR  = Color.DARK_GRAY;
 	
-	private final static Color PROCESS_BAR_COLOR = Color.BLUE;
+	private final static Color PROCESS_BAR_COLOR = Color.CYAN;
 	
 	private final static Font PROCESS_TEXT_FONT = new Font(
 			"SansSerif", Font.BOLD, 14);
