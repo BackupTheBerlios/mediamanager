@@ -1,4 +1,4 @@
-// $Id: MainTabPanel.java,v 1.3 2004/06/23 10:45:35 ia02vond Exp $
+// $Id: MainTabPanel.java,v 1.4 2004/06/23 11:55:24 ia02vond Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -17,23 +17,35 @@ import ch.fha.mediamanager.data.MetaEntity;
 public class MainTabPanel extends JPanel {
 	
 	private JTabbedPane tabbedPane;
+	private JPanel mainTab;
 	
 	public MainTabPanel() {
 		setLayout(new BorderLayout());
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		JPanel mainTab = new MainTab();
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		mainTab = new MainTab();
 		tabbedPane.addTab("Hauptfenster", mainTab);
 		
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 	
-	public void createEntityTabs() {	
-		Iterator it = DataBus.getMetaEntities().iterator();
-		MetaEntity metaEntity;
-		while (it.hasNext()) {
-			metaEntity = (MetaEntity)it.next();
-			tabbedPane.add(metaEntity.getName(), new StdTabPanel(metaEntity));
+	public void connect() {
+		if (DataBus.getMetaEntities() != null) {
+			Iterator it = DataBus.getMetaEntities().iterator();
+			MetaEntity metaEntity;
+			while (it.hasNext()) {
+				metaEntity = (MetaEntity)it.next();
+				tabbedPane.add(metaEntity.getName(), new StdTabPanel(metaEntity));
+			}
+		}
+	}
+	
+	public void disconnect() {
+		Component[] c = tabbedPane.getComponents();
+		for (int i=0; i<c.length; i++) {
+			if (c[i] != mainTab) {
+				tabbedPane.remove(c[i]);
+			}
 		}
 	}
 }
