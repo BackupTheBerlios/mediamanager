@@ -10,12 +10,12 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.12 2004/06/05 18:47:25 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.13 2004/06/14 13:22:11 crac Exp $
  */
-public class DatabaseRepository implements Repository {
+public final class DatabaseRepository implements Repository {
     
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
     
     private DatabaseConnection dbConnection; 
@@ -62,11 +62,32 @@ public class DatabaseRepository implements Repository {
     }
     
     /**
+     * Loads all meta information from repository.
+     * 
+     * @see MetaField
+     * @see MetaEntity
+     * @see MetaData
      * 
      * @return
      */
     public MetaData loadMetaData() {
-    	return null;
+        try {
+            String sql = 
+                "SELECT * FROM Fld, Fldtype, Users, Ent " +
+                "WHERE Fld.UserId = Users.UUID AND " +
+                "Fld.FldFldtypeId = Fldtype.FldtypeId AND " +
+                "Fld.FldEntId = Ent.EntId;";
+            ResultSet result = 
+                dbConnection.executeQuery(sql);
+                
+            if (result.next()) {
+               
+            }
+        } catch (Exception e) {
+            DataBus.logger.fatal("Could not load meta data.");
+            throw new InternalError("Could not load meta data.");
+        }
+        return null;
     }
 
     /**
@@ -126,12 +147,12 @@ public class DatabaseRepository implements Repository {
             while (result.next()) {
                 DataElement e = new DataElement();
                 
-                // TODO
+                //
                 
                 ds.add(e);
             } 
         } catch (Exception e) {
-            throw new RuntimeException("Error while loading DataSet from database.");
+            DataBus.logger.error("Data could not be loaded.");
         }*/
         
         return ds;
