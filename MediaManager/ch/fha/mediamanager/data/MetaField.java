@@ -7,10 +7,11 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.8 2004/06/19 14:42:08 crac Exp $
+ * @version $Id: MetaField.java,v 1.9 2004/06/20 22:42:04 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
+    /* Field types */
 	public final static int PK = 1;
     public final static int USERID = 2;
     public final static int INT = 3;
@@ -18,9 +19,10 @@ public final class MetaField implements Cloneable {
     public final static int TEXT = 5;
     public final static int BOOLEAN = 6;
     public final static int LIST = 7;
+    public final static int DATE = 8;
     
     /* Used for creation of hashCode */
-    private final static int PRIME = 13;
+    //private final static int PRIME = 13;
     
     // --------------------------------
     // FIELDS
@@ -41,27 +43,15 @@ public final class MetaField implements Cloneable {
     
     /**
      * 
-     * @param id
-     * @param entity
-     */
-    public MetaField(String id, MetaEntity entity) {
-        this.identifier = id;
-        this.name = id;
-        this.entity = entity;
-    }
-    
-    /**
-     * 
-     * @param id
      * @param name
      * @param entity
      */
-    public MetaField(String id, String name, MetaEntity entity) {
-        this.identifier = id;
+    public MetaField(String name, MetaEntity entity) {
         this.name = name;
         this.entity = entity;
+        this.identifier = entity.getName() + "." + name;
     }
-    
+      
     // --------------------------------
     // OPERATIONS
     // --------------------------------
@@ -72,8 +62,7 @@ public final class MetaField implements Cloneable {
      * @return Returns true if both MetaFields are equal.
      */
     public boolean equals(MetaField f) {
-        return (identifier.equals(f.identifier) 
-                && entity.equals(f.getEntity()));   
+        return identifier.equals(f.identifier);   
     }
     
     /**
@@ -81,7 +70,7 @@ public final class MetaField implements Cloneable {
      * @return Returns the hashCode.
      */
     public int hashCode() {
-        return PRIME*entity.hashCode() + identifier.hashCode();
+        return identifier.hashCode();
     }
     
     /**
@@ -96,6 +85,14 @@ public final class MetaField implements Cloneable {
             throw new InternalError();   
         }
         return f;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String toString() {
+        return identifier;
     }
     
     // --------------------------------
