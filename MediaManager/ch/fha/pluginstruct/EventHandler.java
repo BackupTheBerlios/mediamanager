@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  * @author ia02vond
- * @version $Id: EventHandler.java,v 1.4 2004/06/28 11:25:33 ia02vond Exp $
+ * @version $Id: EventHandler.java,v 1.5 2004/06/28 21:11:02 ia02vond Exp $
  */
 public final class EventHandler {
 	
@@ -153,11 +153,21 @@ public final class EventHandler {
 			PluginEvent pluginEvent,
 			String event,
 			String condition) {
-
+		
+		fireEvent(returnable, pluginEvent, event, condition, null);
+	}
+	
+	protected void fireEvent(
+			Returnable returnable,
+			PluginEvent pluginEvent,
+			String event,
+			String condition,
+			Plugin plugin) {
+		
 		// validate parameter
 		int e = getEventNumber(event);
 		if (e < 0 || e >= events.length) {
-			throw new IllegalArgumentException("event does not exist");
+			throw new IllegalArgumentException("event does not exist: " + event);
 		}
 		if (condition == null || condition.equals("") || condition.equals("*")) {
 			condition = null;
@@ -166,12 +176,13 @@ public final class EventHandler {
 		pluginEvent.setEventName(event);
 		
 		// fire event
-		fireNode = new Node(null, null);
-		fireNode.next = eventListener[e];
+		fireNode        = new Node(null, null);
+		fireNode.next   = eventListener[e];
 		firePluginEvent = pluginEvent;
-		fireCondition = condition;
-		fireState = RUNNING;
-		fireReturnable = returnable;
+		fireCondition   = condition;
+		firePlugin      = plugin;
+		fireState       = RUNNING;
+		fireReturnable  = returnable;
 
 		fireNext();
 	}
@@ -179,6 +190,7 @@ public final class EventHandler {
 	private Node fireNode;
 	private PluginEvent firePluginEvent;
 	private String fireCondition;
+	private Plugin firePlugin;
 	private int fireState;
 	private Returnable fireReturnable;
 	
@@ -192,7 +204,8 @@ public final class EventHandler {
 			fireNode = fireNode.next;
 			if (fireNode != null) {
 				Plugin plugin = PluginManager.getContainer().getPlugin(fireNode.pluginId);
-				if (PluginManager.getContainer().isPluginActivated(fireNode.pluginId) &&
+				if (    (firePlugin == null || plugin == firePlugin) &&
+						(PluginManager.getContainer().isPluginActivated(fireNode.pluginId)) &&
 						(fireCondition == null || fireNode.condition == null || fireCondition.equals(fireNode.condition)) ) {
 					
 					boolean continuee;

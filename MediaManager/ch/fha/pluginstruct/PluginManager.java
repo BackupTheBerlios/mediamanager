@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.7 2004/06/28 13:45:49 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.8 2004/06/28 21:11:02 ia02vond Exp $
  */
 public final class PluginManager {
 	
@@ -108,6 +108,30 @@ public final class PluginManager {
 		if (!initialized) throw new IllegalStateException("not initialized");
 		
 		eventHandler.fireEvent(returnable, pluginEvent, event, condition);
+	}
+	
+	/**
+	 * Fires an event and notifies the specified plugins which
+	 * should be interested in the specified event with the given
+	 * condition.
+	 * @param pluginEvent    a plugin event object
+	 * @param event          the event name
+	 * @param condition      the condition
+	 * @param plugin         the plugin to run
+	 * @throws OperationCancelException if a plugin wants to
+	 *         cancel the current operation which has caused
+	 *         the event.
+	 */
+	public void fireEvent(
+			Returnable returnable,
+			PluginEvent pluginEvent,
+			String event,
+			String condition,
+			Plugin plugin) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
+		eventHandler.fireEvent(returnable, pluginEvent, event, condition, plugin);
 	}
 	
 	/**
