@@ -1,4 +1,4 @@
-// $Id: Mediamanager.java,v 1.5 2004/06/16 09:03:51 ia02vond Exp $
+// $Id: Mediamanager.java,v 1.6 2004/06/18 08:00:04 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import javax.swing.*;
@@ -13,6 +13,8 @@ import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.theme.SkyBluer;
 
 import ch.fha.mediamanager.gui.framework.*;
+import ch.fha.pluginstruct.PluginManager;
+import ch.fha.pluginstruct.Version;
 
 /**
  * Mediamanager application
@@ -24,14 +26,31 @@ public class Mediamanager {
 	private static Preferences prefs = Preferences.userNodeForPackage(Mediamanager.class);
 	/** Preferences owner */
 	private static LinkedList prefsOwner = new LinkedList();
+	/** Declaration of all possible plugin events in the application */
+	private final static String[] PLUGIN_EVENTS = {
+			"prenew",
+			"postnew",
+			"preedit",
+			"postedit",
+			"predelete",
+			"postdelete",
+			"preinsert",
+			"postinsert",
+			"preupdate",
+			"postupdate"
+	};
+	/** current application version, used for plugin manager */
+	private final static Version APPL_VERSION = new Version("1_0");
+	
+	
 
 	/**
 	 * Main method creates a <code>MainFrame</code>
 	 */
 	public static void main(String[] args) {
 		//JFrame.setDefaultLookAndFeelDecorated(true);
+		configurePluginManager();
 		configureUI();
-		MainFrame.getInstance();
 	}
 
 	/**
@@ -107,4 +126,14 @@ public class Mediamanager {
             System.err.println("Can't set look & feel:" + e);
         }
     }
+    
+    /**
+     * Initializes and configures the Plugin Manager.
+     */
+    private static void configurePluginManager() {
+    	PluginManager manager = PluginManager.getInstance(
+				PLUGIN_EVENTS, APPL_VERSION);
+		manager.initialize();
+    }
+		
 }
