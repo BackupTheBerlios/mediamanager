@@ -5,15 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-
-import com.mckoi.util.HashMapList;
 
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
@@ -27,7 +24,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.7 2004/06/25 06:44:09 radisli Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.8 2004/06/25 16:22:03 crac Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener {
@@ -110,7 +107,7 @@ public class DataTablePopupMenu extends JPopupMenu
 		while (it.hasNext()) {
 			PluginEventObserver peo = (PluginEventObserver)it.next();
 			if (peo.condition == null ||
-				peo.condition.equals("") || peo.condition.equals(metaEntity.getIdentifier())) {
+				peo.condition.equals("") || peo.condition.equals(metaEntity.getName())) {
 				
 				PluginMenuItemData pmid;
 				

@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import ch.fha.mediamanager.gui.MainFrame;
@@ -20,7 +19,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $id$
+ * @version $Id: PluginConf.java,v 1.7 2004/06/25 16:22:03 crac Exp $
  */
 public class PluginConf extends JPanel
 	implements ActionListener, KeyPointListener {
