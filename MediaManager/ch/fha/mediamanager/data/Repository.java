@@ -1,5 +1,8 @@
 package ch.fha.mediamanager.data;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
  * A Repository holds all the necessary data.
  * 
@@ -8,7 +11,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.15 2004/06/26 13:16:03 crac Exp $
+ * @version $Id: Repository.java,v 1.16 2004/06/28 14:03:45 ia02vond Exp $
  */
 public abstract class Repository {
     
@@ -19,6 +22,8 @@ public abstract class Repository {
     protected boolean connected = false;
     protected static String name = "Repository";
     protected static Class query = AbstractQuery.class;
+    
+    private LinkedList repositoryListeners = new LinkedList();
     
     // --------------------------------
     // CONSTRUCTORS
@@ -75,5 +80,20 @@ public abstract class Repository {
      */
     public String getName() {
         return name;
+    }
+    
+    public void addRepositoryListener(RepositoryListener l) {
+    	repositoryListeners.add(l);
+    }
+    
+    public void removeRepositoryListener(RepositoryListener l) {
+    	repositoryListeners.remove(l);
+    }
+    
+    public void fireDataChanged(MetaEntity metaEntity) {
+    	Iterator it = repositoryListeners.iterator();
+    	while (it.hasNext()) {
+    		((RepositoryListener)it.next()).dataChanged(metaEntity);
+    	}
     }
 }
