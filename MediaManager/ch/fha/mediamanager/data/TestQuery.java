@@ -3,10 +3,18 @@ package ch.fha.mediamanager.data;
 import java.util.Vector;
 
 /**
+ * Explains how to send a query to the repository.
  * 
+ * @see Repository
+ * @see QueryRequest
+ * @see QueryCondition
+ * @see MetaEntity
+ * @see MetaField
+ * @see Field
+ * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.3 2004/06/05 14:13:06 crac Exp $
+ * @version $Id: TestQuery.java,v 1.4 2004/06/05 16:37:41 crac Exp $
  */
 public class TestQuery {
     
