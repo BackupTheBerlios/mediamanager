@@ -1,4 +1,4 @@
-//$Id: PluginsTab.java,v 1.1 2004/06/17 12:22:51 radisli Exp $
+//$Id: PluginsTab.java,v 1.2 2004/06/18 07:42:39 ia02vond Exp $
 package ch.fha.mediamanager.gui.config.components;
 
 import java.awt.*;
@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.util.PluginConf;
 
 /**
  * Plugins Configuration panel
@@ -27,5 +28,8 @@ public class PluginsTab extends JPanel {
 		back.addActionListener(mainActionListener);
 		defaultButtonPanel.add(back);
 		add(defaultButtonPanel, BorderLayout.SOUTH);
+		
+		PluginConf pluginConf = new PluginConf();
+		add(pluginConf, BorderLayout.CENTER);
 	}
 }
