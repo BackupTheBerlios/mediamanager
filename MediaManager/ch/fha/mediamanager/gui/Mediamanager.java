@@ -1,4 +1,4 @@
-// $Id: Mediamanager.java,v 1.4 2004/06/16 08:10:36 radisli Exp $
+// $Id: Mediamanager.java,v 1.5 2004/06/16 09:03:51 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ public class Mediamanager {
 	 * Main method creates a <code>MainFrame</code>
 	 */
 	public static void main(String[] args) {
-		JFrame.setDefaultLookAndFeelDecorated(true);
+		//JFrame.setDefaultLookAndFeelDecorated(true);
 		configureUI();
 		MainFrame.getInstance();
 	}
