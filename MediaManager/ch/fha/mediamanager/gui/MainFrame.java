@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.20 2004/06/29 14:07:05 radisli Exp $
+//$Id: MainFrame.java,v 1.21 2004/06/29 20:41:42 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -384,9 +384,6 @@ public class MainFrame extends JFrame implements
 		} else if(kpe == KeyPointEvent.CONNECT) {
 			DataBus.connect();
 			mainTabPanel.connect();
-		} else if(kpe == KeyPointEvent.DISCONNECT_ERROR ||
-				kpe == KeyPointEvent.CONNECT_ERROR) {
-			removeStatusText();
 		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
 			statePanel.setConnectionStatus(false);
 			setStatusText("Getrennt!", true);
@@ -395,6 +392,12 @@ public class MainFrame extends JFrame implements
 			mainTabPanel.disconnect();
 		} else if(kpe == KeyPointEvent.PRE_DISCONNECT) {
 			loadStdPanel();
+		} else if(kpe == KeyPointEvent.CONNECT_ERROR) {
+			exception(new Exception("Fehler beim verbinden mit der Datenbank!"));
+			mainActionListener.fireAction(KeyPointEvent.POST_DISCONNECT);
+		} else if(kpe == KeyPointEvent.DISCONNECT_ERROR) {
+			exception(new Exception("Fehler beim trennen von der Datenbank!"));
+			mainActionListener.fireAction(KeyPointEvent.POST_DISCONNECT);
 		} else if(kpe == KeyPointEvent.WINDOW_FINAL_EXIT) {
 			try {
 				MediaManager.fireSave();
