@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.8 2004/06/21 12:30:29 ia02vond Exp $
+//$Id: MainFrame.java,v 1.9 2004/06/23 11:54:49 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -9,6 +9,7 @@ import javax.swing.border.*;
 import java.util.prefs.*;
 
 import ch.fha.pluginstruct.*;
+import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.gui.components.*;
 import ch.fha.mediamanager.gui.framework.*;
 
@@ -22,7 +23,7 @@ public class MainFrame extends JFrame implements
 	InOut
 {
 	private StandartToolBar standartToolBar;
-	private JPanel mainTabPanel;
+	private MainTabPanel mainTabPanel;
 	private JPanel mainConfigPanel;
 	private JPanel aboutPanel = null;
 	private JPanel mainPanelHolder;
@@ -193,6 +194,8 @@ public class MainFrame extends JFrame implements
 		statePanel.setConnectionStatus(true);
 		setStatusText("Wird verbunden ...", true);
 		mainActionListener.fireAction(KeyPointEvent.CONNECTING);
+		
+		mainTabPanel.connect();
 	}
 
 	/**
@@ -201,7 +204,9 @@ public class MainFrame extends JFrame implements
 	public void disconnect() {
 		statePanel.setConnectionStatus(false);
 		setStatusText("Wird getrennt ...", true);
-		mainActionListener.fireAction(KeyPointEvent.DISCONNECTING);		
+		mainActionListener.fireAction(KeyPointEvent.DISCONNECTING);
+		
+		mainTabPanel.disconnect();
 	}
 	
 	/**
