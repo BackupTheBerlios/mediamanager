@@ -3,8 +3,12 @@ package ch.fha.mediamanager.data;
 import java.util.Vector;
 
 /**
+ * Sends queries to the repository.
+ * 
+ * @see <a href="../../queries.html">Query Examples</a>
+ * 
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.4 2004/06/26 15:01:58 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.5 2004/06/28 12:34:11 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
