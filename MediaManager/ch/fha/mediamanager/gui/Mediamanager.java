@@ -1,4 +1,4 @@
-// $Id: Mediamanager.java,v 1.9 2004/06/21 12:31:27 ia02vond Exp $
+// $Id: Mediamanager.java,v 1.10 2004/06/23 11:53:44 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -58,6 +58,9 @@ public class Mediamanager {
 		// Repository
 		splash.setProcess(0, "lade Repository ...");
 		DataBus.initialize();
+		
+		// TESTING
+		DataBus.loadRepository();
 		
 		// PluginManager
 		splash.setProcess(0.15, "lade Plugin Manager ...");
