@@ -1,5 +1,11 @@
 package ch.fha.mediamanager.data;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -10,12 +16,15 @@ import java.io.IOException;
 
 import java.util.Properties;
 
-import com.eaio.uuid.UUID;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author crac
- * @version $Id: User.java,v 1.5 2004/06/24 15:58:51 crac Exp $
+ * @version $Id: User.java,v 1.6 2004/06/24 17:33:55 crac Exp $
  */
 public final class User {
     
@@ -128,7 +137,7 @@ public final class User {
     }
     
     /**
-     * 
+     * Creates a default config file.
      */
     private void createDefaultConf() {
         username = "";
@@ -143,7 +152,7 @@ public final class User {
      * @see com.eaio.uuid.UUID
      */
     private String createUUID() {
-        String uuid = new UUID().toString();
+        String uuid = new com.eaio.uuid.UUID().toString();
         DataBus.logger.info("UUID " + uuid + " created.");
         return uuid;
     }
@@ -154,7 +163,7 @@ public final class User {
     
     /**
      * 
-     * @return
+     * @return Returns the unique user id
      */
     public String getUUID() {
         return uuId;
@@ -162,7 +171,7 @@ public final class User {
     
     /**
      * 
-     * @return
+     * @return Returns the username
      */
     public String getUsername() {
         return username;   
@@ -170,10 +179,61 @@ public final class User {
 
     /**
      * 
-     * @return
+     * @return Returns the full name of the 
+     *      user
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * 
+     * @return Returns configuration Panel 
+     *      for the user settings
+     */
+    public JPanel getConfPanel() {
+        JPanel outer = new JPanel();
+        outer.setLayout(new BorderLayout());
+        
+        // top
+        JPanel top = new JPanel();
+        final JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3,2));
+        
+        panel.add(new JLabel("Voller Name"));
+        final JTextField name = 
+            new JTextField(getName());
+        panel.add(name);
+        
+        panel.add(new JLabel("Benutzername"));
+        final JTextField username = 
+            new JTextField(getUsername());
+        panel.add(username);
+        
+        JButton save = new JButton("save");
+        save.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getActionCommand().equals("save")) {
+                        setUsername(username.getText());
+                        setName(name.getText());
+                        save();
+                    }
+                }
+            });
+
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new FlowLayout());
+        bottom.add(save);
+        
+        outer.add(top, BorderLayout.CENTER);
+        outer.add(bottom, BorderLayout.SOUTH);
+        
+        JPanel full = new JPanel();
+        full.setLayout(new FlowLayout());
+        full.add(outer);
+        
+        return full;
     }
     
     // --------------------------------
@@ -184,7 +244,15 @@ public final class User {
      * 
      * @param name
      */
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
+    }
+    
+    /**
+     * 
+     * @param username
+     */
+    protected void setUsername(String username) {
+        this.username = username;
     }
 }
