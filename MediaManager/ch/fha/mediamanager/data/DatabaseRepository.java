@@ -22,7 +22,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.18 2004/06/17 12:50:10 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.19 2004/06/18 09:38:36 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -36,14 +36,18 @@ public final class DatabaseRepository implements Repository {
     private static final String file = "conf" + File.separator + 
         "mckoi_repository.ini";
     
-    private String username = "";
-    private String password = "";
+    private DatabaseSettings settings = 
+        new DatabaseSettings(file);
     
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    
+    /**
+     * 
+     * 
+     */
     public DatabaseRepository() {
-        
     }
     
     // --------------------------------
@@ -320,6 +324,8 @@ public final class DatabaseRepository implements Repository {
     
     /**
      * 
+     * @see DatabaseSettings
+     * 
      * @return
      */
     public JPanel getConfPanel() {
@@ -327,11 +333,13 @@ public final class DatabaseRepository implements Repository {
         panel.setLayout(new GridLayout(3,2));
         
         panel.add(new JLabel("Benutzername"));
-        final JTextField user = new JTextField(username);
+        final JTextField user = 
+            new JTextField(settings.getUser());
         panel.add(user);
         
         panel.add(new JLabel("Passwort"));
-        final JPasswordField pwd = new JPasswordField(password);
+        final JPasswordField pwd = 
+            new JPasswordField(settings.getPassword());
         panel.add(pwd);
         
         // bottom
@@ -340,9 +348,11 @@ public final class DatabaseRepository implements Repository {
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getActionCommand().equals("save")) {
-                        String passwd = 
-                            pwd.getPassword().toString();
-                        saveConfig(user.getText(), passwd);
+                        settings.setPassword( 
+                            pwd.getPassword().toString()
+                        );
+                        settings.setUser(user.getText());
+                        settings.saveConfig();
                     }
                 }
             });
