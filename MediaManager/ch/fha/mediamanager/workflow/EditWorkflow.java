@@ -5,13 +5,14 @@ import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.OperationCancelException;
 import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: EditWorkflow.java,v 1.2 2004/06/22 08:39:21 ia02vond Exp $
+ * @version $Id: EditWorkflow.java,v 1.3 2004/06/23 14:21:47 ia02vond Exp $
  */
 public class EditWorkflow implements Workflow {
 	
@@ -34,7 +35,7 @@ public class EditWorkflow implements Workflow {
 					metaEntity.getIdentifier());
 			
 			
-			// TODO showEditForm(dataElement);
+			new InputFormular(dataElement);
 			
 			
 			pluginManager.fireEvent(
