@@ -14,19 +14,19 @@ import javax.swing.JWindow;
 
 /**
  * @author ia02vond
- * @version $Id: Splash.java,v 1.1 2004/06/17 12:26:09 ia02vond Exp $
+ * @version $Id: Splash.java,v 1.2 2004/06/20 10:58:20 radisli Exp $
  */
 public class Splash extends JWindow {
 
-	private final static String IMAGE_PATH = "images/about.jpg";
+	private final static String IMAGE_PATH = "images/splash.jpg";
 	
-	private static int windowWidth  = 250;
-	private static int windowHeight = 150;
+	private static int windowWidth  = 350;
+	private static int windowHeight = 250;
 	
 	private final static int LEFT_INSET = 10;
 	private final static int RIGHT_INSET = 10;
-	private final static int PROCESS_BAR_Y = 80;
-	private final static int PROCESS_BAR_THICKNESS = 2;
+	private final static int PROCESS_BAR_Y = 180;
+	private final static int PROCESS_BAR_THICKNESS = 4;
 	
 	private final static Color BORDER_COLOR  = Color.DARK_GRAY;
 	
@@ -35,7 +35,7 @@ public class Splash extends JWindow {
 	private final static Font PROCESS_TEXT_FONT = new Font(
 			"SansSerif", Font.BOLD, 14);
 	
-	private final static int PROCESS_TEXT_Y = 100;
+	private final static int PROCESS_TEXT_Y = 170;
 	
 	private final static Color PROCESS_TEXT_FOREGROUND_COLOR = Color.WHITE;
 	private final static Color PROCESS_TEXT_BACKGROUND_COLOR = Color.BLACK;
