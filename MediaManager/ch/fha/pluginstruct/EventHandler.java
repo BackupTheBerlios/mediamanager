@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  * @author ia02vond
- * @version $Id: EventHandler.java,v 1.2 2004/06/14 20:18:23 ia02vond Exp $
+ * @version $Id: EventHandler.java,v 1.3 2004/06/23 22:55:39 ia02vond Exp $
  */
 public final class EventHandler {
 	
@@ -272,9 +272,12 @@ public final class EventHandler {
 		}
 
 		public Object next() {
-			Plugin plugin = PluginManager.getContainer().getPlugin(node.pluginId);
+			PluginEventObserver peo = new PluginEventObserver();
+			peo.plugin = PluginManager.getContainer().getPlugin(node.pluginId);
+			peo.condition = node.condition;
+			peo.event = eventStr;
 			node = node.next;			
-			return plugin;
+			return peo;
 		}
 	}
 }
