@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.45 2004/06/28 12:43:43 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.46 2004/06/28 13:39:29 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -754,7 +754,6 @@ public final class MckoiRepository extends Repository {
         //query += " LEFT JOIN Users ON Entry.EntryUsersId = Users.UsersUUID ";
         
         query += qr.createRequest();
-        DataBus.logger.debug(query);
         
         try {   
             ResultSet result = 
