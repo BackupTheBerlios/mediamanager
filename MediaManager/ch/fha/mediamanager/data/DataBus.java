@@ -14,7 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.28 2004/06/28 10:07:24 crac Exp $
+ * @version $Id: DataBus.java,v 1.29 2004/06/28 11:56:05 crac Exp $
  */
 public final class DataBus {
 	
@@ -257,6 +257,29 @@ public final class DataBus {
      */
     public static Set getMetaEntities() {
         return metaData.getMetaEntities();
+    }
+    
+    /**
+     * 
+     * @param entity
+     * @return Returns Primary Key <code>Field</code> of 
+     *      the <code>MetaEntity</code>
+     */
+    public static Field getPKField(MetaEntity entity) {
+        DataElement el = getDefaultElement(entity);
+        return el.getPKField();
+    }
+    
+    /**
+     * 
+     * @see #getPKField(MetaEntity)
+     * 
+     * @param entity
+     * @return Returns Primary Key <code>Field</code> of 
+     *      the <code>MetaEntity</code>
+     */
+    public static Field getPKField(String entity) {
+        return getPKField(new MetaEntity(entity));
     }
     
     /**
