@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.22 2004/06/24 13:12:33 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.23 2004/06/24 14:52:30 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -103,6 +103,30 @@ public final class MckoiRepository implements Repository {
        if ((entity == null) || (fields == null))
            throw new IllegalArgumentException();
        // TODO
+       String create = "CREATE TABLE " + entity.getName();
+       
+       insertEntity = 
+        dbConnection.prepareStatement("INSERT INTO Ent " +
+            "(EntId, EntName) VALUES (?, ?);");
+       
+       try {
+           entity.setId(getNextPK("Ent", "EntId"));
+            
+           dbConnection.getConnection().setAutoCommit(false);
+            
+           insertEntity.setInt(1, entity.getId());
+           insertEntity.setString(2, entity.getName());
+           insertEntity.execute();
+            
+           dbConnection.executeQuery(create);
+            
+           dbConnection.getConnection().commit();
+       } catch (SQLException e) {
+           DataBus.logger.warn("Entity " + entity.getName() + 
+               " not created.");
+           return false;
+       }
+       
        return false;
    }
    
@@ -121,11 +145,11 @@ public final class MckoiRepository implements Repository {
        String createEntity = "CREATE TABLE " + entity.getName() + ";";
        
        try {
-           int id = getNextPK("Ent", "EntId");
+           entity.setId(getNextPK("Ent", "EntId"));
            
            dbConnection.getConnection().setAutoCommit(false);
            
-           insertEntity.setInt(1, id);
+           insertEntity.setInt(1, entity.getId());
            insertEntity.setString(2, entity.getName());
            insertEntity.execute();
            

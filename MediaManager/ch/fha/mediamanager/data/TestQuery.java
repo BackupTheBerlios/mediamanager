@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.10 2004/06/23 17:20:24 crac Exp $
+ * @version $Id: TestQuery.java,v 1.11 2004/06/24 14:52:36 crac Exp $
  */
 public class TestQuery {
     
@@ -23,7 +23,7 @@ public class TestQuery {
         // NB: this will be called on the application startup.
         DataBus.initialize();
         DataBus.logger.info("App started.");
-        DataBus.loadRepository();
+        DataBus.connect();
         
         DataSet ds = null;
         
