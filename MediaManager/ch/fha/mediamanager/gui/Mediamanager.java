@@ -1,4 +1,4 @@
-// $Id: Mediamanager.java,v 1.11 2004/06/23 13:34:18 ia02vond Exp $
+// $Id: Mediamanager.java,v 1.12 2004/06/24 14:58:03 crac Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -63,7 +63,7 @@ public class Mediamanager {
 		DataBus.initialize();
 		
 		// TESTING
-		DataBus.loadRepository();
+		//DataBus.connect();
 		
 		// PluginManager
 		splash.setProcess(0.15, "lade Plugin Manager ...");
