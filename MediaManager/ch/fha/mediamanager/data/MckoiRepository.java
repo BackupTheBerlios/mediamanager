@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.1 2004/06/19 09:13:01 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.2 2004/06/19 14:16:16 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -35,7 +35,7 @@ public final class MckoiRepository implements Repository {
     private DatabaseConnection dbConnection = 
         new DatabaseConnection();
     
-    private static final String name = "Mckoi Database Repository";
+    private static final String name = "Mckoi SQL DB Repository";
     
     private static final String file = "conf" + File.separator + 
         "mckoi_repository.ini";
@@ -56,6 +56,13 @@ public final class MckoiRepository implements Repository {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     */
+    public void initialize() {
+        connect();
+    }
     
     /**
      * 
@@ -311,7 +318,7 @@ public final class MckoiRepository implements Repository {
     
     /**
      * 
-     * @return
+     * @return Returns the name of the repository.
      */
     public String getName() {
         return name;
@@ -319,16 +326,11 @@ public final class MckoiRepository implements Repository {
     
     /**
      * 
-     * @see DatabaseSettings
-     * 
-     * @return
+     * @return Returns the config panel.
      */
     public JPanel getConfPanel() {
-        BorderLayout border = new BorderLayout();
-        border.setVgap(1);
-        
         JPanel outer = new JPanel();
-        outer.setLayout(border);
+        outer.setLayout(new BorderLayout());
         
         // top
         JPanel top = new JPanel();
@@ -361,16 +363,18 @@ public final class MckoiRepository implements Repository {
                     }
                 }
             });
-        
+
         JPanel bottom = new JPanel();
         bottom.setLayout(new FlowLayout());
         bottom.add(save);
         
-        outer.setPreferredSize(new java.awt.Dimension(250, 100));
-        
         outer.add(top, BorderLayout.CENTER);
         outer.add(bottom, BorderLayout.SOUTH);
         
-        return outer;
+        JPanel full = new JPanel();
+        full.setLayout(new FlowLayout());
+        full.add(outer);
+        
+        return full;
     }
 }
