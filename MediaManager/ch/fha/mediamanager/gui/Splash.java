@@ -14,11 +14,12 @@ import javax.swing.JWindow;
 
 /**
  * @author ia02vond
- * @version $Id: Splash.java,v 1.2 2004/06/20 10:58:20 radisli Exp $
+ * @version $Id: Splash.java,v 1.3 2004/06/20 12:02:16 crac Exp $
  */
 public class Splash extends JWindow {
 
-	private final static String IMAGE_PATH = "images/splash.jpg";
+	private final static String IMAGE_PATH = "images" + 
+        java.io.File.separator + "splash.jpg";
 	
 	private static int windowWidth  = 350;
 	private static int windowHeight = 250;
