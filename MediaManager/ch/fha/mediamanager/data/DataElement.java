@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.13 2004/06/22 14:32:15 crac Exp $
+ * @version $Id: DataElement.java,v 1.14 2004/06/22 17:31:11 crac Exp $
  */
 public class DataElement {
 	
@@ -124,6 +124,22 @@ public class DataElement {
     // --------------------------------
     // ACCESSORS
     // --------------------------------
+    
+    /**
+     * 
+     * @return Returns Timestamp of last modification
+     */
+    public java.sql.Timestamp getLastModified() {
+        return entry.getEdit();
+    }
+    
+    /**
+     * 
+     * @return Returns Timestamp of creation
+     */
+    public java.sql.Timestamp getCreation() {
+        return entry.getCreation();
+    }
     
     /**
      * 
