@@ -16,7 +16,7 @@ import ch.fha.mediamanager.data.DataBus;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.4 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.5 2004/06/27 16:19:16 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel {
 
@@ -31,7 +31,8 @@ public class DataTableModel extends AbstractTableModel {
 	}
 	
 	public void refresh() {
-		Field field = new Field("TestId", metaEntity, new Integer(0));
+        DataElement tmp = DataBus.getDefaultElement(metaEntity);
+        Field field = tmp.getPKField();
 		QueryCondition qc = 
 		    new QueryCondition(
 		        field, 
