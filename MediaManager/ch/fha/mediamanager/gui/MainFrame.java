@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.17 2004/06/29 13:01:50 radisli Exp $
+//$Id: MainFrame.java,v 1.18 2004/06/29 13:15:21 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -191,7 +191,10 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/** Loads the standart <code>mainTabPanel</code> */
-	public void loadStdPanel() { loadMainPanel(mainTabPanel); }
+	public void loadStdPanel() {
+		mainTabPanel.showMainTab();
+		loadMainPanel(mainTabPanel);
+	}
 	/** Loads the standart <code>mainConfigPanel</code> */
 	public void loadConfigPanel() { loadMainPanel(mainConfigPanel); }
 	/** Loads the standart <code>aboutConfigPanel</code> */
@@ -377,6 +380,8 @@ public class MainFrame extends JFrame implements
 		} else if(kpe == KeyPointEvent.DISCONNECT) {
 			DataBus.disconnect();
 			mainTabPanel.disconnect();
+		} else if(kpe == KeyPointEvent.PRE_DISCONNECT) {
+			loadStdPanel();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-// $Id: MainTabPanel.java,v 1.4 2004/06/23 11:55:24 ia02vond Exp $
+// $Id: MainTabPanel.java,v 1.5 2004/06/29 13:15:21 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -27,6 +27,10 @@ public class MainTabPanel extends JPanel {
 		tabbedPane.addTab("Hauptfenster", mainTab);
 		
 		add(tabbedPane, BorderLayout.CENTER);
+	}
+	
+	public void showMainTab() {
+		tabbedPane.setSelectedIndex(0);
 	}
 	
 	public void connect() {
