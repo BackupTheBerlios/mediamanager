@@ -11,6 +11,7 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -25,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.6 2004/06/21 21:41:06 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.7 2004/06/22 13:35:44 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -166,7 +167,7 @@ public final class MckoiRepository implements Repository {
                 }
                 data.addEntity(me);
                 data.addField(mf);
-                DataBus.logger.debug("MetaField added: " + mf.toString());
+                DataBus.logger.debug("MetaField added: " + mf.getIdentifier());
             }
         } catch (SQLException e) {
             DataBus.logger.fatal("Could not load MetaData.");
@@ -200,7 +201,7 @@ public final class MckoiRepository implements Repository {
             sql += " ( EntryId ";
             values += entry.getId();
             
-            // prepare sql statement
+            // prepare statement
             Field[] fields = ds.getFields();
             for (int i = 1; i <= fields.length; i++) {
                 sql += " , " + fields[i-1].getName();
@@ -210,8 +211,8 @@ public final class MckoiRepository implements Repository {
             java.sql.PreparedStatement insert = 
                 dbConnection.prepareStatement(sql + values + ");");
             
+            // set values
             try {
-                // set values
                 for (int i = 1; i <= fields.length; i++) {
                     Field field = fields[i-1];
                     MetaField metaField = field.getMetaField();
@@ -251,15 +252,56 @@ public final class MckoiRepository implements Repository {
      * @return
      */
     public DataSet update(DataSet ds) {
-        if (ds.isEmpty()) return null;
+        if (ds.isEmpty() || ds == null) 
+            throw new IllegalArgumentException();
         
-        String sql = "UPDATE " + ds.getMetaEntity().getName();
+        String sql = "UPDATE " + ds.getMetaEntity().getName() + " SET ";
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
+            DataElement el = (DataElement) it.next();
+            Field[] fields = el.getFields();
             
+            // prepare statement
+            for (int i = 0; i < fields.length; i++) {
+                sql += fields[i].getName();
+                sql += "=?";
+                if (i < fields.length-1) sql += ",";
+            }
+            sql += " WHERE " + el.getPKField().getName();
+            sql += " = " + (Integer) el.getPKField().getValue();
+            
+            java.sql.PreparedStatement update = 
+                dbConnection.prepareStatement(sql);
+            
+            // set values
+            try {
+                Entry entry = el.getEntry();
+                entry.setEdit(updateEntry(entry));
+                
+                for (int i = 1; i <= fields.length; i++) {
+                    MetaField metaField = fields[i-1].getMetaField();
+                    
+                    switch (metaField.getType()) {
+                        case (MetaField.PK):
+                        case (MetaField.INT):
+                            update.setObject(i, (Integer) fields[i-1].getValue());
+                            break;
+                        case (MetaField.TEXT):
+                        case (MetaField.VARCHAR):
+                            update.setString(i, fields[i-1].getValue().toString());
+                            break;
+                    }
+                }
+                update.executeQuery();
+            } catch (SQLException e) {
+                DataBus.logger.fatal("DataElement not updated.");
+                e.printStackTrace();
+                throw new InternalError("DataElement not updated.");
+            }
+            DataBus.logger.debug("DataElement updated.");
         }
-        
+        DataBus.logger.debug("DataSet updated.");
         return null;
     }
     
@@ -312,21 +354,20 @@ public final class MckoiRepository implements Repository {
                 dbConnection.executeQuery(query);
             ResultSetMetaData rsmd = result.getMetaData();
             
+            MetaData metaData = DataBus.getMetaData();
+            
             while (result.next()) {
                 DataElement e = new DataElement(qr.getEntity());
                 
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    MetaData metaData = DataBus.getMetaData();
-                    MetaField mf = new MetaField(
-                        rsmd.getColumnLabel(i), 
-                        new MetaEntity(rsmd.getTableName(i))
+                    
+                    MetaField mf = metaData.getMetaField(
+                        rsmd.getTableName(i),
+                        rsmd.getColumnLabel(i)
                     );
                     
-                    // only if known to MetaData
-                    if (metaData.contains(mf)) {
-                        mf = metaData.getMetaField(mf);
+                    if (mf != null) {
                         Field field = new Field(mf);
-                        
                         switch(mf.getType()) {
                             case(MetaField.INT):
                             case(MetaField.PK):
@@ -344,10 +385,9 @@ public final class MckoiRepository implements Repository {
                                 );
                                 break;
                         }
-                        
-                        e.add(field);
+                        e.setField(field);
                     } else {
-                        DataBus.logger.debug("Field not in MetaData: " + mf.toString());   
+                        //DataBus.logger.debug("Field not in MetaData: " + mf.getIdentifier());   
                     }
                 }
                 
@@ -385,6 +425,8 @@ public final class MckoiRepository implements Repository {
      * @return 
      */
     private String createCondStatement(QueryCondition qc) {
+        if (qc == null) throw new IllegalArgumentException();
+        
         String comp = (qc.getEntity()).getName() + "." 
             + (qc.getField()).getName();
         
@@ -420,6 +462,8 @@ public final class MckoiRepository implements Repository {
      * @return 
      */
     private String createRequestStatement(QueryRequest qr) {
+        if (qr == null) throw new IllegalArgumentException();
+        
         Vector tmp = qr.getVector();
         
         String output = (tmp.size() > 0) ? " WHERE ": "";
@@ -456,8 +500,37 @@ public final class MckoiRepository implements Repository {
      * @param entry
      * @return
      */
+    private Timestamp updateEntry(Entry entry) {
+        if (entry == null) throw new IllegalArgumentException();
+        
+        Timestamp stamp = new Timestamp(System.currentTimeMillis());
+        
+        String sql = "UPDATE Entry SET EntryEdit = ? WHERE EntryId = ?";
+        
+        java.sql.PreparedStatement update = 
+            dbConnection.prepareStatement(sql);
+        
+        try {
+            update.setTimestamp(1, stamp);
+            update.setInt(2, entry.getId());
+            update.executeQuery();
+        } catch (SQLException e) {
+            DataBus.logger.fatal("Entry not updated.");
+            e.printStackTrace();
+            throw new InternalError();
+        }
+        
+        DataBus.logger.info("Entry updated.");
+        return stamp;
+    }
+    
+    /**
+     * 
+     * @param entry
+     * @return
+     */
     private int insertEntry(Entry entry) {
-        if (entry == null) return 0;
+        if (entry == null) throw new IllegalArgumentException();
         
         int id = 0;
         String sql = "INSERT INTO Entry " +

@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.11 2004/06/22 09:25:15 crac Exp $
+ * @version $Id: DataElement.java,v 1.12 2004/06/22 13:35:44 crac Exp $
  */
 public class DataElement {
 	
@@ -29,7 +29,8 @@ public class DataElement {
      */
     public DataElement(MetaEntity entity, Entry entry) {
         this.entity = entity;
-        this.entry = (Entry) entry.clone();   
+        this.entry = (Entry) entry.clone();
+        initFields(entity);
     }
     
     /**
@@ -41,30 +42,46 @@ public class DataElement {
         this.entity = entity;
         this.entry = new Entry();
         this.entry.setOwner(owner);
+        initFields(entity);
     }
     
     /**
     *
     * @param entity
     */
-   public DataElement(MetaEntity entity) {
-       this.entity = entity;
-       this.entry = new Entry();
-   }
+    public DataElement(MetaEntity entity) {
+        this.entity = entity;
+        this.entry = new Entry();
+        initFields(entity);
+    }
     
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+   
+    /**
+     * 
+     * @param entity
+     */
+    private void initFields(MetaEntity entity) {
+        Set metaFields = 
+            DataBus.getMetaData().getMetaFields(entity);
+        java.util.Iterator it = metaFields.iterator();
+        while (it.hasNext()) {
+            Field field = new Field((MetaField) it.next());
+            if (field != null)
+                fields.add(field);
+        }
+    }
     
     /**
+     * 
+     * @see #setField(Field)
      * 
      * @param field
      */
     public void add(Field field) {
-        if (entity == null) {
-            entity = field.getMetaField().getEntity();
-        }
-        fields.add(field);
+        setField(field);
     }
     
     /**
@@ -137,15 +154,17 @@ public class DataElement {
      * @return Returns array of <code>MetaField</code>s
      */
     public MetaField[] getMetaFields() {
-        if (isEmpty()) return null;
+        if (fields.isEmpty()) 
+            throw new RuntimeException("No MetaFields");
         
-        MetaField[] meta = new MetaField[size()];
-        java.util.Iterator it = iterator();
+        MetaField[] meta = new MetaField[fields.size()];
+        java.util.Iterator it = fields.iterator();
         
         int i = 0;
         while(it.hasNext()) {
             Field tmp = (Field) it.next();
             meta[i] = tmp.getMetaField();
+            i++;
         }
         
         return meta;
@@ -156,17 +175,18 @@ public class DataElement {
      * @return Returns array of all <code>Field</code>s
      */
     public Field[] getFields() {
-        if (isEmpty()) return null;
+        if (fields.isEmpty()) return null;
         
-        Field[] fields = new Field[size()];
-        java.util.Iterator it = iterator();
+        Field[] flds = new Field[fields.size()];
+        java.util.Iterator it = fields.iterator();
         
         int i = 0;
         while(it.hasNext()) {
-            fields[i] = (Field) it.next();
+            flds[i] = (Field) it.next();
+            i++;
         }
         
-        return fields;
+        return flds;
     }
     
     /**
@@ -175,11 +195,11 @@ public class DataElement {
      * @return Returns a choosen field
      */
     public Field getField(MetaField f) {
-    	java.util.Iterator it = iterator();
+    	java.util.Iterator it = fields.iterator();
         
         while(it.hasNext()) {
             Field tmp = (Field) it.next();
-        	if (tmp.getMetaField().equals(f)) {
+        	if ((tmp != null) && (tmp.getMetaField().equals(f))) {
                 return tmp;
             }
         }
@@ -227,14 +247,43 @@ public class DataElement {
      */
     public void setField(String field, Object value) {
         MetaField mf = new MetaField(field, entity);
-        java.util.Iterator it = iterator();
+        java.util.Iterator it = fields.iterator();
         
         while(it.hasNext()) {
             Field tmp = (Field) it.next();
-            if (tmp.getMetaField().equals(mf)) {
+            if ((tmp != null) && (tmp.getMetaField().equals(mf))) {
+                fields.remove(tmp);
                 tmp.setValue(value);
+                fields.add(tmp);
+                return;
             }
         }
+        
+        fields.add(new Field(mf, value));
+    }
+    
+    /**
+     * Changes a field of the set to the new value. 
+     * If it is not already in the set, it gets added.
+     * 
+     * @param field
+     */
+    public void setField(Field field) {
+        MetaField mf = field.getMetaField();
+        java.util.Iterator it = fields.iterator();
+        
+        while(it.hasNext()) {
+            Field tmp = (Field) it.next();
+            
+            // Compare MetaField data
+            if ((tmp != null) && (tmp.getMetaField().equals(mf))) {
+                fields.remove(tmp);
+                fields.add(field);
+                return;
+            }
+        }
+        
+        fields.add(field);
     }
     
     /**

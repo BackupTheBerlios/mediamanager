@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.10 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: MetaField.java,v 1.11 2004/06/22 13:35:44 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -32,7 +32,7 @@ public final class MetaField implements Cloneable {
     private int type;
     private int length;
     private String name;
-    private String identifier;
+    private String identifier; // Entity.Field
     private boolean hidden;
     private boolean mandatory;
     private MetaEntity entity;
@@ -85,6 +85,7 @@ public final class MetaField implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new InternalError();   
         }
+        
         return f;
     }
     
@@ -93,7 +94,9 @@ public final class MetaField implements Cloneable {
      * @return
      */
     public String toString() {
-        return identifier;
+        return identifier + ":\n" + 
+           "Type: " + type + "\nLength: " + length + "\n" +
+           "Default: " + defaultValue;
     }
     
     // --------------------------------

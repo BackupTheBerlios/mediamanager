@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.8 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: MetaData.java,v 1.9 2004/06/22 13:35:44 crac Exp $
  */
 public final class MetaData {
     
@@ -34,7 +34,7 @@ public final class MetaData {
      * 
      * @param o
      */
-    public void add(Object o) {
+    protected void add(Object o) {
     	if (o instanceof MetaEntity) {
             addEntity((MetaEntity) o);
         }
@@ -47,7 +47,7 @@ public final class MetaData {
      * 
      * @param entity
      */
-    public void addEntity(MetaEntity entity) {
+    protected void addEntity(MetaEntity entity) {
     	metaEntities.add(entity);
     }
     
@@ -55,7 +55,7 @@ public final class MetaData {
      * 
      * @param field
      */
-    public void addField(MetaField field) {
+    protected void addField(MetaField field) {
     	metaFields.add(field);
     }
     
@@ -143,7 +143,8 @@ public final class MetaData {
     /**
      * 
      * @param e
-     * @return
+     * @return Returns true if the specified 
+     *      <code>MetaEntity</code> is available
      */
     public boolean contains(MetaEntity e) {
         java.util.Iterator it = fieldIterator();
@@ -159,7 +160,8 @@ public final class MetaData {
     /**
      * 
      * @param f
-     * @return
+     * @return Returns true if the specified 
+     *      <code>MetaField</code> is available
      */
     public boolean contains(MetaField f) {
         java.util.Iterator it = fieldIterator();
@@ -176,9 +178,13 @@ public final class MetaData {
      * 
      * @param name
      * @param e
-     * @return
+     * @return Returns the <code>MetaField</code> with 
+     *      the specified name of the <code>MetaEntity</code> 
      */
     public MetaField getMetaField(String name, MetaEntity e) {
+        if ((name == null) || (e == null)) 
+            throw new IllegalArgumentException();
+        
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
@@ -200,8 +206,19 @@ public final class MetaData {
     
     /**
      * 
-     * @param e
+     * @param entity
+     * @param field
      * @return
+     */
+    public MetaField getMetaField(String entity, String field) {
+        return getMetaField(field, new MetaEntity(entity));
+    }
+    
+    /**
+     * 
+     * @param e
+     * @return Returns all <code>MetaField</code>s of 
+     *      a <code>MetaEntity</code>
      */
     public Set getMetaFields(MetaEntity e) {
         Set set = new java.util.HashSet();
@@ -209,7 +226,7 @@ public final class MetaData {
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
             if (tmp.getEntity().equals(e)) {
-                set.add(tmp);
+                set.add((MetaField) tmp);
             }
         }
         return set;

@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.7 2004/06/21 21:42:17 crac Exp $
+ * @version $Id: TestQuery.java,v 1.8 2004/06/22 13:35:44 crac Exp $
  */
 public class TestQuery {
     
@@ -24,6 +24,33 @@ public class TestQuery {
         DataBus.initialize();
         DataBus.logger.info("App started.");
         DataBus.loadRepository();
+        
+        DataSet ds = null;
+        
+        // update example:
+        /*MetaEntity ent = new MetaEntity("Test");
+        Field field = new Field("TestId", ent, new Integer(0));
+        QueryCondition qc = 
+            new QueryCondition(
+                field, 
+                QueryCondition.EQUALS, 
+                new Integer(2)
+            );
+        Vector vec = new Vector();
+        vec.add(qc);
+        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        DataSet set = qr.run();
+        
+        if ((set != null) && (set.size() == 1)) {
+            java.util.Iterator it = set.iterator();
+            DataElement e = (DataElement) it.next();
+            set.remove(e);
+            e.setField("Interpret", "DJ Bobo");
+            set.add(e);
+            qr = new QueryRequest(set, QueryRequest.UPDATE);
+            ds = qr.run();
+        }*/
+        
         
         // insert example:
         /*MetaEntity ent = new MetaEntity("Test");
@@ -48,10 +75,10 @@ public class TestQuery {
         Vector vec = new Vector();
         vec.add(qc);
         QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
-        
-        DataSet ds = qr.run();
+        ds = qr.run();
         
         if (ds != null) {
+            System.out.println("QUERY RESULTS:");
             java.util.Iterator it = ds.iterator();
             while(it.hasNext()) {
                 DataElement e = (DataElement) it.next();

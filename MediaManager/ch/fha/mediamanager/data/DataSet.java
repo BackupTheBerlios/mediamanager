@@ -12,7 +12,7 @@ import java.util.HashSet;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.9 2004/06/22 10:04:23 crac Exp $
+ * @version $Id: DataSet.java,v 1.10 2004/06/22 13:35:44 crac Exp $
  */
 public class DataSet {
 	
@@ -36,6 +36,14 @@ public class DataSet {
      */
     public void add(DataElement e) {
         dSet.add(e);
+    }
+    
+    /**
+     * 
+     * @param e
+     */
+    public void remove(DataElement e) {
+        dSet.remove(e);
     }
     
     /**
@@ -106,10 +114,15 @@ public class DataSet {
      * @return
      */
     public Field[] getFields() {
-        if (isEmpty()) return null;
+        if (dSet.isEmpty()) 
+            throw new RuntimeException("No Elements available.");
         
-        java.util.Iterator it = iterator();
+        java.util.Iterator it = dSet.iterator();
         DataElement element = (DataElement) it.next();
+        
+        if (element.isEmpty()) 
+            throw new RuntimeException("No Fields available.");
+        
         return element.getFields();
     }
     
@@ -128,4 +141,23 @@ public class DataSet {
         MetaField[] fields = getMetaFields();
         return fields[0].getEntity();
     }
+    
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
+    
+    /*protected void setElement(DataElement e) {
+        java.util.Iterator it = dSet.iterator();
+        
+        while(it.hasNext()) {
+            DataElement tmp = (DataElement) it.next();
+            if (tmp.getEntryId() == e.getEntryId()) {
+                dSet.remove(tmp);
+                dSet.add(e);
+                return;
+            }
+        }
+        
+        dSet.add(e);
+    }*/
 }
