@@ -12,15 +12,18 @@ import ch.fha.mediamanager.gui.framework.*;
  * button.
  * 
  * @author Roman Rietmann
- * @version $Id: MainTab.java,v 1.14 2004/06/30 18:54:56 crac Exp $
+ * @version $Id: MainTab.java,v 1.15 2004/07/04 15:37:25 crac Exp $
  */
 public class MainTab extends JPanel 
     implements KeyPointListener {
     
 	// Images for connectbutton
-	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
-	private final static ImageIcon connectingImage = new ImageIcon("images/connecting.gif");
-	private final static ImageIcon disconnectImage = new ImageIcon("images/disconnect.gif");
+	private final static ImageIcon connectImage = 
+        new ImageIcon("images" + java.io.File.separator + "connect.gif");
+	private final static ImageIcon connectingImage = 
+        new ImageIcon("images" + java.io.File.separator + "connecting.gif");
+	private final static ImageIcon disconnectImage = 
+        new ImageIcon("images" + java.io.File.separator + "disconnect.gif");
 
 	private NavButton topButton;
 	private JLabel topLabel;
@@ -31,14 +34,19 @@ public class MainTab extends JPanel
 	public MainTab() {
 		final MainFrame mainWindow = MainFrame.getInstance();
 		setLayout(new BorderLayout());
-		ActionHandler mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = 
+            mainWindow.getMainActionListener();
 		setBorder(new BarBorder("Hauptfenster"));
 
 		JPanel basePanel = new JPanel(new GridLayout(3, 1));
-		JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel topButtonPanel = 
+            new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel middleButtonPanel = 
+            new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel bottomButtonPanel = 
+            new JPanel(new FlowLayout(FlowLayout.LEFT));
 
+        // connection
 		topButton = new NavButton(connectImage,
 			new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -49,14 +57,18 @@ public class MainTab extends JPanel
 					}
 				}
 			} ,
-			MainFrame.connectStr);
+			MainFrame.connectStr
+        );
+        
 		topButtonPanel.add(topButton);
 		topLabel = new RenderedJLabel(MainFrame.connectStrShort);
 		topLabel.setFont(MainFrame.titleFont);
 		topButtonPanel.add(topLabel);
 		basePanel.add(topButtonPanel);
 		
-		ImageIcon prefsImage = new ImageIcon("images/config.gif");
+        // prefrences
+		ImageIcon prefsImage = 
+            new ImageIcon("images" + java.io.File.separator + "config.gif");
 		NavButton middleButton = new NavButton(prefsImage,
 				mainActionListener, "Haupteinstellungen ver\u00e4ndern");
 		middleButton.setActionCommand("config");
@@ -66,7 +78,9 @@ public class MainTab extends JPanel
 		middleButtonPanel.add(middleLabel);
 		basePanel.add(middleButtonPanel);
 
-		ImageIcon exitImage = new ImageIcon("images/exit.gif");
+        // exit
+		ImageIcon exitImage = 
+            new ImageIcon("images" + java.io.File.separator + "exit.gif");
 		NavButton bottomButton = new NavButton(exitImage,
 				mainActionListener, "Mediamanager beenden");
 		bottomButton.setActionCommand("exit");
@@ -108,9 +122,9 @@ public class MainTab extends JPanel
 	/**
 	 * Class for a picture button
 	 */
-	private class NavButton extends JButton implements
-		MouseListener
-	{
+	private class NavButton extends JButton 
+        implements MouseListener {
+        
 		// Button dimension
 		private final Dimension d = new Dimension(66, 66);
 		
@@ -130,12 +144,22 @@ public class MainTab extends JPanel
 			setPreferredSize(d);
 			addActionListener(al);
 			addMouseListener(this);
+            setFocusPainted(false);
+            setBorderPainted(false);
 		}
 
+        /**
+         * 
+         * @param arg0
+         */
 		public void mouseEntered(MouseEvent arg0) {
 			MainFrame.getInstance().setStatusText(this.getToolTipText(), false);
 		}
 
+        /**
+         * 
+         * @param arg0
+         */
 		public void mouseExited(MouseEvent arg0) {
 			MainFrame.getInstance().removeStatusText();
 		}
@@ -152,9 +176,19 @@ public class MainTab extends JPanel
 	 * method.
 	 */
 	private class RenderedJLabel extends JLabel {
+        
+        /**
+         * 
+         * @param text
+         */
 		public RenderedJLabel(String text) {
 			super(text);
 		}
+        
+        /**
+         * 
+         * @param g
+         */
 		public void paint(Graphics g) {
 	        Graphics2D g2d = (Graphics2D) g;
 	        g2d.setRenderingHint(

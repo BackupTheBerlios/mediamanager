@@ -9,7 +9,7 @@ import ch.fha.mediamanager.gui.*;
 /**
  * 
  * @author radisli
- * @version $Id: AbstractToolBar.java,v 1.5 2004/07/04 15:19:04 crac Exp $
+ * @version $Id: AbstractToolBar.java,v 1.6 2004/07/04 15:37:25 crac Exp $
  */
 public abstract class AbstractToolBar extends JToolBar {
 	
@@ -51,6 +51,8 @@ public abstract class AbstractToolBar extends JToolBar {
             super(new ImageIcon(image));
 			setMargin(new Insets(0, 0, 0, 0));
 			setToolTip(toolTip);
+            setFocusable(false);
+            setFocusPainted(false);
 			addActionListener(al);
 			if(ac != null) {
 				this.setActionCommand(ac);
