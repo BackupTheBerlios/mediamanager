@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import java.io.File;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.17 2004/06/23 14:13:27 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.18 2004/06/23 14:54:00 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -334,13 +335,24 @@ public final class MckoiRepository implements Repository {
                 mf.setType(result.getInt("FldtypeId"));
                 
                 switch(mf.getType()) {
-                    case(MetaField.VARCHAR):
-                    case(MetaField.TEXT):
+                    case (MetaField.LIST):
+                    case (MetaField.VARCHAR):
+                    case (MetaField.TEXT):
                         mf.setDefaultValue(result.getString("FldDefault"));
                         break;
-                    case(MetaField.DATE):
+                    case (MetaField.DATE):
+                        mf.setDefaultValue(result.getDate("FldDefault"));
                         break;
-                    case(MetaField.INT):
+                    case (MetaField.TIMESTAMP):
+                        mf.setDefaultValue(result.getTimestamp("FldDefault"));
+                        break;
+                    case (MetaField.BOOLEAN):
+                        mf.setDefaultValue(
+                            new Boolean(
+                                (result.getInt("FldDefault") == 1)? true: false
+                            )
+                        );
+                    case (MetaField.INT):
                         mf.setDefaultValue(
                             new Integer(result.getInt("FldDefault"))
                         );
@@ -407,12 +419,29 @@ public final class MckoiRepository implements Repository {
                                 ds.getPKField())
                             );
                             break;
+                        case (MetaField.BOOLEAN):
                         case (MetaField.INT):
-                            insert.setObject(i, (Integer) field.getValue());
+                            insert.setObject(
+                                i,
+                                (Integer) field.getValue()
+                            );
                             break;
+                        case (MetaField.LIST):
                         case (MetaField.TEXT):
                         case (MetaField.VARCHAR):
-                            insert.setString(i, field.getValue().toString());
+                            insert.setString(
+                                i,
+                                field.getValue().toString()
+                            );
+                            break;
+                        case (MetaField.DATE):
+                            insert.setDate(i,(Date) field.getValue());
+                            break;
+                        case (MetaField.TIMESTAMP):
+                            insert.setTimestamp(
+                                i,
+                                (Timestamp) field.getValue()
+                            );
                             break;
                     }
                 }
@@ -468,12 +497,26 @@ public final class MckoiRepository implements Repository {
                     
                     switch (metaField.getType()) {
                         case (MetaField.PK):
+                        case (MetaField.BOOLEAN):
                         case (MetaField.INT):
                             update.setObject(i, (Integer) fields[i-1].getValue());
                             break;
+                        case (MetaField.LIST):
                         case (MetaField.TEXT):
                         case (MetaField.VARCHAR):
                             update.setString(i, fields[i-1].getValue().toString());
+                            break;
+                        case (MetaField.DATE):
+                            update.setDate(
+                                i,
+                                (Date) fields[i-1].getValue()
+                            );
+                            break;
+                        case (MetaField.TIMESTAMP):
+                            update.setTimestamp(
+                                 i,
+                                 (Timestamp) fields[i-1].getValue()
+                            );
                             break;
                     }
                 }
