@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.11 2004/06/23 17:01:03 crac Exp $
+ * @version $Id: MetaData.java,v 1.12 2004/06/25 17:05:40 crac Exp $
  */
 public final class MetaData {
     
@@ -29,6 +29,35 @@ public final class MetaData {
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    /**
+     * 
+     * @param o
+     */
+    protected void remove(Object o) {
+        if (o instanceof MetaEntity) {
+            addEntity((MetaEntity) o);
+        }
+        else if (o instanceof MetaField) {
+            addField((MetaField) o);
+        }
+    }
+    
+    /**
+     * 
+     * @param entity
+     */
+    protected void remove(MetaEntity entity) {
+        metaEntities.remove(entity);
+    }
+    
+    /**
+     * 
+     * @param field
+     */
+    protected void remove(MetaField field) {
+        metaFields.remove(field);
+    }
     
     /**
      * 
