@@ -5,7 +5,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author luca
- * @version $Id: QueryCondition.java,v 1.2 2004/05/21 17:45:28 crac Exp $
+ * @version $Id: QueryCondition.java,v 1.3 2004/05/21 18:02:01 crac Exp $
  */
 public class QueryCondition {
     
@@ -22,7 +22,7 @@ public class QueryCondition {
     
     private DataEntity entity;
     private DataField field;
-    private int connector;
+    private int comparator;
     private Object value;
     
     // --------------------------------

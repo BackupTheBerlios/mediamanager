@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.2 2004/05/21 17:45:28 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.3 2004/05/21 18:02:01 crac Exp $
  */
 public class QueryRequest {
     
@@ -14,8 +14,8 @@ public class QueryRequest {
     
     public static final int OR = 0;          // +
     public static final int AND = 1;         // *
-    public static final int BACE_OPEN = 3;   // (
-    public static final int BACE_CLOSE = 4;  // )
+    public static final int BRACE_OPEN = 3;   // (
+    public static final int BRACE_CLOSE = 4;  // )
     
     // --------------------------------
     // ATTRIBUTES

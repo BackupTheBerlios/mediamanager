@@ -4,49 +4,94 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * 
- * @author luca
+ * @author crac
+ * @version $Id: DataEntity.java,v 1.2 2004/05/21 18:02:39 crac Exp $
  */
 public class DataEntity {
+
+    // --------------------------------
+    // ATTRIBUTES
+    // --------------------------------
     
+    private String name;
+    
+    // --------------------------------
+    // CONSTRUCTORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @param name
+     */
+    public DataEntity(String name) {
+        this.name = name;
+    }
+    
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+    
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
+    
+    /**
+     * 
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 
 /**
  *
  *
  * @author crac
- * @version $Id: DataEntity.java,v 1.1 2004/05/20 14:40:43 crac Exp $
+ * @version $Id: DataEntity.java,v 1.2 2004/05/21 18:02:39 crac Exp $
  */ 
 class DataField {
+    
+    // --------------------------------
+    // ATTRIBUTES
+    // --------------------------------
 
     private Object data;
-    private String key;
+    private String name;
+    
+    // --------------------------------
+    // CONSTRUCTORS
+    // --------------------------------
 
     /**
      * 
      * 
-     * @param key
+     * @param name
      * @param data
      */
-    public DataField(String key, Object data) {
-       this.key = key;
+    public DataField(String name, Object data) {
+       this.name = name;
        this.data = data;
     }
     
-    /**
-     * Performs the request.
-     * 
-     * @return DataSet
-     */
-    public DataSet run() {
-        return null;
-    }
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
     
     /**
      * 
      * @return
      */
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -56,13 +101,17 @@ class DataField {
     public Object getData() {
         return data;
     }
+    
+    // --------------------------------
+    // MUTATORS
+    // --------------------------------
 
     /**
      * 
-     * @param key
+     * @param name
      */
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
