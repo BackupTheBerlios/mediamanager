@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.27 2004/06/25 08:58:17 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.28 2004/06/25 10:55:56 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -204,7 +204,6 @@ public final class MckoiRepository implements Repository {
        if ( (field == null) 
                || (field.getType() == MetaField.USERID)
 			   || (field.getType() == MetaField.ENTRYID)
-			   || (field.getType() == MetaField.PK)
                || (field.getEntity().getId() == 0)
            ) {
            throw new IllegalArgumentException();
@@ -236,13 +235,21 @@ public final class MckoiRepository implements Repository {
            insertField.execute();
            
            switch (field.getType()) {
+               case (MetaField.PK):
+                   alter += " INTEGER DEFAULT UNIQUEKEY('" +
+                       field.getEntity().getName() + "') ";
+                   insertConstraint(field);
+                   break;
                case (MetaField.INT):
                    alter += " INTEGER ";
                    break;
                case (MetaField.TEXT):
+                   alter += " TEXT ";
+                   break;
                case (MetaField.VARCHAR):
                case (MetaField.LIST):
-                   alter += " VARCHAR(" + field.getLength() +
+                   alter +=  
+                       " VARCHAR(" + field.getLength() +
                        ") ";
                    break;
                case (MetaField.BOOLEAN):
@@ -269,6 +276,14 @@ public final class MckoiRepository implements Repository {
        DataBus.logger.info("Field " + field.getIdentifier() + 
            " created.");
        return true;
+   }
+   
+   /**
+    * 
+    * @param field
+    */
+   private void insertConstraint(MetaField field) {
+       //
    }
    
    /**
@@ -405,18 +420,41 @@ public final class MckoiRepository implements Repository {
                         mf.setDefaultValue(result.getDate("FldDefault"));
                         break;
                     case (MetaField.TIMESTAMP):
-                        mf.setDefaultValue(result.getTimestamp("FldDefault"));
+                        if (! result.getString("FldDefault").equals("")) {
+                            mf.setDefaultValue(
+                                new Timestamp(Integer.parseInt(
+                                    result.getString("FldDefault")
+                                ))
+                            );
+                        } else {
+                            mf.setDefaultValue(
+                                new Timestamp(System.currentTimeMillis())
+                            );
+                        }
                         break;
                     case (MetaField.BOOLEAN):
-                        mf.setDefaultValue(
-                            new Boolean(
-                                (result.getInt("FldDefault") == 1)? true: false
-                            )
-                        );
+                        if (! result.getString("FldDefault").equals("")) {
+                            mf.setDefaultValue(
+                                new Boolean(
+                                    (Integer.parseInt(
+                                            result.getString("FldDefault")
+                                    ) == 1)? true: false
+                                )
+                            );
+                        } else {
+                            mf.setDefaultValue(new Boolean(false));
+                        }
+                        break;
                     case (MetaField.INT):
-                        mf.setDefaultValue(
-                            new Integer(result.getInt("FldDefault"))
-                        );
+                        if (! result.getString("FldDefault").equals("")) {
+                            mf.setDefaultValue(
+                                new Integer(Integer.parseInt(
+                                    result.getString("FldDefault")
+                                ))
+                            );
+                        } else {
+                            mf.setDefaultValue(new Integer(0));
+                        }
                         break;
                 }
                 data.addEntity(me);
