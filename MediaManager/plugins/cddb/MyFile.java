@@ -568,10 +568,8 @@ public class MyFile extends File
                 lastObject = in.readObject();
             } catch (Exception e) {
                 //e.printStackTrace();
-            } finally {
-               	return tmp; 
             }
-						
+            return tmp;
         }
     }
 }
