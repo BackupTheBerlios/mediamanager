@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.4 2004/06/17 12:35:04 radisli Exp $
+//$Id: MainFrame.java,v 1.5 2004/06/18 11:07:38 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -71,8 +71,8 @@ public class MainFrame extends JFrame implements
 		});
 		Preferences prefs = Mediamanager.getPrefs();
 
-		// ---> test KeyPointEvent
-		mainActionListener.addActionListener(this, new KeyPointEvent(KeyPointEvent.WINDOW_EXIT, "test successfull at MainFrame::init"));
+		// Registeres event which is called when the <code>PluginsTab</code> is shown
+		mainActionListener.addActionListener(this, new KeyPointEvent(KeyPointEvent.CONFIG_PANEL_LOAD, ""));
 		
 		// Main Panel
 		mainTabPanel = new MainTabPanel();
@@ -142,7 +142,7 @@ public class MainFrame extends JFrame implements
 	 *
 	 * @return mainActionListener
 	 */
-	public ActionListener getMainActionListener() {
+	public ActionHandler getMainActionListener() {
 		return mainActionListener;
 	}
 	
@@ -234,11 +234,23 @@ public class MainFrame extends JFrame implements
 	}
 
 	/**
-	 * TODO ---> To Delete 
+	 * Method is called when a preregistered key-point is reached.
+	 *  
+	 * @param e is a <code>KeyPointEvent</code> which contains:
+	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
+	 *          - additional string parameter
 	 */
 	public void runAction(KeyPointEvent e) {
-		System.out.println("runAction performed in MainFrame:");
-		System.out.println("  --> Parameter: " + e.getParameter());
+		if(e.getKeyPointEvent() == KeyPointEvent.CONFIG_PANEL_LOAD) {
+			/**
+			 * 
+			 * TODO --> Simon von Däniken
+			 * Wird ausgeführt wenn das Config Pannel geladen wird
+			 * 
+			 */
+		} else {
+			message("Uncatched KeyPointerEvent: " + e.getParameter() + " (" + e.getKeyPointEvent() + ")");	
+		}
 	}
 	
 	/**

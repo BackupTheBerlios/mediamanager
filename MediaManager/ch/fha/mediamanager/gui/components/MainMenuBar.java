@@ -9,7 +9,7 @@ import ch.fha.mediamanager.gui.components.menu.*;
 /**
  * @author Roman Rietmann
  *
- * TODO
+ * The main-menu bar
  */
 public class MainMenuBar extends JMenuBar {
 	public MainMenuBar() {

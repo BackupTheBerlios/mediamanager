@@ -1,11 +1,11 @@
-//$Id: PluginsTab.java,v 1.2 2004/06/18 07:42:39 ia02vond Exp $
+//$Id: PluginsTab.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
 package ch.fha.mediamanager.gui.config.components;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.*;
 import ch.fha.mediamanager.gui.util.PluginConf;
 
 /**
@@ -20,7 +20,7 @@ public class PluginsTab extends JPanel {
 	public PluginsTab() {
 		setLayout(new BorderLayout());
 		MainFrame mainWindow = MainFrame.getInstance();
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 	
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton back = new JButton("Zur\u00fcck");

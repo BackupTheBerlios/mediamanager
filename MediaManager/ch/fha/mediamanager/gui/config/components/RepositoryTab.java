@@ -1,11 +1,11 @@
-//$Id: RepositoryTab.java,v 1.1 2004/06/17 12:22:51 radisli Exp $
+//$Id: RepositoryTab.java,v 1.2 2004/06/18 11:07:38 radisli Exp $
 package ch.fha.mediamanager.gui.config.components;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.*;
 
 /**
  * Repository Configuration panel
@@ -19,7 +19,7 @@ public class RepositoryTab extends JPanel {
 	public RepositoryTab() {
 		setLayout(new BorderLayout());
 		MainFrame mainWindow = MainFrame.getInstance();
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 	
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton back = new JButton("Zur\u00fcck");

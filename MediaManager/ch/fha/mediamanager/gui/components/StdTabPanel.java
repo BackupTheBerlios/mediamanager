@@ -1,8 +1,7 @@
-//$Id: StdTabPanel.java,v 1.2 2004/06/17 12:41:20 radisli Exp $
+//$Id: StdTabPanel.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.prefs.*;
 
@@ -16,7 +15,7 @@ public class StdTabPanel extends JPanel implements
 		Mediamanager.addSavable(this);
 		setLayout(new BorderLayout());
 		MainFrame mainWindow = MainFrame.getInstance();
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 		
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton exit = new JButton("Exit");

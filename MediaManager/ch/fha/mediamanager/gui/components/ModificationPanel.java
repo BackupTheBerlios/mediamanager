@@ -1,18 +1,18 @@
-//$Id: ModificationPanel.java,v 1.2 2004/06/16 08:10:59 radisli Exp $
+//$Id: ModificationPanel.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
-import java.awt.event.*;
-
 import javax.swing.*;
+
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.*;
 
 public class ModificationPanel extends JPanel {
 	private JButton exit, loadTabs, loadConfig;
 	
 	public ModificationPanel() {
 		MainFrame mainWindow = MainFrame.getInstance();
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 		setLayout(new BorderLayout());
 		setBorder(MainFrame.b);
 		
