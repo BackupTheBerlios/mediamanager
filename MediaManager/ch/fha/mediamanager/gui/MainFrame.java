@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.7 2004/06/21 07:30:58 radisli Exp $
+//$Id: MainFrame.java,v 1.8 2004/06/21 12:30:29 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -112,7 +112,6 @@ public class MainFrame extends JFrame implements
 		
 		cp.add(windowHolder, BorderLayout.CENTER);
 
-		setVisible(true);
 		setExtendedState(prefs.getInt(SCREEN_MODE, defaultScreenMode));
 	}
 	
