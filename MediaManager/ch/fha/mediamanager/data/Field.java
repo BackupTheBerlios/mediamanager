@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.10 2004/06/27 09:22:26 crac Exp $
+ * @version $Id: Field.java,v 1.11 2004/06/28 14:12:20 crac Exp $
  */
 public class Field {
 	
@@ -107,7 +107,7 @@ public class Field {
      * @return
      */
     public MetaEntity getMetaEntity() {
-    	return meta.getEntity();
+    	return meta.getMetaEntity();
     }
     
     /**

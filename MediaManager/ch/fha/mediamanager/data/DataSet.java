@@ -12,7 +12,7 @@ import java.util.Set;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.12 2004/06/28 10:07:24 crac Exp $
+ * @version $Id: DataSet.java,v 1.13 2004/06/28 14:12:20 crac Exp $
  */
 public class DataSet {
 	
@@ -139,7 +139,7 @@ public class DataSet {
         if (isEmpty()) return null;
         
         MetaField[] fields = getMetaFields();
-        return fields[0].getEntity();
+        return fields[0].getMetaEntity();
     }
     
     // --------------------------------

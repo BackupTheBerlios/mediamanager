@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.16 2004/06/28 14:03:45 ia02vond Exp $
+ * @version $Id: Repository.java,v 1.17 2004/06/28 14:12:20 crac Exp $
  */
 public abstract class Repository {
     
@@ -62,6 +62,33 @@ public abstract class Repository {
         return connected;
     }
     
+    /**
+     * 
+     * @param l
+     */
+    public void addRepositoryListener(RepositoryListener l) {
+        repositoryListeners.add(l);
+    }
+    
+    /**
+     * 
+     * @param l
+     */
+    public void removeRepositoryListener(RepositoryListener l) {
+        repositoryListeners.remove(l);
+    }
+    
+    /**
+     * 
+     * @param metaEntity
+     */
+    public void fireDataChanged(MetaEntity metaEntity) {
+        Iterator it = repositoryListeners.iterator();
+        while (it.hasNext()) {
+            ((RepositoryListener)it.next()).dataChanged(metaEntity);
+        }
+    }
+    
     // --------------------------------
     // ACCESSORS
     // --------------------------------
@@ -80,20 +107,5 @@ public abstract class Repository {
      */
     public String getName() {
         return name;
-    }
-    
-    public void addRepositoryListener(RepositoryListener l) {
-    	repositoryListeners.add(l);
-    }
-    
-    public void removeRepositoryListener(RepositoryListener l) {
-    	repositoryListeners.remove(l);
-    }
-    
-    public void fireDataChanged(MetaEntity metaEntity) {
-    	Iterator it = repositoryListeners.iterator();
-    	while (it.hasNext()) {
-    		((RepositoryListener)it.next()).dataChanged(metaEntity);
-    	}
     }
 }

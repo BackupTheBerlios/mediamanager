@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.46 2004/06/28 13:39:29 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.47 2004/06/28 14:12:20 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -185,7 +185,7 @@ public final class MckoiRepository extends Repository {
        if ( (field == null) 
                || (field.getType() == MetaField.USERID)
 			   || (field.getType() == MetaField.ENTRYID)
-               || (field.getEntity().getId() == 0)
+               || (field.getMetaEntity().getId() == 0)
                || (field.getId() != 0)
                || (field.getType() == MetaField.INVALID_TYPE)
                || (field.getName().equals(""))
@@ -193,7 +193,7 @@ public final class MckoiRepository extends Repository {
            throw new IllegalArgumentException();
        }
        
-       String alter = "ALTER TABLE " + field.getEntity().getName() + 
+       String alter = "ALTER TABLE " + field.getMetaEntity().getName() + 
            " ADD " + field.getName();
        
        insertField = 
@@ -214,7 +214,7 @@ public final class MckoiRepository extends Repository {
            
            insertField.setInt(1, id);
            insertField.setString(2, field.getName());
-           insertField.setInt(3, field.getEntity().getId());
+           insertField.setInt(3, field.getMetaEntity().getId());
            insertField.setInt(4, field.getType());
            insertField.setInt(5, field.getLength());
            insertField.setString(6, defaultValue);
@@ -226,7 +226,7 @@ public final class MckoiRepository extends Repository {
            switch (field.getType()) {
                case (MetaField.PK):
                    alter += " INTEGER DEFAULT UNIQUEKEY('" +
-                       field.getEntity().getName() + "') ";
+                       field.getMetaEntity().getName() + "') ";
                    pk = field;
                    break;
                case (MetaField.INT):
@@ -271,6 +271,8 @@ public final class MckoiRepository extends Repository {
        DataBus.logger.info("Field " + field.getIdentifier() + 
             " with Id " + field.getId() + " created.");
        DataBus.getMetaData().addMetaField(field);
+       
+       fireDataChanged(field.getMetaEntity());
        return true;
    }
    
@@ -287,7 +289,7 @@ public final class MckoiRepository extends Repository {
        }
        
        String sql = "ALTER TABLE " + 
-           field.getEntity().getName() + 
+           field.getMetaEntity().getName() + 
            " ADD PRIMARY KEY(" + field.getName() + ");";
        dbConnection.executeQuery(sql);
    }
@@ -333,6 +335,8 @@ public final class MckoiRepository extends Repository {
        DataBus.logger.info("Entity " + entity.getName() +
            " deleted.");
        DataBus.getMetaData().remove(entity);
+       
+       fireDataChanged(entity);
        return true;
    }
    
@@ -355,7 +359,7 @@ public final class MckoiRepository extends Repository {
        String delFld = "DELETE FROM Fld WHERE FldId = " + 
            field.getId() + ";";
        String delField = "ALTER TABLE " + 
-           field.getEntity().getName() + " DROP " + field.getName() + ";";
+           field.getMetaEntity().getName() + " DROP " + field.getName() + ";";
            
        try {
            dbConnection.getConnection().setAutoCommit(false);
@@ -372,6 +376,8 @@ public final class MckoiRepository extends Repository {
        DataBus.logger.info("Field " + field.getIdentifier() + 
            " deleted.");
        DataBus.getMetaData().remove(field);
+       
+       fireDataChanged(field.getMetaEntity());
        return true;
    }
     
@@ -594,7 +600,9 @@ public final class MckoiRepository extends Repository {
             DataBus.logger.debug("DataElement inserted.");
         }
         
-        DataBus.logger.debug("DataSet inserted.");   
+        DataBus.logger.debug("DataSet inserted.");
+        
+        fireDataChanged(ds.getMetaEntity());
         return ds;
     }
     
@@ -697,6 +705,8 @@ public final class MckoiRepository extends Repository {
             DataBus.logger.debug("DataElement updated.");
         }
         DataBus.logger.debug("DataSet updated.");
+        
+        fireDataChanged(ds.getMetaEntity());
         return ds;
     }
     
@@ -727,6 +737,8 @@ public final class MckoiRepository extends Repository {
         }
         DataBus.logger.info("DataSet deleted.");
         ds = null;
+        
+        fireDataChanged(ds.getMetaEntity());
         return null;
     }
     

@@ -13,7 +13,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.17 2004/06/28 10:07:24 crac Exp $
+ * @version $Id: MetaData.java,v 1.18 2004/06/28 14:12:20 crac Exp $
  */
 public final class MetaData {
     
@@ -263,7 +263,7 @@ public final class MetaData {
      * @return
      */
     protected MetaField getMetaField(MetaField f) {
-        return getMetaField(f.getName(), f.getEntity());   
+        return getMetaField(f.getName(), f.getMetaEntity());   
     }
     
     /**
@@ -287,7 +287,7 @@ public final class MetaData {
         java.util.Iterator it = fieldIterator();
         while (it.hasNext()) {
             MetaField tmp = (MetaField) it.next();
-            if (tmp.getEntity().equals(e)) {
+            if (tmp.getMetaEntity().equals(e)) {
                 set.add((MetaField) tmp);
             }
         }
