@@ -12,7 +12,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.14 2004/06/25 17:26:46 crac Exp $
+ * @version $Id: MetaData.java,v 1.15 2004/06/26 12:19:23 crac Exp $
  */
 public final class MetaData {
     
@@ -228,7 +228,8 @@ public final class MetaData {
                 return tmp;
             }
         }
-        return null;
+        
+        throw new NoSuchMetaEntityException();
     }
     
     /**
@@ -249,7 +250,8 @@ public final class MetaData {
                 return tmp;   
             }
         }
-        return null;   
+        
+        return null;  
     }
     
     /**

@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.23 2004/06/25 17:26:46 crac Exp $
+ * @version $Id: DataBus.java,v 1.24 2004/06/26 12:19:23 crac Exp $
  */
 public final class DataBus {
 	
@@ -163,6 +163,42 @@ public final class DataBus {
         try {
             Object[] args = {ds, new Integer(type)};
             Class[] argTypes = {ds.getClass(), int.class};
+            Class qrClass = 
+                currentRepository.getQueryClass();
+
+            AbstractQuery qr = (AbstractQuery)
+                qrClass.getConstructor(argTypes).newInstance(args);
+            return qr;
+            
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InvocationTargetException e ){
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * 
+     * @param vec
+     * @param type
+     * 
+     * @return Returns query handler of the 
+     *      active repository
+     */
+    public static AbstractQuery getQueryInstance(
+        int type) {
+        
+        try {
+            Object[] args = {new Integer(type)};
+            Class[] argTypes = {int.class};
             Class qrClass = 
                 currentRepository.getQueryClass();
 

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.35 2004/06/26 09:58:42 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.36 2004/06/26 12:19:23 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -159,7 +159,9 @@ public final class MckoiRepository extends Repository {
        insertEntity = 
            dbConnection.prepareStatement("INSERT INTO Ent " +
                "(EntId, EntName) VALUES (?, ?);");
-       String createEntity = "CREATE TABLE " + entity.getName() + ";";
+       String createEntity = "CREATE TABLE " + entity.getName() + 
+           "(EntryId INTEGER DEFAULT 0 NOT NULL," + 
+           "FOREIGN KEY(EntryId) REFERENCES Entry (EntryId));";
        
        try {
            entity.setId(getNextPK("Ent", "EntId"));
@@ -175,12 +177,12 @@ public final class MckoiRepository extends Repository {
            dbConnection.getConnection().commit();
        } catch (SQLException e) {
            DataBus.logger.warn("Entity " + entity.getName() + 
-               " not created.");
+                " with Id " + entity.getId() + " not created.");
            return false;
        }
        
        DataBus.logger.info("Entity " + entity.getName() + 
-           " created.");
+           " with Id " + entity.getId() + " created.");
        DataBus.getMetaData().addEntity(entity);
        return true;
    }
@@ -195,6 +197,8 @@ public final class MckoiRepository extends Repository {
                || (field.getType() == MetaField.USERID)
 			   || (field.getType() == MetaField.ENTRYID)
                || (field.getEntity().getId() == 0)
+               || (field.getId() != 0)
+               || (field.getName().equals(""))
            ) {
            throw new IllegalArgumentException();
        }
@@ -212,6 +216,10 @@ public final class MckoiRepository extends Repository {
            int id = getNextPK("Fld", "FldId");
            field.setId(id);
            
+           String defaultValue;
+           if (field.getDefaultValue() == null) defaultValue = "";
+           else defaultValue = field.getDefaultValue().toString();
+           
            dbConnection.getConnection().setAutoCommit(false);
            
            insertField.setInt(1, id);
@@ -219,16 +227,20 @@ public final class MckoiRepository extends Repository {
            insertField.setInt(3, field.getEntity().getId());
            insertField.setInt(4, field.getType());
            insertField.setInt(5, field.getLength());
-           insertField.setObject(6, field.getDefaultValue()); // ?
+           insertField.setString(
+               6,
+               defaultValue
+           ); // ?
            insertField.setInt(7, (field.getHidden() == true)? 1: 0);
            insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
-           insertField.execute();
+           
+           MetaField pk = null;
            
            switch (field.getType()) {
                case (MetaField.PK):
                    alter += " INTEGER DEFAULT UNIQUEKEY('" +
                        field.getEntity().getName() + "') ";
-                   createPK(field);
+                   pk = field;
                    break;
                case (MetaField.INT):
                    alter += " INTEGER ";
@@ -238,6 +250,9 @@ public final class MckoiRepository extends Repository {
                    break;
                case (MetaField.VARCHAR):
                case (MetaField.LIST):
+                   if (field.getLength() == 0) {
+                       field.setLength(255);
+                   }
                    alter +=  
                        " VARCHAR(" + field.getLength() +
                        ") ";
@@ -255,16 +270,19 @@ public final class MckoiRepository extends Repository {
            
            alter += " NOT NULL ";
            
+           insertField.execute();
            dbConnection.executeQuery(alter);
+           
+           if (pk != null) createPK(pk);
            
            dbConnection.getConnection().commit();
        } catch (SQLException e) {
            DataBus.logger.warn("Field " + field.getIdentifier() + 
-               " not created.");
+               " with Id " + field.getId() + " not created.");
            return false;
        }      
        DataBus.logger.info("Field " + field.getIdentifier() + 
-           " created.");
+            " with Id " + field.getId() + " created.");
        DataBus.getMetaData().addField(field);
        return true;
    }
@@ -283,7 +301,7 @@ public final class MckoiRepository extends Repository {
        
        String sql = "ALTER TABLE " + 
            field.getEntity().getName() + 
-           " ADD PRIMARY KEY('" + field.getName() + "');";
+           " ADD PRIMARY KEY(" + field.getName() + ");";
        dbConnection.executeQuery(sql);
    }
    
@@ -313,8 +331,8 @@ public final class MckoiRepository extends Repository {
        try {
            dbConnection.getConnection().setAutoCommit(false);
            
-           dbConnection.executeQuery(delEntity);
            dbConnection.executeQuery(delEntries);
+           dbConnection.executeQuery(delEntity);
            dbConnection.executeQuery(delFld);
            dbConnection.executeQuery(delEnt);
            
@@ -461,9 +479,22 @@ public final class MckoiRepository extends Repository {
                         }
                         break;
                 }
-                data.addEntity(me);
+                //data.addEntity(me);
                 data.addField(mf);
                 DataBus.logger.debug("MetaField added: " + mf.getIdentifier());
+            }
+            
+            String loadEntities = "SELECT * FROM Ent WHERE EntId > 0;";
+            ResultSet resEntities = 
+                dbConnection.executeQuery(loadEntities);
+            
+            while (resEntities.next()) {
+                MetaEntity entity = 
+                    new MetaEntity(
+                        resEntities.getString("EntName"),
+                        resEntities.getInt("EntId")
+                    );
+                data.addEntity(entity);
             }
         } catch (SQLException e) {
             DataBus.logger.fatal("Could not load MetaData.");

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
  * @author luca
- * @version $Id: Query.java,v 1.2 2004/06/26 09:58:07 crac Exp $
+ * @version $Id: Query.java,v 1.3 2004/06/26 12:19:23 crac Exp $
  */
 public interface Query {
     
@@ -21,7 +21,7 @@ public interface Query {
     public static final int DELETE = 4;
     public static final int ENTITY_CREATE = 5;
     public static final int ENTITY_DELETE = 6;
-    public static final int ENTITY_FIELD_CREATE = 7;
+    public static final int ENTITY_FIELDS_CREATE = 7;
     public static final int FIELD_CREATE = 8;
     public static final int FIELD_DELETE = 9;
     

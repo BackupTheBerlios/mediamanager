@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.2 2004/06/26 10:01:07 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.3 2004/06/26 12:19:23 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
@@ -168,7 +168,7 @@ public abstract class AbstractQuery implements Query {
             throw new RuntimeException("Querytype was not set.");
         
         switch (this.type) {
-            case (ENTITY_FIELD_CREATE):
+            case (ENTITY_FIELDS_CREATE):
                 return repository.create(e, f);
         }
         return false;
