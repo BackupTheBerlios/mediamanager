@@ -1,10 +1,11 @@
-// $Id: Mediamanager.java,v 1.2 2004/05/27 13:38:16 radisli Exp $
+// $Id: Mediamanager.java,v 1.3 2004/06/05 13:49:35 radisli Exp $
 package ch.fha.mediamanager.gui;
 
-// import java.io.*;
 import javax.swing.*;
 import java.util.*;
 import java.util.prefs.*;
+
+import ch.fha.mediamanager.gui.framework.*;
 
 /**
  * Mediamanager application
@@ -12,39 +13,58 @@ import java.util.prefs.*;
  * @author Roman Rietmann
  */
 public class Mediamanager {
+	/** Preferences */
 	private static Preferences prefs = Preferences.userNodeForPackage(Mediamanager.class);
+	/** Preferences owner */
 	private static LinkedList prefsOwner = new LinkedList();
-	
-	private static final String NOTSAVED = "notSaved";
 
 	/**
-	 *  Private to prevent instantiation.
+	 * Main method creates a <code>MainFrame</code>
 	 */
-	private Mediamanager() {
-		Package p = getClass().getPackage();
-	}
-
 	public static void main(String[] args) {
-		JFrame mainFrame = new MainFrame(); 
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		MainFrame.getInstance();
 	}
 
-	public static void addPrefsOwner(PrefsOwnerListener listener){
+	/**
+	 * Adds a <code>Savable</code> components to the <code>prefsOwner</code>
+	 * list which will be iterated on Program shutsown to save all
+	 * preferences
+	 * 
+	 * @param listener is the class which will be added
+	 */
+	public static void addSavable(Savable listener){
 		prefsOwner.add(listener);
 	}
 
-	public static void removePrefsOwnerListener(PrefsOwnerListener listener){
+	/**
+	 * Removes a <code>Savable</code> components from the <code>prefsOwner</code>
+	 * list which will be iterated on Program shutsown to save all preferences
+	 * 
+	 * @param listener is the class which will be removed
+	 */
+	public static void removeSavable(Savable listener){
 		int figureIndex = prefsOwner.indexOf((Object)listener);
 		prefsOwner.remove(figureIndex);
 	}
 	
+	/**
+	 * Calls the <code>savePrefs</code> method in all registred
+	 * <code>Savable</code> components in the <code>prefsOwner</code>
+	 */
 	public static void fireSave() {
 		System.out.println("fireSave performed in Mediamanager");
 		Iterator it = prefsOwner.iterator();
 		while(it.hasNext()) {
-			((PrefsOwnerListener)it.next()).savePrefs();
+			((Savable)it.next()).savePrefs(prefs);
 		}
 	}
 	
+	/**
+	 * Returns the <code>prefs</code> object
+	 * 
+	 * @return prefs which contains all settings
+	 */
 	public static Preferences getPrefs() {
 		return prefs;
 	}

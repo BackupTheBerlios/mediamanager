@@ -1,17 +1,12 @@
-//$Id: StandartToolBar.java,v 1.1 2004/05/27 13:38:16 radisli Exp $
+//$Id: StandartToolBar.java,v 1.2 2004/06/05 13:49:35 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
-import javax.swing.*;
-import java.awt.event.*;
+import ch.fha.mediamanager.gui.framework.*;
 
 public class StandartToolBar extends AbstractToolBar {
 
-	public StandartToolBar(JFrame mainWindow, ActionListener mainActionHandler) {
-		super(mainWindow, mainActionHandler);
+	public StandartToolBar() {
+		super();
 		addToolbarElement("images/SELECTION.gif", "Select");
-	}
-
-	public void runAction() {
-		
 	}
 }
