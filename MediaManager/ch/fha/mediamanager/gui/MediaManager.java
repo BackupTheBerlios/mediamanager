@@ -1,4 +1,4 @@
-// $Id: MediaManager.java,v 1.2 2004/06/28 10:43:41 radisli Exp $
+// $Id: MediaManager.java,v 1.3 2004/06/28 13:45:37 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -76,6 +76,7 @@ public class MediaManager {
 		// Gui
 		splash.setProcess(0.7, "lade graphische Umgebung ...");
 		MainFrame mainFrame = MainFrame.getInstance();
+		PluginManager.getInstance().setInOut(mainFrame);
 		
 		// waiting ...
 		splash.setProcess(1, "");
