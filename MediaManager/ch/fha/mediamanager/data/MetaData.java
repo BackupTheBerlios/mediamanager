@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.9 2004/06/22 13:35:44 crac Exp $
+ * @version $Id: MetaData.java,v 1.10 2004/06/23 13:53:46 crac Exp $
  */
 public final class MetaData {
     
@@ -172,6 +172,25 @@ public final class MetaData {
             }
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @return Returns requested <code>MetaEntity</code>
+     */
+    public MetaEntity getMetaEntity(String name) {
+        if (name == null)
+            throw new IllegalArgumentException();
+        
+        java.util.Iterator it = entityIterator();
+        while (it.hasNext()) {
+            MetaEntity tmp = (MetaEntity) it.next();
+            if (tmp.getName().equals(name)) {
+                return tmp;
+            }
+        }
+        return null;
     }
     
     /**
