@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: Field.java,v 1.8 2004/06/22 13:35:44 crac Exp $
+ * @version $Id: Field.java,v 1.9 2004/06/22 13:36:40 crac Exp $
  */
 public class Field {
 	
@@ -89,8 +89,7 @@ public class Field {
      * @return
      */
     public MetaField getMetaField() {
-        //return (MetaField) meta.clone();
-        return meta;
+        return (MetaField) meta.clone();
     }
     
     /**
