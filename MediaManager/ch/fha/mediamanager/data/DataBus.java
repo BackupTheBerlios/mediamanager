@@ -17,7 +17,7 @@ import ch.fha.mediamanager.gui.framework.KeyPointEvent;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.33 2004/06/29 13:03:46 crac Exp $
+ * @version $Id: DataBus.java,v 1.34 2004/06/29 13:34:31 radisli Exp $
  */
 public final class DataBus {
 	
@@ -93,11 +93,16 @@ public final class DataBus {
      * @see AbstractRepository#disconnect()
      */
     public static void disconnect() {
-        if (currentRepository != null) {
+    	MainFrame mf = MainFrame.getInstance();
+    	if (currentRepository != null) {
             currentRepository.disconnect();
             metaData = null;
             DataBus.logger.info("Repository disconnected.");
-            MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.POST_DISCONNECT);
+            if(mf.exiting) {
+            	mf.getMainActionListener().fireAction(KeyPointEvent.WINDOW_FINAL_EXIT);
+            } else {
+            	mf.getMainActionListener().fireAction(KeyPointEvent.POST_DISCONNECT);
+            }
         } else {
             DataBus.logger.info("No repository available.");
             MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.DISCONNECT_ERROR);

@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.18 2004/06/29 13:15:21 radisli Exp $
+//$Id: MainFrame.java,v 1.19 2004/06/29 13:34:39 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -34,6 +34,9 @@ public class MainFrame extends JFrame implements
 	private ActionHandler mainActionListener = new ActionHandler();
 	private MainMenuBar menuBar;
 	private JPanel coverPanel = null;
+	
+	// Is true when program exits
+	public boolean exiting = false;
 	
 	// Singleton reference
 	private static MainFrame instance = null;
@@ -275,7 +278,6 @@ public class MainFrame extends JFrame implements
 		windowXPos = this.getX();
 		windowYPos = this.getY();
 		setVisible(false);
- 		
 		try {
 			prefs.putInt(WINDOW_WIDTH, windowWidth);
 			prefs.putInt(WINDOW_HEIGHT, windowHeight);
@@ -297,13 +299,11 @@ public class MainFrame extends JFrame implements
 	public void myWindowClosing(WindowEvent arg0) {
 		String[] options = {"Ja", "Nein"};
 		if(option("Wollen Sie wirklich beenden?", options) == 0) {
-			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
-			try {
-				MediaManager.fireSave();
-			} catch(Exception e) {
-				exception(e);
+			exiting = true;
+			if(getConnectionStatus()) {
+				disconnect();
 			}
-			System.exit(0);
+			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 		}
 	}
 
@@ -382,6 +382,13 @@ public class MainFrame extends JFrame implements
 			mainTabPanel.disconnect();
 		} else if(kpe == KeyPointEvent.PRE_DISCONNECT) {
 			loadStdPanel();
+		} else if(kpe == KeyPointEvent.WINDOW_FINAL_EXIT) {
+			try {
+				MediaManager.fireSave();
+			} catch(Exception except) {
+				exception(except);
+			}
+			System.exit(0);
 		}
 	}
 }
