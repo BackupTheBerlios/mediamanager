@@ -14,7 +14,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: EditWorkflow.java,v 1.5 2004/06/23 19:51:27 ia02vond Exp $
+ * @version $Id: EditWorkflow.java,v 1.6 2004/06/24 11:01:46 crac Exp $
  */
 public class EditWorkflow implements Workflow {
 	
@@ -34,7 +34,7 @@ public class EditWorkflow implements Workflow {
 			pluginManager.fireEvent(
 					new MMPluginEvent(dataElement),
 					"preedit",
-					metaEntity.getIdentifier());
+					metaEntity.getName());
 			
 			
 			new InputFormular(dataElement, this, "Bearbeiten");
@@ -42,7 +42,7 @@ public class EditWorkflow implements Workflow {
 			
 		} catch (OperationCancelException e) {
 			String message =
-				"Operation 'edit " + metaEntity.getIdentifier() +
+				"Operation 'edit " + metaEntity.getName() +
 				" ' was canceled by a plugin.";
 			DataBus.logger.info(message);
 		}
@@ -54,29 +54,30 @@ public class EditWorkflow implements Workflow {
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"preupdate",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 				// update
 				DataSet set = new DataSet();
 				set.add(dataElement);
 				QueryRequest req = new QueryRequest(set, QueryRequest.UPDATE);
-				
+				req.run();
+                
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"postupdate",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"postedit",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 			} catch (OperationCancelException e) {
 				String message =
-					"Operation 'edit " + metaEntity.getIdentifier() +
+					"Operation 'edit " + metaEntity.getName() +
 					" ' was canceled by a plugin.";
 				DataBus.logger.info(message);
 			}
