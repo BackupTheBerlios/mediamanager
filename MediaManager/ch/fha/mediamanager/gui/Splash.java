@@ -3,26 +3,24 @@ package ch.fha.mediamanager.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 /**
  * @author ia02vond
- * @version $Id: Splash.java,v 1.3 2004/06/20 12:02:16 crac Exp $
+ * @version $Id: Splash.java,v 1.4 2004/06/21 08:03:09 radisli Exp $
  */
 public class Splash extends JWindow {
 
 	private final static String IMAGE_PATH = "images" + 
         java.io.File.separator + "splash.jpg";
 	
-	private static int windowWidth  = 350;
-	private static int windowHeight = 250;
+	private static int windowWidth;
+	private static int windowHeight;
 	
 	private final static int LEFT_INSET = 10;
 	private final static int RIGHT_INSET = 10;
@@ -72,16 +70,10 @@ public class Splash extends JWindow {
 		processText = "";
 		
 		// background image
-		Color bg = new Color(194, 242, 242);
-		JPanel aboutHolder = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JLabel aboutLabel = new JLabel();
+		JLabel splashLabel = new JLabel();
 		ImageIcon aboutImage = new ImageIcon(IMAGE_PATH);
-		Dimension d = new Dimension(aboutImage.getIconWidth(), aboutImage.getIconHeight());
-		aboutHolder.setPreferredSize(d);
-		aboutLabel.setIcon(aboutImage);
-		aboutHolder.add(aboutLabel);
-		aboutHolder.setBackground(bg);
-		getContentPane().add(aboutHolder, BorderLayout.CENTER);
+		splashLabel.setIcon(aboutImage);
+		getContentPane().add(splashLabel, BorderLayout.CENTER);
 		
 		// window dimension
 		pack();
