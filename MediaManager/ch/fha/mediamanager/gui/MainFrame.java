@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.14 2004/06/28 10:37:40 radisli Exp $
+//$Id: MainFrame.java,v 1.15 2004/06/28 11:49:43 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -88,8 +88,6 @@ public class MainFrame extends JFrame implements
 		windowYPos = prefs.getInt(WINDOW_Y_POS, defaultWindowYPos);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle(apptitle);
-		setSize(windowWidth, windowHeight);
-		setLocation(windowXPos, windowYPos);
 		Image icon = Toolkit.getDefaultToolkit().getImage("images/icon.gif");
 		setIconImage(icon);
 		
@@ -120,6 +118,8 @@ public class MainFrame extends JFrame implements
 		cp.add(windowHolder, BorderLayout.CENTER);
 
 		pack();
+		setSize(windowWidth, windowHeight);
+		setLocation(windowXPos, windowYPos);
 		setExtendedState(prefs.getInt(SCREEN_MODE, defaultScreenMode));
 
 		addWindowListener(new WindowAdapter() {
