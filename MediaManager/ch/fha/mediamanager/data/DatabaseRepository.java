@@ -1,6 +1,6 @@
 package ch.fha.mediamanager.data;
 
-import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +22,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.17 2004/06/16 09:54:57 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.18 2004/06/17 12:50:10 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -36,9 +36,15 @@ public final class DatabaseRepository implements Repository {
     private static final String file = "conf" + File.separator + 
         "mckoi_repository.ini";
     
+    private String username = "";
+    private String password = "";
+    
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    public DatabaseRepository() {
+        
+    }
     
     // --------------------------------
     // OPERATIONS
@@ -318,22 +324,15 @@ public final class DatabaseRepository implements Repository {
      */
     public JPanel getConfPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        panel.setLayout(new GridLayout(3,2));
         
-        // left
-        JPanel p1 = new JPanel();
-        p1.setLayout(new GridLayout(2,1));
-        p1.add(new JLabel("Benutzername"));
-        p1.add(new JLabel("Passwort"));
+        panel.add(new JLabel("Benutzername"));
+        final JTextField user = new JTextField(username);
+        panel.add(user);
         
-        // right
-        final JTextField user = new JTextField("username");
-        final JPasswordField pwd = new JPasswordField("password");
-        
-        JPanel p2 = new JPanel();
-        p2.setLayout(new GridLayout(2,1));
-        p2.add(user);
-        p2.add(pwd);
+        panel.add(new JLabel("Passwort"));
+        final JPasswordField pwd = new JPasswordField(password);
+        panel.add(pwd);
         
         // bottom
         JButton save = new JButton("save");
@@ -348,9 +347,11 @@ public final class DatabaseRepository implements Repository {
                 }
             });
         
-        panel.add(p1, BorderLayout.EAST);
-        panel.add(p2, BorderLayout.CENTER);
-        panel.add(save, BorderLayout.SOUTH);
+        panel.add(new JPanel());
+        JPanel p3 = new JPanel();
+        p3.setLayout(new FlowLayout());
+        p3.add(save);
+        panel.add(p3);
         
         return panel;
     }
