@@ -8,12 +8,13 @@ import ch.fha.pluginstruct.OperationCancelException;
 
 /**
  * @author ia02vond
- * @version $Id: TestPlugin.java,v 1.1 2004/05/13 12:17:10 ia02vond Exp $
+ * @version $Id: TestPlugin.java,v 1.2 2004/06/21 12:31:05 radisli Exp $
  */
 public class TestPlugin extends MMPlugin {
 
 	public void run(MMPluginEvent event) throws OperationCancelException {
 		System.out.println ("Hallo, ich bin ein Plugin.");
+		finish();
 	}
 
 	public void addPropertie(String key, String[] values) {
