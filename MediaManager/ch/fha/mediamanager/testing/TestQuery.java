@@ -26,7 +26,7 @@ import ch.fha.mediamanager.data.Repository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.1 2004/06/26 12:21:00 crac Exp $
+ * @version $Id: TestQuery.java,v 1.2 2004/06/27 15:04:02 crac Exp $
  */
 public class TestQuery {
     
@@ -113,7 +113,6 @@ public class TestQuery {
         // insert example:
         /*MetaEntity ent = new MetaEntity("Test");
         DataElement el = DataBus.getDefaultElement(ent);
-        el.setOwner(new User("A"));
         el.setField("Interpret", new String("Bobo"));
         el.setField("Stil", new String("Pop"));
         DataSet set = new DataSet();
