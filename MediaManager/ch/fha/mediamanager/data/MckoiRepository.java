@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.8 2004/06/22 13:54:15 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.9 2004/06/22 14:07:21 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -187,7 +187,8 @@ public final class MckoiRepository implements Repository {
      * @return Returns null
      */
     public DataSet insert(DataSet ds) {
-        if (ds.isEmpty()) return null;
+        if ((ds.isEmpty()) || (ds == null))
+            throw new IllegalArgumentException();
         
         // DataElement
         String sql = "INSERT INTO " + ds.getMetaEntity().getName();
@@ -315,17 +316,35 @@ public final class MckoiRepository implements Repository {
      * @return Returns null
      */
     public DataSet delete(DataSet ds) {
-        if (ds.isEmpty()) return null;
+        if ((ds.isEmpty()) || (ds == null))
+            throw new IllegalArgumentException();
         
-        String sql = "DELETE FROM " + ds.getMetaEntity().getName();
+        String sql = "DELETE FROM ? WHERE ? = ?;";
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
-            DataElement e = (DataElement) it.next();
+            DataElement el = (DataElement) it.next();
             
-            // TODO
+            deleteEntry(el.getEntry());
+            
+            java.sql.PreparedStatement delete = 
+                dbConnection.prepareStatement(sql);
+            
+            try {
+                delete.setString(1, el.getMetaEntity().getName());
+                delete.setString(2, el.getPKField().getName());
+                delete.setObject(3, (Integer) el.getPKField().getValue());
+                delete.executeUpdate();
+            } catch (SQLException e) {
+                DataBus.logger.fatal("DataElement not deleted.");
+                e.printStackTrace();
+                throw new InternalError();
+            }
+            DataBus.logger.info("DataElement deleted.");
+            ds.remove(el);
         }
-        
+        DataBus.logger.info("DataSet deleted.");
+        ds = null;
         return null;
     }
     
@@ -431,7 +450,8 @@ public final class MckoiRepository implements Repository {
      * @return 
      */
     private String createCondStatement(QueryCondition qc) {
-        if (qc == null) throw new IllegalArgumentException();
+        if (qc == null) 
+            throw new IllegalArgumentException();
         
         String comp = (qc.getEntity()).getName() + "." 
             + (qc.getField()).getName();
