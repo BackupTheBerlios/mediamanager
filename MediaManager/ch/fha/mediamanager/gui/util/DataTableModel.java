@@ -3,6 +3,7 @@ package ch.fha.mediamanager.gui.util;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import ch.fha.mediamanager.data.DataElement;
@@ -13,19 +14,22 @@ import ch.fha.mediamanager.data.MetaField;
 import ch.fha.mediamanager.data.QueryCondition;
 import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.data.DataBus;
+import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.6 2004/06/27 19:19:24 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.7 2004/06/28 14:07:41 ia02vond Exp $
  */
-public class DataTableModel extends AbstractTableModel {
+public class DataTableModel extends AbstractTableModel
+	implements RepositoryListener {
 
+	private JTable table;
 	private MetaEntity metaEntity;
 	private MetaField[] metaFields;
 	private DataElement[] elements;
 	private Object[][] data;
 	
-	public DataTableModel(MetaEntity metaEntity) {
+	public DataTableModel(JTable table, MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
 		refresh();
 	}
@@ -103,5 +107,12 @@ public class DataTableModel extends AbstractTableModel {
 	
 	public DataElement getDataElement(int index) {
 		return elements[index];
+	}
+
+	public void dataChanged(MetaEntity metaEntity) {
+		if (metaEntity.equals(this.metaEntity)) {
+			refresh();
+			table.repaint();
+		}
 	}
 }
