@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.5 2004/06/21 12:56:41 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.6 2004/06/21 21:41:06 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -202,8 +202,8 @@ public final class MckoiRepository implements Repository {
             
             // prepare sql statement
             Field[] fields = ds.getFields();
-            for (int i = 0; i < fields.length; i++) {
-                sql += " , " + fields[i].getName();
+            for (int i = 1; i <= fields.length; i++) {
+                sql += " , " + fields[i-1].getName();
                 values += ",?";
             }
             
@@ -212,16 +212,16 @@ public final class MckoiRepository implements Repository {
             
             try {
                 // set values
-                for (int i = 0; i < fields.length; i++) {
-                    Field field = fields[i];
+                for (int i = 1; i <= fields.length; i++) {
+                    Field field = fields[i-1];
                     MetaField metaField = field.getMetaField();
                     
                     switch (metaField.getType()) {
                         case (MetaField.PK):
-                            int pk = dbConnection.getNextPrimaryKey(
-                                field.getMetaField().getEntity().getName()
+                            insert.setInt(i, getNextPK(
+                                ds.getMetaEntity().getName(),
+                                ds.getPKField())
                             );
-                            insert.setInt(i, pk);
                             break;
                         case (MetaField.INT):
                             insert.setObject(i, (Integer) field.getValue());
@@ -235,6 +235,7 @@ public final class MckoiRepository implements Repository {
                 insert.executeQuery();
             } catch (SQLException e) {
                 DataBus.logger.fatal("DataElement not inserted.");
+                e.printStackTrace();
                 throw new InternalError("DataElement not inserted.");
             }
             DataBus.logger.debug("DataElement inserted.");
@@ -312,7 +313,7 @@ public final class MckoiRepository implements Repository {
             ResultSetMetaData rsmd = result.getMetaData();
             
             while (result.next()) {
-                DataElement e = new DataElement();
+                DataElement e = new DataElement(qr.getEntity());
                 
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                     MetaData metaData = DataBus.getMetaData();
@@ -466,7 +467,7 @@ public final class MckoiRepository implements Repository {
             dbConnection.prepareStatement(sql);
         
         try {
-            id = dbConnection.getNextPrimaryKey("Entry");
+            id = getNextPK("Entry", "EntryId");
             insertPS.setInt(1, id);
             insertPS.setTimestamp(2, entry.getCreation());
             insertPS.setTimestamp(3, entry.getEdit());
@@ -483,6 +484,51 @@ public final class MckoiRepository implements Repository {
     // --------------------------------
     // ACCESSORS
     // --------------------------------
+    
+    /**
+     * 
+     * @param entity
+     * @param pk
+     * @return
+     */
+    private int getNextPK(String entity, String pk) {
+        if ((pk == null) || (entity == null)) 
+            throw new IllegalArgumentException();
+        
+        String query = "SELECT MAX(" + pk + ") FROM " + entity + ";";
+        try {
+            ResultSet result =  
+                dbConnection.executeQuery(query);
+            result.next();
+            return (result.getInt(1) + 1);
+        } catch (SQLException e) {
+            DataBus.logger.fatal("Error while getting next primary key.");
+            e.printStackTrace();
+            throw new RuntimeException("Erroneous database query.");
+        }
+    }
+    
+    /**
+     * 
+     * @param entity
+     * @return
+     */
+    private int getNextPK(String entity) {
+        if (entity == null) 
+            throw new IllegalArgumentException();
+        
+        String query = "SELECT UNIQUEKEY('" + entity + "');";
+        try {
+            ResultSet result =  
+                dbConnection.executeQuery(query);
+            result.next();
+            return (result.getInt(1) + 1);
+        } catch (SQLException e) {
+            DataBus.logger.fatal("Error while getting next primary key.");
+            e.printStackTrace();
+            throw new RuntimeException("Erroneous database query.");
+        }
+    }
     
     /**
      * 
