@@ -3,7 +3,7 @@ package ch.fha.mediamanager.data;
 /**
  *
  * @author crac
- * @version $Id: User.java,v 1.2 2004/06/11 12:47:36 crac Exp $
+ * @version $Id: User.java,v 1.3 2004/06/14 13:33:03 crac Exp $
  */
 public final class User {
     
@@ -13,10 +13,23 @@ public final class User {
     
     private String uuId; // immutable
     private String name;
+    private String username;
     
     // --------------------------------
     // CONSTRUCTORS
     // --------------------------------
+    
+    /**
+     * 
+     * @param uuId
+     * @param name
+     * @param username
+     */
+    public User(String uuId, String name, String username) {
+        this.uuId = uuId;
+        this.name = name;
+        this.username = username;
+    }
     
     // --------------------------------
     // OPERATIONS
@@ -33,10 +46,17 @@ public final class User {
     public String getUUID() {
         return uuId;
     }
-
+    
     /**
      * 
      * @return
+     */
+    public String getUsername() {
+        return username;   
+    }
+
+    /**
+     * 
      * @return
      */
     public String getName() {
