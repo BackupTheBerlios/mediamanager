@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.25 2004/06/26 15:18:42 crac Exp $
+ * @version $Id: DataBus.java,v 1.26 2004/06/27 12:26:24 crac Exp $
  */
 public final class DataBus {
 	
@@ -322,10 +322,26 @@ public final class DataBus {
     // --------------------------------
 	
 	/**
-	 * 
-	 * @param repository
+	 * Changes the current Repository to a new one, 
+     * but only if current one has been disconnected. 
+     * Do not forget to call 
+     * <code>DataBus.disconnect();</code>
+     * in advance.
+     * 
+	 * @param rep
+     * @throws CurrentRepositoryConnectedException if 
+     *      repository was not disconnected in 
+     *      advance
 	 */
 	public void setRepository(Repository rep) {
-	    currentRepository = rep;
+        if (! currentRepository.isConnected()) {
+            currentRepository = rep;
+        } else {
+            throw new CurrentRepositoryConnectedException(
+                "Current repository " + 
+                currentRepository.getName() + 
+                "still connected!"
+            );
+        }
 	}
 }
