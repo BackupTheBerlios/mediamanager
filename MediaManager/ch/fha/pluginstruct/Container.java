@@ -9,18 +9,17 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: Container.java,v 1.4 2004/06/14 20:15:27 ia02vond Exp $
+ * @version $Id: Container.java,v 1.5 2004/06/29 15:22:08 ia02vond Exp $
  */
 public final class Container {
 	
 	/** Path to the plugins.xml file.*/
 	public final static String PLUGINSXML_FILE = 
-		"ch" + File.separator + "fha" + File.separator +
-		"pluginstruct" + File.separator + "plugins.xml";
+		"conf" + File.separator + "plugins.xml";
 	
 	/** Root path of the plugins.*/
 	public final static String PLUGIN_DIR = 
-		"plugins" + File.separator;
+		"conf" + File.separator + "plugins" + File.separator;
 	
 	
 	/** Hashmap of all plugins. */
