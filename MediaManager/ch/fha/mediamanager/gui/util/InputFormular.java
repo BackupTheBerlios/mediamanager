@@ -12,24 +12,28 @@ import javax.swing.JPanel;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.gui.MainFrame;
+import ch.fha.mediamanager.gui.components.BarBorder;
 import ch.fha.mediamanager.gui.util.dataInput.DataInput;
 import ch.fha.mediamanager.workflow.Workflow;
 
 /**
  * @author ia02vond
- * @version $Id: InputFormular.java,v 1.2 2004/06/23 16:54:35 ia02vond Exp $
+ * @version $Id: InputFormular.java,v 1.3 2004/06/23 19:51:41 ia02vond Exp $
  */
 public class InputFormular extends JPanel
 	implements ActionListener {
 	
 	private DataElement element;
 	private Workflow workflow;
+	private String workflowName;
 	private JButton okB, cancelB;
 	
-	public InputFormular(DataElement element, Workflow workflow) {
+	public InputFormular(DataElement element, Workflow workflow, String workflowName) {
 		this.element = element;
 		this.workflow = workflow;
+		this.workflowName = workflowName;
 		
+		this.setBorder(new BarBorder(element.getMetaEntity().getName() + " > " + workflowName));
 		initInputFields();
 		
 		MainFrame.getInstance().loadMainPanel(this);
