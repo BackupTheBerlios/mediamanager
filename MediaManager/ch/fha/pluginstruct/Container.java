@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: Container.java,v 1.3 2004/05/18 08:26:30 ia02vond Exp $
+ * @version $Id: Container.java,v 1.4 2004/06/14 20:15:27 ia02vond Exp $
  */
 public final class Container {
 	
@@ -244,7 +244,7 @@ public final class Container {
 
 		public Object next() {
 			identifier = i.next().toString();
-			return ((PluginStruct)container.getPlugin(identifier)).plugin;
+			return container.getPlugin(identifier);
 		}
 	}
 }
