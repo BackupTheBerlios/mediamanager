@@ -1,4 +1,3 @@
-//$Id: AboutPanel.java,v 1.2 2004/06/28 08:08:32 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -11,15 +10,18 @@ import ch.fha.mediamanager.gui.*;
  * About panel which shows the details about the MediaManager project
  *
  * @author Roman Rietmann
+ * @version $Id: AboutPanel.java,v 1.3 2004/06/30 18:54:56 crac Exp $
  */
 public class AboutPanel extends JPanel {
+    
 	/**
 	 * Constructor creates the about panel
 	 */
 	public AboutPanel() {
 		MainFrame mainWindow = MainFrame.getInstance();
 		setLayout(new BorderLayout());
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		ActionListener mainActionListener = 
+            mainWindow.getMainActionListener();
 		setBorder(new BarBorder("About"));
 
 		JPanel aboutHolder = new JPanel();
@@ -31,7 +33,10 @@ public class AboutPanel extends JPanel {
 
 		JLabel aboutLabel = new JLabel();
 		ImageIcon aboutImage = new ImageIcon("images/about.jpg");
-		Dimension d = new Dimension(aboutImage.getIconWidth(), aboutImage.getIconHeight());
+		Dimension d = new Dimension(
+            aboutImage.getIconWidth(),
+            aboutImage.getIconHeight()
+        );
 		aboutHolder.setPreferredSize(d);
 		aboutLabel.setIcon(aboutImage);
 		aboutHolder.add(aboutLabel);
@@ -41,7 +46,8 @@ public class AboutPanel extends JPanel {
 		sp.setBorder(null);
 		add(sp, BorderLayout.CENTER);
 	
-		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel defaultButtonPanel = 
+            new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton back = new JButton("Zur\u00fcck");
 		back.setActionCommand("tabs");
 		back.addActionListener(mainActionListener);

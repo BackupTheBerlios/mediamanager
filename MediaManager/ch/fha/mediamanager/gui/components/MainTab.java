@@ -1,4 +1,3 @@
-//$Id: MainTab.java,v 1.13 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -9,14 +8,15 @@ import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 
 /**
- * @author Roman Rietmann
- *
  * The panel which will be shown first contains connect-, config- and exit
  * button.
+ * 
+ * @author Roman Rietmann
+ * @version $Id: MainTab.java,v 1.14 2004/06/30 18:54:56 crac Exp $
  */
-public class MainTab extends JPanel implements
-	KeyPointListener
-{
+public class MainTab extends JPanel 
+    implements KeyPointListener {
+    
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
 	private final static ImageIcon connectingImage = new ImageIcon("images/connecting.gif");

@@ -1,4 +1,3 @@
-//$Id: ModificationPanel.java,v 1.5 2004/06/28 10:37:23 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -7,6 +6,11 @@ import javax.swing.*;
 import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 
+/**
+ * 
+ * @author radisli
+ * @version $Id: ModificationPanel.java,v 1.6 2004/06/30 18:54:56 crac Exp $
+ */
 public class ModificationPanel extends JPanel {
 	public ModificationPanel() {
 		MainFrame mainWindow = MainFrame.getInstance();

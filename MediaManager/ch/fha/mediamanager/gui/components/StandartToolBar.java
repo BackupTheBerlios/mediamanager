@@ -1,4 +1,3 @@
-//$Id: StandartToolBar.java,v 1.7 2004/06/29 14:07:17 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.event.ActionEvent;
@@ -9,9 +8,14 @@ import javax.swing.ImageIcon;
 import ch.fha.mediamanager.gui.MainFrame;
 import ch.fha.mediamanager.gui.framework.*;
 
-public class StandartToolBar extends AbstractToolBar implements
-	KeyPointListener
-{
+/**
+ * 
+ * @author radisli
+ * @version $Id: StandartToolBar.java,v 1.8 2004/06/30 18:54:56 crac Exp $
+ */
+public class StandartToolBar extends AbstractToolBar 
+    implements KeyPointListener {
+    
 	private ToolBarButton connect;
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/iconnect.gif");
@@ -19,6 +23,10 @@ public class StandartToolBar extends AbstractToolBar implements
 	private final static ImageIcon disconnectImage = new ImageIcon("images/idisconnect.gif");
 
 
+    /**
+     * 
+     *
+     */
 	public StandartToolBar() {
 		super();
 		final MainFrame mainWindow = MainFrame.getInstance();
@@ -58,14 +66,18 @@ public class StandartToolBar extends AbstractToolBar implements
 		mainActionListener.addActionListener(this);
 	}
 
+    /**
+     * 
+     * @param e
+     */
 	public void runAction(KeyPointEvent e) {
 		int kpe = e.getKeyPointEvent();
-		if(kpe == KeyPointEvent.PRE_CONNECT || kpe == KeyPointEvent.PRE_DISCONNECT) {
+		if (kpe == KeyPointEvent.PRE_CONNECT || kpe == KeyPointEvent.PRE_DISCONNECT) {
 			connect.setIcon(connectingImage);
-		} else if(kpe == KeyPointEvent.POST_CONNECT) {
+		} else if (kpe == KeyPointEvent.POST_CONNECT) {
 			connect.setIcon(disconnectImage);
 			connect.setToolTip(MainFrame.disconnectStr);
-		} else if(kpe == KeyPointEvent.POST_DISCONNECT) {
+		} else if (kpe == KeyPointEvent.POST_DISCONNECT) {
 			connect.setIcon(connectImage);
 			connect.setToolTip(MainFrame.connectStr);
 		}		

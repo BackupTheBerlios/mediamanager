@@ -1,4 +1,3 @@
-// $Id: MainTabPanel.java,v 1.5 2004/06/29 13:15:21 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -13,12 +12,17 @@ import ch.fha.mediamanager.data.MetaEntity;
  * The main view of the <em>Mediamanager</em> application.
  *
  * @author Roman Rietmann
+ * @version $Id: MainTabPanel.java,v 1.6 2004/06/30 18:54:56 crac Exp $
  */
 public class MainTabPanel extends JPanel {
 	
 	private JTabbedPane tabbedPane;
 	private JPanel mainTab;
 	
+    /**
+     * 
+     *
+     */
 	public MainTabPanel() {
 		setLayout(new BorderLayout());
 		
@@ -29,21 +33,36 @@ public class MainTabPanel extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 	
+    /**
+     * 
+     *
+     */
 	public void showMainTab() {
 		tabbedPane.setSelectedIndex(0);
 	}
 	
+    /**
+     * 
+     *
+     */
 	public void connect() {
 		if (DataBus.getMetaEntities() != null) {
 			Iterator it = DataBus.getMetaEntities().iterator();
 			MetaEntity metaEntity;
 			while (it.hasNext()) {
 				metaEntity = (MetaEntity)it.next();
-				tabbedPane.add(metaEntity.getName(), new StdTabPanel(metaEntity));
+				tabbedPane.add(
+                    metaEntity.getName(), 
+                    new StdTabPanel(metaEntity)
+                );
 			}
 		}
 	}
 	
+    /**
+     * 
+     *
+     */
 	public void disconnect() {
 		Component[] c = tabbedPane.getComponents();
 		for (int i=0; i<c.length; i++) {

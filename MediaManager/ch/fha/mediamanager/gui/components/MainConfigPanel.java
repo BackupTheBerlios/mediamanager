@@ -1,4 +1,4 @@
-//$Id: MainConfigPanel.java,v 1.4 2004/06/18 11:07:38 radisli Exp $
+//$Id: MainConfigPanel.java,v 1.5 2004/06/30 18:54:56 crac Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -14,8 +14,10 @@ import ch.fha.mediamanager.gui.config.components.*;
  * Configuration panel
  *
  * @author Roman Rietmann
+ * @version $Id: MainConfigPanel.java,v 1.5 2004/06/30 18:54:56 crac Exp $
  */
 public class MainConfigPanel extends JPanel {
+    
 	/**
 	 * Constructor creates the main-config panel
 	 */

@@ -1,4 +1,3 @@
-//$Id: StatePanel.java,v 1.6 2004/06/29 13:03:24 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -12,7 +11,8 @@ import ch.fha.mediamanager.gui.framework.KeyPointListener;
  * 
  * Shows connection status and statustext on the buttom of the GUI
  *
- * @author Roman Rietmann
+ * @author radisli
+ * @version $Id: StatePanel.java,v 1.7 2004/06/30 18:54:56 crac Exp $
  */
 public class StatePanel extends JPanel {
 	// Font type for the status text
