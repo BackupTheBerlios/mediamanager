@@ -4,17 +4,19 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: QueryCondition.java,v 1.6 2004/06/25 13:41:10 crac Exp $
+ * @version $Id: QueryCondition.java,v 1.7 2004/06/26 15:01:58 crac Exp $
  */
 public class QueryCondition {
     
-    public static final int EQUALS = 0;
-    public static final int GREATER = 1;
-    public static final int LESSER = 2;
-    public static final int GREATER_EQUALS = 3;
-    public static final int LESSER_EQUALS = 4;
-    public static final int DONT_EQUALS = 5;
-    public static final int LIKE = 6;
+    // Comparator types
+    public static final int INVALID_TYPE = 0;
+    public static final int EQUALS = 1;
+    public static final int GREATER = 2;
+    public static final int LESSER = 3;
+    public static final int GREATER_EQUALS = 4;
+    public static final int LESSER_EQUALS = 5;
+    public static final int DONT_EQUALS = 6;
+    public static final int LIKE = 7;
     
     // --------------------------------
     // FIELDS
@@ -22,7 +24,7 @@ public class QueryCondition {
     
     private MetaEntity entity;
     private Field field;
-    private int comparator;
+    private int comparator = INVALID_TYPE;
     private Object value;
     
     // --------------------------------
@@ -51,7 +53,7 @@ public class QueryCondition {
      * 
      * @return
      */
-    public MetaEntity getEntity() {
+    protected MetaEntity getMetaEntity() {
         return entity;
     }
     
@@ -59,7 +61,7 @@ public class QueryCondition {
      * 
      * @return
      */
-    public Field getField() {
+    protected Field getField() {
         return field;
     }
     
@@ -67,7 +69,7 @@ public class QueryCondition {
      * 
      * @return
      */
-    public int getComparator() {
+    protected int getComparator() {
         return comparator;
     }
     
@@ -76,7 +78,7 @@ public class QueryCondition {
      * 
      * @return 
      */
-    public Object getValue() {
+    protected Object getValue() {
         return value;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
  * @author crac
- * @version $Id: AbstractQuery.java,v 1.3 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: AbstractQuery.java,v 1.4 2004/06/26 15:01:58 crac Exp $
  */
 public abstract class AbstractQuery implements Query {
     
@@ -14,7 +14,7 @@ public abstract class AbstractQuery implements Query {
     
     private Repository repository = DataBus.getRepository();
     private DataSet dSet;
-    private int type = 0;
+    private int type = INVALID_TYPE;
     private Vector request;
     private MetaEntity entity;
     private Vector fields = new Vector();
@@ -101,7 +101,7 @@ public abstract class AbstractQuery implements Query {
             if (vec.elementAt(i) instanceof QueryCondition) {
                 // create entitySet
                 MetaEntity tmp = 
-                    ((QueryCondition) vec.elementAt(i)).getEntity();
+                    ((QueryCondition) vec.elementAt(i)).getMetaEntity();
                 
                 entity = tmp;
                 
@@ -118,7 +118,7 @@ public abstract class AbstractQuery implements Query {
      * @return 
      */
     public DataSet run() {
-        if (this.type == 0)
+        if (this.type == INVALID_TYPE)
             throw new RuntimeException("Querytype was not set.");
         
         switch (this.type) {
@@ -142,7 +142,7 @@ public abstract class AbstractQuery implements Query {
      *      of the <code>MetaEntity</code> was successful
      */
     public boolean admin(MetaEntity entity) {
-        if (this.type == 0)
+        if (this.type == INVALID_TYPE)
             throw new RuntimeException("Querytype was not set.");
         
         switch (this.type) {
@@ -164,7 +164,7 @@ public abstract class AbstractQuery implements Query {
      *      <code>MetaField</code>s was successful
      */
     public boolean admin(MetaEntity e, MetaField[] f) {
-        if (this.type == 0)
+        if (this.type == INVALID_TYPE)
             throw new RuntimeException("Querytype was not set.");
         
         switch (this.type) {
@@ -181,7 +181,7 @@ public abstract class AbstractQuery implements Query {
      *      of the <code>MetaField</code> was successful
      */
     public boolean admin(MetaField field) {
-        if (this.type == 0)
+        if (this.type == INVALID_TYPE)
             throw new RuntimeException("Querytype was not set.");
         
         switch (this.type) {
@@ -219,7 +219,7 @@ public abstract class AbstractQuery implements Query {
      * 
      * @return
      */
-    public MetaEntity getEntity() {
+    public MetaEntity getMetaEntity() {
         return entity;
     }
     
@@ -227,7 +227,7 @@ public abstract class AbstractQuery implements Query {
      * 
      * @return
      */
-    public Vector getFields() {
+    public Vector getMetaFields() {
         return fields;   
     }
     

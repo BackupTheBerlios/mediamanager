@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.39 2004/06/26 13:45:37 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.40 2004/06/26 15:01:58 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -713,7 +713,7 @@ public final class MckoiRepository extends Repository {
         
         DataSet ds = new DataSet();
         
-        String ent = qr.getEntity().getName();
+        String ent = qr.getMetaEntity().getName();
         String entryField = ent + ".EntryId";
         
         String query = "SELECT * FROM " + ent;
@@ -731,7 +731,7 @@ public final class MckoiRepository extends Repository {
             MetaData metaData = DataBus.getMetaData();
             
             while (result.next()) {
-                DataElement e = new DataElement(qr.getEntity());
+                DataElement e = new DataElement(qr.getMetaEntity());
                 
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                     

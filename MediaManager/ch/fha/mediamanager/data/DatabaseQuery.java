@@ -3,7 +3,7 @@ package ch.fha.mediamanager.data;
 /**
  *
  * @author crac
- * @version $Id: DatabaseQuery.java,v 1.3 2004/06/26 10:00:51 crac Exp $
+ * @version $Id: DatabaseQuery.java,v 1.4 2004/06/26 15:01:58 crac Exp $
  */
 public final class DatabaseQuery extends AbstractQuery {
     
@@ -58,7 +58,7 @@ public final class DatabaseQuery extends AbstractQuery {
         if (qc == null) 
             throw new IllegalArgumentException();
         
-        String comp = (qc.getEntity()).getName() + "." 
+        String comp = (qc.getMetaEntity()).getName() + "." 
             + (qc.getField()).getName();
         
         switch(qc.getComparator()) {

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 /**
  * @author luca
- * @version $Id: Query.java,v 1.3 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: Query.java,v 1.4 2004/06/26 15:01:58 crac Exp $
  */
 public interface Query {
     
@@ -15,6 +15,7 @@ public interface Query {
     public static final int BRACE_CLOSE = 4;  // )
     
     // query types
+    public static final int INVALID_TYPE = 0;
     public static final int INSERT = 1;
     public static final int UPDATE = 2;
     public static final int LOAD = 3;
@@ -59,13 +60,13 @@ public interface Query {
      * 
      * @return
      */
-    public MetaEntity getEntity();
+    public MetaEntity getMetaEntity();
     
     /**
      * 
      * @return
      */
-    public Vector getFields();
+    public Vector getMetaFields();
     
     // --------------------------------
     // MUTATORS
