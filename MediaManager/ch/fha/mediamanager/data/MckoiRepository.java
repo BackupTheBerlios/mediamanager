@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.9 2004/06/22 14:07:21 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.10 2004/06/22 14:32:15 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -319,21 +319,20 @@ public final class MckoiRepository implements Repository {
         if ((ds.isEmpty()) || (ds == null))
             throw new IllegalArgumentException();
         
-        String sql = "DELETE FROM ? WHERE ? = ?;";
+        String sql = "DELETE FROM " + ds.getMetaEntity().getName() + 
+            " WHERE ?=?";
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
             DataElement el = (DataElement) it.next();
             
-            deleteEntry(el.getEntry());
-            
             java.sql.PreparedStatement delete = 
                 dbConnection.prepareStatement(sql);
             
             try {
-                delete.setString(1, el.getMetaEntity().getName());
-                delete.setString(2, el.getPKField().getName());
-                delete.setObject(3, (Integer) el.getPKField().getValue());
+                delete.setString(1, el.getPKField().getName());
+                delete.setObject(2, (Integer) el.getPKField().getValue());
+                System.out.println(delete);
                 delete.executeUpdate();
             } catch (SQLException e) {
                 DataBus.logger.fatal("DataElement not deleted.");
@@ -341,6 +340,7 @@ public final class MckoiRepository implements Repository {
                 throw new InternalError();
             }
             DataBus.logger.info("DataElement deleted.");
+            deleteEntry(el.getEntry());
             ds.remove(el);
         }
         DataBus.logger.info("DataSet deleted.");
@@ -529,10 +529,21 @@ public final class MckoiRepository implements Repository {
         if ((entry == null) || (entry.getId() < 1))
             throw new IllegalArgumentException();
         
-        String sql = "DELETE FROM Entry WHERE EntryId = " + 
-            entry.getId();
+        String sql = "DELETE FROM Entry WHERE EntryId=" + 
+            entry.getId() + ";";
         
-        dbConnection.executeQuery(sql);
+        java.sql.PreparedStatement delete = 
+            dbConnection.prepareStatement(sql);
+        
+        try {
+            delete.executeQuery();
+        } catch (SQLException e) {
+            DataBus.logger.fatal("Entry not deleted.");
+            e.printStackTrace();
+            throw new InternalError();
+        }
+        
+        DataBus.logger.info("Entry deleted.");
     }
     
     /**

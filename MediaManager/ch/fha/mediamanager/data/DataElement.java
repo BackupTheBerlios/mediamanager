@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.12 2004/06/22 13:35:44 crac Exp $
+ * @version $Id: DataElement.java,v 1.13 2004/06/22 14:32:15 crac Exp $
  */
 public class DataElement {
 	
@@ -237,7 +237,7 @@ public class DataElement {
      * @param entry
      */
     public void setEntry(Entry entry) {
-        entry = (Entry) entry.clone();
+        this.entry = entry;
     }
     
     /**
