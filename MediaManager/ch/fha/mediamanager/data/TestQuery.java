@@ -6,31 +6,28 @@ import java.util.Vector;
  * 
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.2 2004/05/29 18:10:41 crac Exp $
+ * @version $Id: TestQuery.java,v 1.3 2004/06/05 14:13:06 crac Exp $
  */
 public class TestQuery {
     
     public static void main(String[] args) {
-        DataEntity de = new DataEntity("Movies");
-        DataField df = new DataField("id", new Integer(0));
+        MetaEntity ent = new MetaEntity("Movies");
+        Field field = new Field("id", ent, new Integer(0));
         QueryCondition qca = 
             new QueryCondition(
-                de, 
-                df, 
+                field, 
                 QueryCondition.GREATER, 
                 new Integer(1)
             );
         QueryCondition qcb = 
             new QueryCondition(
-                de, 
-                df, 
+                field, 
                 QueryCondition.LESSER, 
-                new Integer(1)
+                new Integer(10)
             );
         QueryCondition qcc = 
             new QueryCondition(
-                de, 
-                df, 
+                field, 
                 QueryCondition.EQUALS, 
                 new Integer(20)
             );
@@ -42,6 +39,5 @@ public class TestQuery {
         vec.add(qcc);
         QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
         DataSet ds = qr.run();
-
     }
 }

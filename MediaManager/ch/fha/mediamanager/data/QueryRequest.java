@@ -7,29 +7,34 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.7 2004/05/29 18:10:41 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.8 2004/06/05 14:13:06 crac Exp $
  */
 public class QueryRequest {
     
     // TODO: has to be auto-loaded from config
     private Repository repository = new DatabaseRepository();
     
+    // 
     public static final int OR = 0;           // +
     public static final int AND = 1;          // *
     public static final int BRACE_OPEN = 3;   // (
     public static final int BRACE_CLOSE = 4;  // )
     
+    // query types
     public static final int INSERT = 0;
     public static final int UPDATE = 1;
     public static final int LOAD = 2;
     public static final int DELETE = 3;
+    public static int ENTITY_CREATE = 4;
+    public static int ENTITY_DELETE = 5;
+    public static int FIELD_ADD = 6;
+    public static int FIELD_DELETE = 7;
     
     // --------------------------------
     // ATTRIBUTES
     // --------------------------------
 
     private DataSet dSet;
-    
     private int type;
     private Vector request;
     private Set entitySet = new HashSet(5);
@@ -70,7 +75,7 @@ public class QueryRequest {
         // create entitySet
         for(int i = 0; i < vec.size(); i++) {
             if (vec.elementAt(i) instanceof QueryCondition) {
-                DataEntity tmp = 
+                MetaEntity tmp = 
                     ((QueryCondition) vec.elementAt(i)).getEntity();
                 
                 if (! entitySet.contains(tmp))  entitySet.add(tmp);

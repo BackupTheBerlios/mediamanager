@@ -1,6 +1,7 @@
 package ch.fha.mediamanager.data;
 
 import java.sql.ResultSet;
+
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -9,7 +10,7 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.7 2004/05/28 17:22:57 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.8 2004/06/05 14:13:06 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -59,7 +60,7 @@ public class DatabaseRepository implements Repository {
         Set entities = qr.getEntities();
         Iterator it = entities.iterator();
         while (it.hasNext()) {
-            query += ((DataEntity) it.next()).getName();
+            query += ((MetaEntity) it.next()).getName();
         }
         
         query += createRequestStatement(qr);

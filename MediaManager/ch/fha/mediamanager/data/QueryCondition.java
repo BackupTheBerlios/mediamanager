@@ -1,11 +1,10 @@
 package ch.fha.mediamanager.data;
 
-
 /**
  * 
  * 
- * @author luca
- * @version $Id: QueryCondition.java,v 1.3 2004/05/21 18:02:01 crac Exp $
+ * @author crac
+ * @version $Id: QueryCondition.java,v 1.4 2004/06/05 14:13:06 crac Exp $
  */
 public class QueryCondition {
     
@@ -15,13 +14,14 @@ public class QueryCondition {
     public static final int GREATER_EQUALS = 3;
     public static final int LESSER_EQUALS = 4;
     public static final int DONT_EQUALS = 5;
+    public static final int LIKE = 6;
     
     // --------------------------------
     // ATTRIBUTES
     // --------------------------------
     
-    private DataEntity entity;
-    private DataField field;
+    private MetaEntity entity;
+    private Field field;
     private int comparator;
     private Object value;
     
@@ -36,8 +36,8 @@ public class QueryCondition {
      * @param comp  Comparator
      * @param value Compare to this value
      */
-    public QueryCondition(DataEntity de, DataField df, int comp, Object value) {
-        this.entity = de;
+    public QueryCondition(Field df, int comp, Object value) {
+        this. entity = df.getEntity();
         this.field = df;
         this.comparator = comp;
         this.value = value;
@@ -51,7 +51,7 @@ public class QueryCondition {
      * 
      * @return
      */
-    public DataEntity getEntity() {
+    public MetaEntity getEntity() {
         return entity;
     }
     
@@ -59,7 +59,7 @@ public class QueryCondition {
      * 
      * @return
      */
-    public DataField getField() {
+    public Field getField() {
         return field;
     }
     
