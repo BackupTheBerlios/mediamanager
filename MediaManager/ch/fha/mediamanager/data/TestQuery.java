@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.12 2004/06/25 16:06:18 crac Exp $
+ * @version $Id: TestQuery.java,v 1.13 2004/06/26 12:19:44 crac Exp $
  */
 public class TestQuery {
     
@@ -26,6 +26,31 @@ public class TestQuery {
         DataBus.connect();
         
         DataSet ds = null;
+        
+        // create entity
+        MetaEntity entity = new MetaEntity("Lied");
+        MetaField f1 = new MetaField(MetaField.PK, "LiedId", entity);
+        MetaField f2 = new MetaField(MetaField.INT, "Laenge", entity);
+        MetaField f3 = new MetaField(MetaField.INT, "Jahr", entity);
+        MetaField f4 = new MetaField(MetaField.VARCHAR, "Interpret", entity);
+        MetaField[] fields = {f1,f2,f3,f4};
+        
+        AbstractQuery query = 
+            DataBus.getQueryInstance(Query.ENTITY_FIELDS_CREATE);
+        
+        if (query.admin(entity, fields)) {
+            System.out.println("Created, YEAH!");
+        }
+        
+        // delete entity
+        /*MetaEntity entity = 
+            DataBus.getMetaData().getMetaEntity("Lied");
+        AbstractQuery query = 
+            DataBus.getQueryInstance(Query.ENTITY_DELETE);
+        
+        if (query.admin(entity)) {
+            System.out.println("Deleted, YEAH!");
+        }*/
         
         // delete example:
         /*MetaEntity ent = new MetaEntity("Test");
@@ -110,11 +135,11 @@ public class TestQuery {
         }
         
         // how to get a default DataElement
-        DataElement e = DataBus.getDefaultElement("Test");
+        /*DataElement e = DataBus.getDefaultElement("Test");
         Field[] flds = e.getFields();
         for (int i = 0; i < flds.length; i++) {
             System.out.println(flds[i].toString());
-        }
+        }*/
         
         DataBus.logger.info("App stoped.");
     }
