@@ -1,7 +1,7 @@
 package ch.fha.mediamanager.data;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Contains a set of data elements.
@@ -12,7 +12,7 @@ import java.util.HashSet;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.11 2004/06/27 09:39:05 crac Exp $
+ * @version $Id: DataSet.java,v 1.12 2004/06/28 10:07:24 crac Exp $
  */
 public class DataSet {
 	
@@ -20,7 +20,7 @@ public class DataSet {
     // FIELDS
     // --------------------------------
 	
-    private Set dSet = new HashSet();
+    private Set dSet = new LinkedHashSet();
     
     // --------------------------------
     // CONSTRUCTORS

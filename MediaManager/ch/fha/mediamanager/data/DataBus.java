@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.LinkedList;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -13,7 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.27 2004/06/27 14:10:55 crac Exp $
+ * @version $Id: DataBus.java,v 1.28 2004/06/28 10:07:24 crac Exp $
  */
 public final class DataBus {
 	
@@ -243,8 +244,8 @@ public final class DataBus {
      * 
      * @return Returns Set of all MetaFields
      */
-    public static Set getMetaFields() {
-        return metaData.getFields();
+    public static LinkedList getMetaFields() {
+        return metaData.getMetaFields();
     }
     
     /**
@@ -255,7 +256,7 @@ public final class DataBus {
      * @return Returns Set of all MetaEntities
      */
     public static Set getMetaEntities() {
-        return metaData.getEntities();
+        return metaData.getMetaEntities();
     }
     
     /**

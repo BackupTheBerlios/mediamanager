@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.16 2004/06/26 13:45:37 crac Exp $
+ * @version $Id: MetaField.java,v 1.17 2004/06/28 10:07:24 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
@@ -63,10 +63,8 @@ public final class MetaField implements Cloneable {
      * @param id
      */
     public MetaField(String name, MetaEntity entity, int id) {
-        this.name = name;
-        this.entity = entity;
+        this(name, entity);
         this.id = id;
-        this.identifier = entity.getName() + "." + name;
     }
     
     /**
@@ -76,10 +74,8 @@ public final class MetaField implements Cloneable {
      * @param entity
      */
     public MetaField(int type, String name, MetaEntity entity) {
+        this(name, entity, 0);
         this.type = type;
-        this.entity = entity;
-        this.name = name;
-        this.identifier = entity.getName() + "." + name;
     }
       
     // --------------------------------
@@ -92,7 +88,11 @@ public final class MetaField implements Cloneable {
      * @return Returns true if both MetaFields are equal.
      */
     public boolean equals(MetaField f) {
-        return identifier.equals(f.identifier);   
+        if ((id == 0) || (f.id == 0)) {
+            return identifier.equals(f.identifier);
+        } else {
+            return (id == f.id);
+        }
     }
     
     /**
@@ -100,7 +100,11 @@ public final class MetaField implements Cloneable {
      * @return Returns the hashCode.
      */
     public int hashCode() {
-        return identifier.hashCode();
+        if (id == 0) {
+            return identifier.hashCode();
+        } else {
+            return id;
+        }
     }
     
     /**

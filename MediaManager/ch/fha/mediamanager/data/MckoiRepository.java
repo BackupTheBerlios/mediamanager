@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.43 2004/06/27 22:30:28 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.44 2004/06/28 10:07:24 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -172,7 +172,7 @@ public final class MckoiRepository extends Repository {
        
        DataBus.logger.info("Entity " + entity.getName() + 
            " with Id " + entity.getId() + " created.");
-       DataBus.getMetaData().addEntity(entity);
+       DataBus.getMetaData().addMetaEntity(entity);
        return true;
    }
    
@@ -270,7 +270,7 @@ public final class MckoiRepository extends Repository {
        }      
        DataBus.logger.info("Field " + field.getIdentifier() + 
             " with Id " + field.getId() + " created.");
-       DataBus.getMetaData().addField(field);
+       DataBus.getMetaData().addMetaField(field);
        return true;
    }
    
@@ -394,7 +394,9 @@ public final class MckoiRepository extends Repository {
             String sql = 
                 "SELECT * FROM Fld " +
                 "LEFT JOIN Fldtype ON Fld.FldFldtypeId = Fldtype.FldtypeId " +
-                "LEFT JOIN Ent ON Fld.FldEntId = Ent.EntId;";
+                "LEFT JOIN Ent ON Fld.FldEntId = Ent.EntId " +
+                "WHERE Fld.FldId > 0 " +
+                "ORDER BY Ent.EntId ASC, Fld.FldId ASC;";
             ResultSet result = 
                 dbConnection.executeQuery(sql);
                 
@@ -468,8 +470,9 @@ public final class MckoiRepository extends Repository {
                         break;
                 }
                 //data.addEntity(me);
-                data.addField(mf);
-                DataBus.logger.debug("MetaField added: " + mf.getIdentifier());
+                data.addMetaField(mf);
+                DataBus.logger.debug("MetaField added: " + mf.getIdentifier() + 
+                   " hashcode: " + mf.hashCode());
             }
             
             String loadEntities = "SELECT * FROM Ent WHERE EntId > 0;";
@@ -482,7 +485,7 @@ public final class MckoiRepository extends Repository {
                         resEntities.getString("EntName"),
                         resEntities.getInt("EntId")
                     );
-                data.addEntity(entity);
+                data.addMetaEntity(entity);
             }
         } catch (SQLException e) {
             DataBus.logger.fatal("Could not load MetaData.");

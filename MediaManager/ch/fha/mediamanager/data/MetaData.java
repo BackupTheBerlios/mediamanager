@@ -1,6 +1,7 @@
 package ch.fha.mediamanager.data;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.16 2004/06/26 13:49:15 crac Exp $
+ * @version $Id: MetaData.java,v 1.17 2004/06/28 10:07:24 crac Exp $
  */
 public final class MetaData {
     
@@ -20,8 +21,10 @@ public final class MetaData {
     // FIELDS
     // --------------------------------
     
-    private HashSet metaFields = new HashSet();
-    private HashSet metaEntities = new HashSet();
+    private LinkedHashSet metaFields = 
+        new LinkedHashSet();
+    private LinkedHashSet metaEntities = 
+        new LinkedHashSet();
     
     // --------------------------------
     // CONSTRUCTORS
@@ -37,10 +40,10 @@ public final class MetaData {
      */
     protected void remove(Object o) {
         if (o instanceof MetaEntity) {
-            removeEntity((MetaEntity) o);
+            removeMetaEntity((MetaEntity) o);
         }
         else if (o instanceof MetaField) {
-            removeField((MetaField) o);
+            removeMetaField((MetaField) o);
         }
     }
     
@@ -48,7 +51,7 @@ public final class MetaData {
      * 
      * @param entity
      */
-    protected void removeEntity(MetaEntity entity) {
+    protected void removeMetaEntity(MetaEntity entity) {
         metaEntities.remove(entity);
     }
     
@@ -56,7 +59,7 @@ public final class MetaData {
      * 
      * @param field
      */
-    protected void removeField(MetaField field) {
+    protected void removeMetaField(MetaField field) {
         metaFields.remove(field);
     }
     
@@ -66,10 +69,10 @@ public final class MetaData {
      */
     protected void add(Object o) {
     	if (o instanceof MetaEntity) {
-            addEntity((MetaEntity) o);
+            addMetaEntity((MetaEntity) o);
         }
         else if (o instanceof MetaField) {
-        	addField((MetaField) o);
+        	addMetaField((MetaField) o);
         }
     }
     
@@ -77,7 +80,7 @@ public final class MetaData {
      * 
      * @param entity
      */
-    protected void addEntity(MetaEntity entity) {
+    protected void addMetaEntity(MetaEntity entity) {
         if (! contains((MetaEntity) entity)) {
             metaEntities.add(entity);
         }
@@ -87,9 +90,9 @@ public final class MetaData {
      * 
      * @param field
      */
-    protected void addField(MetaField field) {
+    protected void addMetaField(MetaField field) {
         if (! contains((MetaField) field)) {
-    	    metaFields.add(field);
+            metaFields.add(field);
         }
     }
     
@@ -113,20 +116,20 @@ public final class MetaData {
      * Returns true if no entities and no fields 
      * are available.
      * 
-     * @see #hasEntities()
-     * @see #hasFields()
+     * @see #hasMetaEntities()
+     * @see #hasMetaFields()
      * 
      * @return
      */
     protected boolean isEmpty() {
-    	return hasEntities() && hasFields();
+    	return hasMetaEntities() && hasMetaFields();
     }
     
     /**
      * 
      * @return
      */
-    protected boolean hasEntities() {
+    protected boolean hasMetaEntities() {
     	return metaEntities.isEmpty();
     }
     
@@ -134,7 +137,7 @@ public final class MetaData {
      * 
      * @return
      */
-    protected boolean hasFields() {
+    protected boolean hasMetaFields() {
     	return metaFields.isEmpty();
     }
     
@@ -164,8 +167,8 @@ public final class MetaData {
      *      Set to prevent direct modification of 
      *      the elements
      */
-    protected HashSet getEntities() {
-    	return (HashSet) metaEntities.clone();
+    protected LinkedHashSet getMetaEntities() {
+    	return (LinkedHashSet) metaEntities.clone();
     }
     
     /**
@@ -174,8 +177,8 @@ public final class MetaData {
      *      Set to prevent direct modification of 
      *      the elements
      */
-    protected HashSet getFields() {
-    	return (HashSet) metaFields.clone();
+    protected LinkedList getMetaFields() {
+    	return (LinkedList) metaFields.clone();
     }
     
     /**

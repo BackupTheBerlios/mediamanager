@@ -1,12 +1,12 @@
 package ch.fha.mediamanager.data;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.17 2004/06/27 10:05:11 crac Exp $
+ * @version $Id: DataElement.java,v 1.18 2004/06/28 10:07:24 crac Exp $
  */
 public class DataElement {
 	
@@ -14,7 +14,7 @@ public class DataElement {
     // FIELDS
     // --------------------------------
 	
-    private Set fields = new HashSet();
+    private Set fields = new LinkedHashSet();
     private Entry entry = null;
     private MetaEntity entity = null;
     
