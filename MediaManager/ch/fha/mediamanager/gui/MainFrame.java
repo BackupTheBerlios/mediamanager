@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.9 2004/06/23 11:54:49 ia02vond Exp $
+//$Id: MainFrame.java,v 1.10 2004/06/24 14:58:43 crac Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -188,24 +188,24 @@ public class MainFrame extends JFrame implements
 	}
 	
 	/**
-	 * TODO
+	 * 
 	 */
 	public void connect() {
 		statePanel.setConnectionStatus(true);
 		setStatusText("Wird verbunden ...", true);
 		mainActionListener.fireAction(KeyPointEvent.CONNECTING);
-		
+		DataBus.connect();
 		mainTabPanel.connect();
 	}
 
 	/**
-	 * TODO
+     * 
 	 */
 	public void disconnect() {
 		statePanel.setConnectionStatus(false);
 		setStatusText("Wird getrennt ...", true);
 		mainActionListener.fireAction(KeyPointEvent.DISCONNECTING);
-		
+		DataBus.disconnect();
 		mainTabPanel.disconnect();
 	}
 	
