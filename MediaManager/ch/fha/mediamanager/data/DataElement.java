@@ -1,18 +1,17 @@
 package ch.fha.mediamanager.data;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.4 2004/06/05 23:23:15 crac Exp $
+ * @version $Id: DataElement.java,v 1.5 2004/06/11 12:35:27 crac Exp $
  */
 public class DataElement {
 	
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
 	
     private Set fields = new HashSet();
@@ -37,7 +36,7 @@ public class DataElement {
      * 
      * @return
      */
-    public Iterator iterator() {
+    public java.util.Iterator iterator() {
     	return fields.iterator();
     }
     
@@ -67,7 +66,7 @@ public class DataElement {
      * @return
      */
     public Field getField(MetaField f) {
-    	Iterator it = iterator();
+    	java.util.Iterator it = iterator();
         
         while(it.hasNext()) {
             Field tmp = (Field) it.next();

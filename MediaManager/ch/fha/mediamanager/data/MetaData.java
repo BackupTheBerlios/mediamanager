@@ -5,13 +5,13 @@ import java.util.Set;
 /**
  * Holds all meta-information about the repository.
  * 
- * <p>All entities and its fields are propagated. 
+ * <p>All entities and all its fields are propagated. 
  * 
  * @see MetaField
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.4 2004/06/11 12:08:26 crac Exp $
+ * @version $Id: MetaData.java,v 1.5 2004/06/11 12:37:13 crac Exp $
  */
 public final class MetaData {
     
