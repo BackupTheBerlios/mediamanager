@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import ch.fha.mediamanager.gui.MainFrame;
@@ -85,6 +86,7 @@ public class PluginConf extends JPanel
 		for (int i=0; i<plugin.length; i++) {
 			checkBox[i] = new JCheckBox(name[i]);
 			checkBox[i].addActionListener(this);
+			checkBox[i].setToolTipText(createToolTip(plugin[i]));
 			panel.add(checkBox[i]);
 		}
 		this.setBorder(new BarBorder("Plugin Einstellungen"));
@@ -113,5 +115,31 @@ public class PluginConf extends JPanel
 		if(e.getKeyPointEvent() == KeyPointEvent.CONFIG_PANEL_LOAD) {
 			refresh();
 		}
+	}
+	
+	private String createToolTip(Plugin plugin) {
+		StringBuffer tt = new StringBuffer();
+		String breakk = "<br>";
+		tt.append("<html><b>");
+		tt.append(plugin.getName());
+		tt.append("</b>");
+		tt.append(breakk);
+		tt.append("Source: ");
+		tt.append(plugin.getSource());
+		tt.append("<hr>");
+		
+		String desc = plugin.getDescription();
+		int last = 0;
+		for (int i=50; i<desc.length(); i+=50) {
+			while (desc.charAt(i) != ' ') {
+				i++;
+			}
+			tt.append(desc.subSequence(last, i));
+			tt.append(breakk);
+			last = i;
+		}
+		tt.append(desc.substring(last));
+		tt.append("</html>");
+		return tt.toString();
 	}
 }
