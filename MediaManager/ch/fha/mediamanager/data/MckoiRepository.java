@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.11 2004/06/22 17:31:40 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.12 2004/06/22 21:21:35 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -128,7 +128,8 @@ public final class MckoiRepository implements Repository {
      * @see MetaData
      * 
      * @throws InterError if meta data could not be loaded.
-     * @return
+     * @return Returns <code>MetaData</code> of the 
+     *      repository
      */
     public MetaData loadMetaData() {
         MetaData data = new MetaData();
@@ -182,9 +183,10 @@ public final class MckoiRepository implements Repository {
     }
 
     /**
+     * Inserts a <code>DataSet</code> to the repository.
      * 
      * @param ds
-     * @return Returns null
+     * @return Returns always null
      */
     public DataSet insert(DataSet ds) {
         if ((ds.isEmpty()) || (ds == null))
@@ -252,9 +254,10 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
+     * Updates a <code>DataSet</code> in the repository.
      * 
      * @param ds
-     * @return Returns null
+     * @return Returns always null
      */
     public DataSet update(DataSet ds) {
         if (ds.isEmpty() || ds == null) 
@@ -311,9 +314,10 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
+     * Deletes a <code>DataSet</code> from the repository.
      * 
      * @param ds
-     * @return Returns null
+     * @return Returns always null
      */
     public DataSet delete(DataSet ds) {
         if ((ds.isEmpty()) || (ds == null))
@@ -347,7 +351,7 @@ public final class MckoiRepository implements Repository {
      * @see QueryRequest
      * 
      * @param ds
-     * @return 
+     * @return Returns the requested <code>DataSet</code>
      */
     public DataSet load(QueryRequest qr) {
     	Vector tmp = qr.getVector();
@@ -513,6 +517,7 @@ public final class MckoiRepository implements Repository {
     }
     
     /**
+     * Deletes an entry from the repository.
      * 
      * @param entry
      */
@@ -530,7 +535,7 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param entry
-     * @return
+     * @return Returns the Timestamp of the updated entry
      */
     private Timestamp updateEntry(Entry entry) {
         if ((entry == null) || (entry.getId() < 1))
@@ -560,7 +565,7 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param entry
-     * @return
+     * @return Returns the id of the inserted entry
      */
     private int insertEntry(Entry entry) {
         if ((entry == null) || (entry.getId() != 0))
@@ -596,7 +601,7 @@ public final class MckoiRepository implements Repository {
      * 
      * @param entity
      * @param pk
-     * @return
+     * @return Returns the next PrimaryKey of the entity
      */
     private int getNextPK(String entity, String pk) {
         if ((pk == null) || (entity == null)) 
@@ -617,37 +622,16 @@ public final class MckoiRepository implements Repository {
     
     /**
      * 
-     * @param entity
-     * @return
-     */
-    private int getNextPK(String entity) {
-        if (entity == null) 
-            throw new IllegalArgumentException();
-        
-        String query = "SELECT UNIQUEKEY('" + entity + "');";
-        try {
-            ResultSet result =  
-                dbConnection.executeQuery(query);
-            result.next();
-            return (result.getInt(1) + 1);
-        } catch (SQLException e) {
-            DataBus.logger.fatal("Error while getting next primary key.");
-            e.printStackTrace();
-            throw new RuntimeException("Erroneous database query.");
-        }
-    }
-    
-    /**
-     * 
-     * @return Returns the name of the repository.
+     * @return Returns the name of the repository
      */
     public String getName() {
         return name;
     }
     
     /**
+     * TODO: use conf/mckoi.conf with these settings
      * 
-     * @return Returns the config panel.
+     * @return Returns the config panel
      */
     public JPanel getConfPanel() {
         JPanel outer = new JPanel();
