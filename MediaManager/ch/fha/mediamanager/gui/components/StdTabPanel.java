@@ -1,4 +1,4 @@
-//$Id: StdTabPanel.java,v 1.9 2004/06/23 13:40:08 ia02vond Exp $
+//$Id: StdTabPanel.java,v 1.10 2004/06/23 18:24:36 ia02vond Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -9,6 +9,7 @@ import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 import ch.fha.mediamanager.gui.util.DataTableModel;
 import ch.fha.mediamanager.gui.util.DataTablePopupMenu;
+import ch.fha.mediamanager.gui.util.SortDecorator;
 
 public class StdTabPanel extends JPanel {
 	
@@ -22,6 +23,7 @@ public class StdTabPanel extends JPanel {
 		
 		DataTableModel model = new DataTableModel(metaEntity);
 		table = new JTable(model);
+		SortDecorator decorator = new SortDecorator(table, table.getModel());
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		table.addMouseListener(new DataTablePopupMenu(table, model, metaEntity));
 		
