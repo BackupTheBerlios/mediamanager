@@ -1,9 +1,11 @@
 package ch.fha.mediamanager.data;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.io.File;
 
 import java.sql.ResultSet;
@@ -22,7 +24,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.20 2004/06/18 12:06:08 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.21 2004/06/18 13:09:18 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -321,6 +323,14 @@ public final class DatabaseRepository implements Repository {
      * @return
      */
     public JPanel getConfPanel() {
+        BorderLayout border = new BorderLayout();
+        border.setVgap(1);
+        
+        JPanel outer = new JPanel();
+        outer.setLayout(border);
+        
+        // top
+        JPanel top = new JPanel();
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,2));
         
@@ -333,6 +343,8 @@ public final class DatabaseRepository implements Repository {
         final JPasswordField pwd = 
             new JPasswordField(settings.getPassword());
         panel.add(pwd);
+        
+        top.add(panel);
         
         // bottom
         JButton save = new JButton("save");
@@ -349,12 +361,15 @@ public final class DatabaseRepository implements Repository {
                 }
             });
         
-        panel.add(new JPanel());
-        JPanel p3 = new JPanel();
-        p3.setLayout(new FlowLayout());
-        p3.add(save);
-        panel.add(p3);
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new FlowLayout());
+        bottom.add(save);
         
-        return panel;
+        outer.setPreferredSize(new java.awt.Dimension(250, 100));
+        
+        outer.add(top, BorderLayout.CENTER);
+        outer.add(bottom, BorderLayout.SOUTH);
+        
+        return outer;
     }
 }
