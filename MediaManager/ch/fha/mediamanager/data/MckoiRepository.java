@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.24 2004/06/24 14:59:19 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.25 2004/06/24 21:44:27 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -34,13 +34,16 @@ public final class MckoiRepository implements Repository {
     // FIELDS
     // --------------------------------
     
-    private static final String name = "Mckoi SQL DB Repository";
+    private static final String name = 
+        "Mckoi SQL DB Repository";
     
     /* Database connection settings */
     private static final String connFile = "conf" + 
         File.separator + "mckoi_repository.ini";
     private ConnectionSettings connSettings = 
         new ConnectionSettings(connFile);
+    
+    private boolean connected = false;
     
     /* Mckoi SQL Database settings */
     private MckoiSettings mckoiSettings = null;
@@ -58,15 +61,12 @@ public final class MckoiRepository implements Repository {
     // CONSTRUCTORS
     // --------------------------------
     
-    /**
-     * 
-     * 
-     */
-    public MckoiRepository() {}
-    
     // --------------------------------
     // OPERATIONS
     // --------------------------------
+    
+    ///////////////////////////
+    ///////////////////////////
     
     /**
      * 
@@ -82,6 +82,7 @@ public final class MckoiRepository implements Repository {
     public void connect() {
         if (dbConnection != null) {
             dbConnection.connect();
+            connected = true;
         }
     }
     
@@ -90,8 +91,21 @@ public final class MckoiRepository implements Repository {
      */
     public void disconnect() {
         dbConnection.disconnect();
+        connected = false;
         //dbConnection = null;
     }
+    
+    /**
+     * 
+     * @return Returns true if connection to 
+     *      repository is established
+     */
+    public boolean isConnected() {
+        return connected;
+    }
+    
+    ///////////////////////////
+    ///////////////////////////
     
     /**
     *
