@@ -8,7 +8,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  *
  * @author crac
- * @version $Id: Repository.java,v 1.13 2004/06/26 09:57:00 crac Exp $
+ * @version $Id: Repository.java,v 1.14 2004/06/26 13:03:14 crac Exp $
  */
 public abstract class Repository {
     
@@ -22,8 +22,6 @@ public abstract class Repository {
     abstract protected boolean create(MetaField field);
     abstract protected boolean delete(MetaEntity entity);
     abstract protected boolean delete(MetaField field);
-    
-    abstract protected MetaData loadMetaData();
     
     abstract protected void insertUser(User user);
     abstract protected void deleteUser(User user);

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.36 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.37 2004/06/26 13:03:14 crac Exp $
  */
 public final class MckoiRepository extends Repository {
     
@@ -399,7 +399,7 @@ public final class MckoiRepository extends Repository {
      * @return Returns <code>MetaData</code> of the 
      *      repository
      */
-   protected MetaData loadMetaData() {
+   private MetaData loadMetaData() {
         MetaData data = new MetaData();
         
         try {
