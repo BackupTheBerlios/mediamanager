@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.3 2004/06/16 08:10:36 radisli Exp $
+//$Id: MainTab.java,v 1.4 2004/06/16 10:29:34 ia02vond Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -54,17 +54,17 @@ public class MainTab extends JPanel {
 			} ,
 			"Zum Server verbinden");
 		topButtonPanel.add(topButton);
-		JLabel topLabel = new JLabel("Verbinden");
+		JLabel topLabel = new RenderedJLabel("Verbinden");
 		topLabel.setFont(MainFrame.titleFont);
 		topButtonPanel.add(topLabel);
 		basePanel.add(topButtonPanel);
 		
 		ImageIcon prefsImage = new ImageIcon("images/prefs.gif");
 		NavButton middleButton = new NavButton(prefsImage,
-				mainActionListener, "Haupteinstellungen verändern");
+				mainActionListener, "Haupteinstellungen verï¿½ndern");
 		middleButton.setActionCommand("config");
 		middleButtonPanel.add(middleButton);
-		JLabel middleLabel = new JLabel("Einstellungen");
+		JLabel middleLabel = new RenderedJLabel("Einstellungen");
 		middleLabel.setFont(MainFrame.titleFont);
 		middleButtonPanel.add(middleLabel);
 		basePanel.add(middleButtonPanel);
@@ -74,7 +74,7 @@ public class MainTab extends JPanel {
 				mainActionListener, "Mediamanager beenden");
 		bottomButton.setActionCommand("exit");
 		bottomButtonPanel.add(bottomButton);
-		JLabel bottomLabel = new JLabel("Beenden");
+		JLabel bottomLabel = new RenderedJLabel("Beenden");
 		bottomLabel.setFont(MainFrame.titleFont);
 		bottomButtonPanel.add(bottomLabel);
 		basePanel.add(bottomButtonPanel);
@@ -120,5 +120,26 @@ public class MainTab extends JPanel {
 		public void mouseClicked(MouseEvent arg0) {}
 		public void mousePressed(MouseEvent arg0) {}
 		public void mouseReleased(MouseEvent arg0) {}
+	}
+	
+	
+	/**
+	 * Simple Extension of <code>JLabel</code> which
+	 * sets new rendering hints for better font displaying
+	 * before invoking the <code>super.paint()</code>
+	 * method.
+	 */
+	private class RenderedJLabel extends JLabel {
+		public RenderedJLabel(String text) {
+			super(text);
+		}
+		public void paint(Graphics g) {
+	        Graphics2D g2d = (Graphics2D) g;
+	        g2d.setRenderingHint(
+	            RenderingHints.KEY_ANTIALIASING, 
+	            RenderingHints.VALUE_ANTIALIAS_ON);
+	
+	        super.paint(g2d);
+	    }
 	}
 }
