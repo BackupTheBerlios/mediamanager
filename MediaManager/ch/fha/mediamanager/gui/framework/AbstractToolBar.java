@@ -1,4 +1,4 @@
-//$Id: AbstractToolBar.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
+//$Id: AbstractToolBar.java,v 1.4 2004/06/27 20:32:16 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import javax.swing.*;
@@ -8,26 +8,38 @@ import java.awt.event.*;
 import ch.fha.mediamanager.gui.*;
 
 public abstract class AbstractToolBar extends JToolBar {
-	public void addToolbarElement(String image, String toolTipText) {
-		MainFrame mainWindow = MainFrame.getInstance();
-		ActionHandler mainActionListener = mainWindow.getMainActionListener();
-		add(new ToolBarButton(image, mainActionListener, "Select test"));
+	public ToolBarButton addToolbarElement(String image, ActionListener al,
+			String ac, String toolTipText) {
+		ToolBarButton jb = new ToolBarButton(image, al, ac, toolTipText);
+		add(jb);
+		return jb ;
 	}
 	
 	public class ToolBarButton extends JButton {
-		final String toolTip;
+		String toolTip;
 		
-		ToolBarButton(String image, ActionHandler mainActionListener, String newToolTip) {
-			this.toolTip = newToolTip;
+		ToolBarButton(String image, ActionListener al, String ac, String toolTip) {
 			this.setIcon(new ImageIcon(image));
 			setMargin(new Insets(0, 0, 0, 0));
-			setToolTipText(toolTip);
-			addActionListener(mainActionListener);
+			setToolTip(toolTip);
+			addActionListener(al);
+			if(ac != null) {
+				this.setActionCommand(ac);
+			}
 			addMouseListener(new MouseAdapter() {
 				public void mouseEntered(MouseEvent arg0) {
-					MainFrame.getInstance().setStatusText(toolTip, true);
+					setStatusText();
 				}
 			});
+		}
+		
+		private void setStatusText() {
+			MainFrame.getInstance().setStatusText(toolTip, true);
+		}
+		
+		public void setToolTip(String toolTip) {
+			this.setToolTipText(toolTip);
+			this.toolTip = toolTip;
 		}
 	}
 }
