@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.15 2004/06/21 21:43:31 crac Exp $
+ * @version $Id: DataBus.java,v 1.16 2004/06/23 17:17:15 crac Exp $
  */
 public final class DataBus {
 	
@@ -147,6 +147,17 @@ public final class DataBus {
         }
         
         return el;
+    }
+    
+    /**
+     * 
+     * @see #getDefaultElement(MetaEntity)
+     * 
+     * @param e
+     * @return
+     */
+    public static DataElement getDefaultElement(String e) {
+        return getDefaultElement(new MetaEntity(e));
     }
 	
     // --------------------------------
