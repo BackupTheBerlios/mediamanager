@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.29 2004/06/25 11:05:15 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.30 2004/06/25 13:41:10 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -238,7 +238,7 @@ public final class MckoiRepository implements Repository {
                case (MetaField.PK):
                    alter += " INTEGER DEFAULT UNIQUEKEY('" +
                        field.getEntity().getName() + "') ";
-                   insertConstraint(field);
+                   createPK(field);
                    break;
                case (MetaField.INT):
                    alter += " INTEGER ";
@@ -279,11 +279,21 @@ public final class MckoiRepository implements Repository {
    }
    
    /**
+    * Adds Primary Key to an entity.
     * 
     * @param field
     */
-   private void insertConstraint(MetaField field) {
-       //
+   private void createPK(MetaField field) {
+       if ( (field == null) 
+       	       || (field.getType() != MetaField.PK)
+           ) {
+           throw new IllegalArgumentException();
+       }
+       
+       String sql = "ALTER TABLE " + 
+           field.getEntity().getName() + 
+           " ADD PRIMARY KEY('" + field.getName() + "');";
+       dbConnection.executeQuery(sql);
    }
    
    /**

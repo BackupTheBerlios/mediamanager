@@ -4,7 +4,7 @@ package ch.fha.mediamanager.data;
  * 
  * 
  * @author crac
- * @version $Id: QueryCondition.java,v 1.5 2004/06/05 21:21:22 crac Exp $
+ * @version $Id: QueryCondition.java,v 1.6 2004/06/25 13:41:10 crac Exp $
  */
 public class QueryCondition {
     
@@ -17,7 +17,7 @@ public class QueryCondition {
     public static final int LIKE = 6;
     
     // --------------------------------
-    // ATTRIBUTES
+    // FIELDS
     // --------------------------------
     
     private MetaEntity entity;
