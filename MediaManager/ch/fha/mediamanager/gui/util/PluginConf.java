@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+import ch.fha.mediamanager.gui.MainFrame;
+import ch.fha.mediamanager.gui.components.BarBorder;
+import ch.fha.mediamanager.gui.framework.KeyPointEvent;
+import ch.fha.mediamanager.gui.framework.KeyPointListener;
 import ch.fha.pluginstruct.Plugin;
 import ch.fha.pluginstruct.PluginManager;
 
@@ -18,7 +22,7 @@ import ch.fha.pluginstruct.PluginManager;
  * @version $id$
  */
 public class PluginConf extends JPanel
-	implements ActionListener {
+	implements ActionListener, KeyPointListener {
 	
 	private PluginManager manager;
 
@@ -30,6 +34,11 @@ public class PluginConf extends JPanel
 	private JCheckBox[] checkBox;
 	
 	public PluginConf() {
+		// Registeres event which is called when the <code>PluginsTab</code> is shown
+		MainFrame.getInstance().getMainActionListener().addActionListener(
+				this, new KeyPointEvent(KeyPointEvent.CONFIG_PANEL_LOAD, ""));
+		
+		
 		manager = PluginManager.getInstance();
 		loadPluginList();
 		initSwing();
@@ -79,6 +88,7 @@ public class PluginConf extends JPanel
 			checkBox[i].addActionListener(this);
 			panel.add(checkBox[i]);
 		}
+		this.setBorder(new BarBorder("Plugin Einstellungen"));
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.add(panel);
 	}
@@ -90,6 +100,20 @@ public class PluginConf extends JPanel
 				activated[i] = source.isSelected();
 				manager.setPluginActivity(identifier[i], activated[i]);
 			}
+		}
+	}
+	
+
+	/**
+	 * Method is called when a preregistered key-point is reached.
+	 *  
+	 * @param e is a <code>KeyPointEvent</code> which contains:
+	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
+	 *          - additional string parameter
+	 */
+	public void runAction(KeyPointEvent e) {
+		if(e.getKeyPointEvent() == KeyPointEvent.CONFIG_PANEL_LOAD) {
+			refresh();
 		}
 	}
 }
