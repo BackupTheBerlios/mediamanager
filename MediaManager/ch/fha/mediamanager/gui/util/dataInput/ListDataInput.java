@@ -11,8 +11,8 @@ import ch.fha.mediamanager.data.Field;
 /**
  * @see DataInput
  * 
- * @author ia02vond
- * @version $id$
+ * @author ia02vond, crac
+ * @version $Id: ListDataInput.java,v 1.2 2004/06/28 20:32:18 crac Exp $
  */
 public class ListDataInput extends AbstractDataInput
 	implements ActionListener {
@@ -25,7 +25,14 @@ public class ListDataInput extends AbstractDataInput
 		comboBox = new JComboBox();
 		
 		setValue(field.getValue(), false);
+        
+        String[] str = 
+            (String[]) field.getMetaField().getDefaultValue();
 		
+        for (int i = 0; i < str.length; i++) {
+        	comboBox.addItem(str[i]);
+        }
+        
 		comboBox.addActionListener(this);
 	}
 	
@@ -38,11 +45,11 @@ public class ListDataInput extends AbstractDataInput
 	}
 
 	private void setValue(Object value, boolean fireEvent) {
-		// TODO Auto-generated method stub	
+		field.setTmpValue(value);	
 		if (fireEvent) fireDataInputChanged();
 	}
 	
 	public void actionPerformed(ActionEvent event) {
-		// TODO
+		setValue(comboBox.getSelectedItem(), true);
 	}
 }
