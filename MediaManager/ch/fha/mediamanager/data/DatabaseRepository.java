@@ -9,7 +9,7 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.5 2004/05/22 11:51:15 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.6 2004/05/27 18:58:38 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -77,7 +77,7 @@ public class DatabaseRepository implements Repository {
                 ds.add(e);
             } 
         } catch (Exception e) {
-            throw new LogicException("Error while loading DataSet from database.");
+            throw new RuntimeException("Error while loading DataSet from database.");
         }
         
         return ds;
