@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  *
  * @author crac
- * @version $Id: QueryRequest.java,v 1.4 2004/05/22 10:50:26 crac Exp $
+ * @version $Id: QueryRequest.java,v 1.5 2004/05/22 13:01:27 crac Exp $
  */
 public class QueryRequest {
     
@@ -81,7 +81,7 @@ public class QueryRequest {
      */
     public DataSet run() {
         switch (this.type) {
-            case(Repository.DISPLAY):
+            case(Repository.LOAD):
                 return repository.load(this);
             case(Repository.UPDATE):
                 return repository.update(dSet);
