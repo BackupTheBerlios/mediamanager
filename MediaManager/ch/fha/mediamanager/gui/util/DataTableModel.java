@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
 import ch.fha.mediamanager.data.DataElement;
@@ -18,18 +19,17 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.7 2004/06/28 14:07:41 ia02vond Exp $
+ * @version $Id: DataTableModel.java,v 1.8 2004/06/28 14:10:45 ia02vond Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
 
-	private JTable table;
 	private MetaEntity metaEntity;
 	private MetaField[] metaFields;
 	private DataElement[] elements;
 	private Object[][] data;
 	
-	public DataTableModel(JTable table, MetaEntity metaEntity) {
+	public DataTableModel(MetaEntity metaEntity) {
 		this.metaEntity = metaEntity;
 		refresh();
 	}
@@ -112,7 +112,7 @@ public class DataTableModel extends AbstractTableModel
 	public void dataChanged(MetaEntity metaEntity) {
 		if (metaEntity.equals(this.metaEntity)) {
 			refresh();
-			table.repaint();
+			fireTableChanged(new TableModelEvent(this));
 		}
 	}
 }
