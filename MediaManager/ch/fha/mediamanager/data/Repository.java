@@ -6,7 +6,7 @@ import javax.swing.JPanel;
  * A Repository holds the data.
  *
  * @author crac
- * @version $Id: Repository.java,v 1.6 2004/06/15 12:01:07 ia02vond Exp $
+ * @version $Id: Repository.java,v 1.7 2004/06/15 12:29:20 crac Exp $
  */
 public interface Repository {
     public DataSet update(DataSet ds);
@@ -23,4 +23,7 @@ public interface Repository {
     
     public JPanel getConfPanel();
     public String getName();
+    
+    public void connect();
+    public void disconnect();
 }
