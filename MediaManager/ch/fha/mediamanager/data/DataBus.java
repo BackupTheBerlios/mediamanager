@@ -1,6 +1,9 @@
 package ch.fha.mediamanager.data;
 
 import java.io.FileNotFoundException;
+
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -10,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.20 2004/06/25 08:58:17 crac Exp $
+ * @version $Id: DataBus.java,v 1.21 2004/06/25 16:06:18 crac Exp $
  */
 public final class DataBus {
 	
@@ -35,6 +38,7 @@ public final class DataBus {
     private static MetaData metaData;
 	private static Repository[] repositories;
 	private static Repository   currentRepository;
+    private static Query query;
 	
     // --------------------------------
     // CONSTRUCTORS
@@ -107,6 +111,80 @@ public final class DataBus {
     // ACCESSORS
     // --------------------------------
 	
+    /**
+     * 
+     * @param vec
+     * @param type
+     * 
+     * @return Returns query handler of the 
+     *      active repository
+     */
+    public static AbstractQuery getQueryInstance(
+        java.util.Vector vec,
+        int type) {
+        
+        try {
+            Object[] args = {vec, new Integer(type)};
+            Class[] argTypes = {vec.getClass(), int.class};
+            Class qrClass = 
+                currentRepository.getQuery().getClass();
+
+        	AbstractQuery qr = (AbstractQuery)
+                qrClass.getConstructor(argTypes).newInstance(args);
+            return qr;
+            
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InvocationTargetException e ){
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * 
+     * @param ds
+     * @param type
+     * 
+     * @return Returns query handler of the 
+     *      active repository
+     */
+    public static AbstractQuery getQueryInstance(
+        DataSet ds, 
+        int type) {
+        
+        try {
+            Object[] args = {ds, new Integer(type)};
+            Class[] argTypes = {ds.getClass(), int.class};
+            Class qrClass = 
+                currentRepository.getQuery().getClass();
+
+            AbstractQuery qr = (AbstractQuery)
+                qrClass.getConstructor(argTypes).newInstance(args);
+            return qr;
+            
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InvocationTargetException e ){
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 	/**
 	 * 
 	 * @return

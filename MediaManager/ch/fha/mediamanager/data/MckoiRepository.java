@@ -26,13 +26,16 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.30 2004/06/25 13:41:10 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.31 2004/06/25 16:06:18 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
     // --------------------------------
     // FIELDS
     // --------------------------------
+    
+    private AbstractQuery query = 
+        new DatabaseQuery();
     
     private static final String name = 
         "Mckoi SQL DB Repository";
@@ -66,7 +69,7 @@ public final class MckoiRepository implements Repository {
     // --------------------------------
     
     ///////////////////////////
-    /// CONNECTION OPERATIONS ///
+    /// CONNECTION OPS      ///
     ///////////////////////////
     
     /**
@@ -134,8 +137,8 @@ public final class MckoiRepository implements Repository {
        String create = "CREATE TABLE " + entity.getName();
        
        insertEntity = 
-        dbConnection.prepareStatement("INSERT INTO Ent " +
-            "(EntId, EntName) VALUES (?, ?);");
+           dbConnection.prepareStatement("INSERT INTO Ent " +
+               "(EntId, EntName) VALUES (?, ?);");
        
        try {
            entity.setId(getNextPK("Ent", "EntId"));
@@ -686,12 +689,12 @@ public final class MckoiRepository implements Repository {
      * defined <code>QueryRequest</code> from the repository.
      * 
      * @see DataSet
-     * @see QueryRequest
+     * @see DatabaseQuery
      * 
      * @param ds
      * @return Returns the requested <code>DataSet</code>
      */
-    public DataSet load(QueryRequest qr) {
+    public DataSet load(AbstractQuery qr) {
     	Vector tmp = qr.getVector();
         if (tmp.size() == 0)    return null;
         
@@ -704,7 +707,7 @@ public final class MckoiRepository implements Repository {
         query += " LEFT JOIN Entry ON " + entryField + " = Entry.EntryId ";
         //query += " LEFT JOIN Users ON Entry.EntryUsersId = Users.UsersUUID ";
         
-        query += createRequestStatement(qr);
+        query += qr.createRequest();
         DataBus.logger.debug(query);
         
         try {   
@@ -783,90 +786,6 @@ public final class MckoiRepository implements Repository {
         }
         DataBus.logger.debug("DataSet loaded.");
         return ds;
-    }
-    
-    ///////////////////////////
-    /// QUERY OPERATIONS    ///
-    ///////////////////////////
-    
-    /**
-     * 
-     * 
-     * Syntax: Field.name Comperator Value
-     * 
-     * @param qc
-     * @return 
-     */
-    private String createCondStatement(QueryCondition qc) {
-        if (qc == null) 
-            throw new IllegalArgumentException();
-        
-        String comp = (qc.getEntity()).getName() + "." 
-            + (qc.getField()).getName();
-        
-        switch(qc.getComparator()) {
-            case(QueryCondition.EQUALS):
-                comp += " = ";
-                break;
-            case(QueryCondition.GREATER):
-                comp += " > ";
-                break;
-            case(QueryCondition.LESSER):
-                comp += " < ";
-                break;
-            case(QueryCondition.GREATER_EQUALS):
-                comp += " >= ";
-                break;
-            case(QueryCondition.LESSER_EQUALS):
-                comp += " <= ";
-                break;
-            case(QueryCondition.DONT_EQUALS):
-                comp += " != ";
-                break;
-        }
-        
-        comp += (qc.getValue()).toString();
-        
-        return comp;
-    }
-    
-    /**
-     * 
-     * @param qr
-     * @return 
-     */
-    private String createRequestStatement(QueryRequest qr) {
-        if (qr == null) throw new IllegalArgumentException();
-        
-        Vector tmp = qr.getVector();
-        
-        String output = (tmp.size() > 0) ? " WHERE ": "";
-        
-        for(int i = 0; i < tmp.size(); i++) {
-            if (tmp.elementAt(i) instanceof QueryCondition) {
-                output += 
-                    createCondStatement((QueryCondition) tmp.elementAt(i));
-            } else {
-                
-                Integer t = (Integer) tmp.elementAt(i);
-                switch(t.intValue()) {
-                    case(QueryRequest.OR):
-                        output += " OR ";
-                        break;
-                    case(QueryRequest.AND):
-                        output += " AND ";
-                        break;
-                    case(QueryRequest.BRACE_OPEN):
-                        output += " ( ";
-                        break;
-                    case(QueryRequest.BRACE_CLOSE):
-                        output += " ) ";
-                        break;
-                }
-            }
-        }
-        
-        return output;
     }
     
     ///////////////////////////
@@ -985,6 +904,14 @@ public final class MckoiRepository implements Repository {
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public Query getQuery() {
+        return query;
     }
     
     /**

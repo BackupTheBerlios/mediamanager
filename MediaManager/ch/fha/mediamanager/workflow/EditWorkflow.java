@@ -6,7 +6,7 @@ import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
-import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.OperationCancelException;
@@ -14,7 +14,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: EditWorkflow.java,v 1.6 2004/06/24 11:01:46 crac Exp $
+ * @version $Id: EditWorkflow.java,v 1.7 2004/06/25 16:06:18 crac Exp $
  */
 public class EditWorkflow implements Workflow {
 	
@@ -60,7 +60,8 @@ public class EditWorkflow implements Workflow {
 				// update
 				DataSet set = new DataSet();
 				set.add(dataElement);
-				QueryRequest req = new QueryRequest(set, QueryRequest.UPDATE);
+				AbstractQuery req = 
+                    DataBus.getQueryInstance(set, AbstractQuery.UPDATE);
 				req.run();
                 
 				pluginManager.fireEvent(

@@ -6,7 +6,7 @@ import java.util.Vector;
  * Explains how to send a query to the repository.
  * 
  * @see Repository
- * @see QueryRequest
+ * @see DatabaseQuery
  * @see QueryCondition
  * @see MetaEntity
  * @see MetaField
@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.11 2004/06/24 14:52:36 crac Exp $
+ * @version $Id: TestQuery.java,v 1.12 2004/06/25 16:06:18 crac Exp $
  */
 public class TestQuery {
     
@@ -38,11 +38,12 @@ public class TestQuery {
             );
         Vector vec = new Vector();
         vec.add(qc);
-        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        AbstractQuery qr =
+            DataBus.getQueryInstance(vec, AbstractQuery.LOAD);
         DataSet set = qr.run();
         
         if ((set != null) && (set.size() == 1)) {
-            qr = new QueryRequest(set, QueryRequest.DELETE);
+            qr = DataBus.getQueryInstance(vec, AbstractQuery.DELETE);
             ds = qr.run();
         }*/
         
@@ -57,7 +58,8 @@ public class TestQuery {
             );
         Vector vec = new Vector();
         vec.add(qc);
-        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        AbstractQuery qr =
+            DataBus.getQueryInstance(vec, AbstractQuery.LOAD);
         DataSet set = qr.run();
         
         if ((set != null) && (set.size() == 1)) {
@@ -66,7 +68,7 @@ public class TestQuery {
             set.remove(e);
             e.setField("Interpret", "DJ Bobo");
             set.add(e);
-            qr = new QueryRequest(set, QueryRequest.UPDATE);
+            qr = DataBus.getQueryInstance(set, AbstractQuery.UPDATE);
             ds = qr.run();
         }*/
         
@@ -79,7 +81,8 @@ public class TestQuery {
         el.setField("Stil", new String("Pop"));
         DataSet set = new DataSet();
         set.add(el);
-        QueryRequest qr = new QueryRequest(set, QueryRequest.INSERT);
+        AbstractQuery qr = 
+            DataBus.getQueryInstance(vec, AbstractQuery.INSERT);
         ds = qr.run();*/
         
         // query example: return all with id > 0
@@ -93,7 +96,8 @@ public class TestQuery {
             );
         Vector vec = new Vector();
         vec.add(qc);
-        QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+        AbstractQuery qr = 
+            DataBus.getQueryInstance(vec, AbstractQuery.LOAD);
         ds = qr.run();
         
         if (ds != null) {

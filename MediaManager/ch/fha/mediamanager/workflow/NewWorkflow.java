@@ -6,7 +6,7 @@ import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
-import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.gui.util.InputFormular;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.OperationCancelException;
@@ -14,7 +14,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.3 2004/06/23 19:51:27 ia02vond Exp $
+ * @version $Id: NewWorkflow.java,v 1.4 2004/06/25 16:06:18 crac Exp $
  */
 public class NewWorkflow implements Workflow {
 
@@ -34,7 +34,7 @@ public class NewWorkflow implements Workflow {
 			pluginManager.fireEvent(
 					new MMPluginEvent(dataElement),
 					"prenew",
-					metaEntity.getIdentifier());
+					metaEntity.getName());
 			
 			
 			new InputFormular(dataElement, this, "Neu");
@@ -42,7 +42,7 @@ public class NewWorkflow implements Workflow {
 			
 		} catch (OperationCancelException e) {
 			String message =
-				"Operation 'new " + metaEntity.getIdentifier() +
+				"Operation 'new " + metaEntity.getName() +
 				" ' was canceled by a plugin.";
 			DataBus.logger.info(message);
 		}
@@ -54,29 +54,30 @@ public class NewWorkflow implements Workflow {
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"preinsert",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 				// insert
 				DataSet set = new DataSet();
 				set.add(dataElement);
-				QueryRequest req = new QueryRequest(set, QueryRequest.INSERT);
+				AbstractQuery req = 
+                    DataBus.getQueryInstance(set, AbstractQuery.INSERT);
 				
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"postinsert",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
 						"postnew",
-						metaEntity.getIdentifier());
+						metaEntity.getName());
 				
 				
 			} catch (OperationCancelException e) {
 				String message =
-					"Operation 'new " + metaEntity.getIdentifier() +
+					"Operation 'new " + metaEntity.getName() +
 					" ' was canceled by a plugin.";
 				DataBus.logger.info(message);
 			}

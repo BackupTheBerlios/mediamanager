@@ -9,7 +9,7 @@ import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
 import ch.fha.mediamanager.data.MetaEntity;
-import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.gui.MainFrame;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.pluginstruct.OperationCancelException;
@@ -17,7 +17,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.5 2004/06/25 06:58:59 radisli Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.6 2004/06/25 16:06:18 crac Exp $
  */
 public class DeleteWorkflow implements Workflow {
 
@@ -66,7 +66,8 @@ public class DeleteWorkflow implements Workflow {
 			// delete
 			DataSet set = new DataSet();
 			set.add(dataElement);
-			QueryRequest req = new QueryRequest(set, QueryRequest.DELETE);
+			AbstractQuery req = 
+                DataBus.getQueryInstance(set, AbstractQuery.DELETE);
 			
 			pluginManager.fireEvent(
 					new MMPluginEvent(dataElement),

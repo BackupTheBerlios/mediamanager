@@ -6,13 +6,14 @@ import javax.swing.JPanel;
  * A Repository holds the data.
  *
  * @author crac
- * @version $Id: Repository.java,v 1.10 2004/06/24 21:52:10 crac Exp $
+ * @version $Id: Repository.java,v 1.11 2004/06/25 16:06:18 crac Exp $
  */
 public interface Repository {
+    
     public DataSet update(DataSet ds);
     public DataSet insert(DataSet ds);
     public DataSet delete(DataSet ds);
-    public DataSet load(QueryRequest qr);
+    public DataSet load(AbstractQuery qr);
     
     public boolean create(MetaEntity entity, MetaField[] fields);
     public boolean create(MetaEntity entity);
@@ -28,6 +29,7 @@ public interface Repository {
     
     public JPanel getConfPanel();
     public String getName();
+    public Query getQuery();
     
     public MetaData initialize();
     public void connect();

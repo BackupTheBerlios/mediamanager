@@ -11,11 +11,12 @@ import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.MetaField;
 import ch.fha.mediamanager.data.QueryCondition;
-import ch.fha.mediamanager.data.QueryRequest;
+import ch.fha.mediamanager.data.AbstractQuery;
+import ch.fha.mediamanager.data.DataBus;
 
 /**
  * @author ia02vond
- * @version $id$
+ * @version $Id: DataTableModel.java,v 1.4 2004/06/25 16:06:18 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel {
 
@@ -39,7 +40,10 @@ public class DataTableModel extends AbstractTableModel {
 		    );
 		Vector vec = new Vector();
 		vec.add(qc);
-		QueryRequest qr = new QueryRequest(vec, QueryRequest.LOAD);
+		AbstractQuery qr = DataBus.getQueryInstance(
+            vec,
+            AbstractQuery.LOAD
+        );
 		DataSet ds = qr.run();
 		metaFields = ds.getMetaFields();
 		
