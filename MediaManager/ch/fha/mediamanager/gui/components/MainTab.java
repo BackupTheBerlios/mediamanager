@@ -1,16 +1,33 @@
-//$Id: MainTab.java,v 1.2 2004/06/05 13:49:35 radisli Exp $
+//$Id: MainTab.java,v 1.3 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 import ch.fha.mediamanager.gui.*;
 
+/**
+ * @author Roman Rietmann
+ *
+ * The panel which will be shown first contains connect-, config- and exit
+ * button.
+ */
 public class MainTab extends JPanel {
+	// Tool Tips which is displayed in the <code>StatePanel</code> too
+	private final static String connectStr = "Zum Server verbinden";
+	private final static String disconnectStr = "Verbindung trennen";
+	// Images for connectbutton
+	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
+	private final static ImageIcon disconnectImage = new ImageIcon("images/disconnect.gif");
+	// Connectbutton
+	private NavButton topButton;
+	
+	/**
+	 * Constructor which creates the <code>MainTab</code>
+	 */
 	public MainTab() {
-		MainFrame mainWindow = MainFrame.getInstance();
+		final MainFrame mainWindow = MainFrame.getInstance();
 		setLayout(new BorderLayout());
 		ActionListener mainActionListener = mainWindow.getMainActionListener();
 		
@@ -18,10 +35,24 @@ public class MainTab extends JPanel {
 		JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		ImageIcon connectImage = new ImageIcon("images/connect.gif");
-		NavButton topButton = new NavButton(connectImage,
-				mainActionListener, "Zum Server verbinden");
+
+		topButton = new NavButton(connectImage,
+			new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(mainWindow.getConnectionStatus()) {
+						mainWindow.setConnectionStatus(false);
+						topButton.setIcon(connectImage);
+						topButton.setToolTipText(connectStr);
+						mainWindow.setStatusText("Wird getrennt ...", true);
+					} else {
+						mainWindow.setConnectionStatus(true);
+						topButton.setIcon(disconnectImage);
+						topButton.setToolTipText(disconnectStr);
+						mainWindow.setStatusText("Wird verbunden ...", true);
+					}
+				}
+			} ,
+			"Zum Server verbinden");
 		topButtonPanel.add(topButton);
 		JLabel topLabel = new JLabel("Verbinden");
 		topLabel.setFont(MainFrame.titleFont);
@@ -51,11 +82,24 @@ public class MainTab extends JPanel {
 		add(basePanel, BorderLayout.WEST);
 	}
 	
+	/**
+	 * Class for a picture button
+	 */
 	private class NavButton extends JButton implements
 		MouseListener
 	{
+		// Button dimension
 		private final Dimension d = new Dimension(52, 52);
 		
+		/**
+		 * Creates a button contains image <code>img</code>, shows
+		 * <code>toolTip</code> and uses <code>ActionListener</code>
+		 * <code>al</code>
+		 * 
+		 * @param img is the picture which will be displayed on the button
+		 * @param al is the button specific actionlistener
+		 * @param toolTip is the toolTip used by the button
+		 */
 		NavButton(ImageIcon img, ActionListener al, String toolTip) {
 			setIcon(img);
 			setToolTipText(toolTip);
@@ -66,11 +110,11 @@ public class MainTab extends JPanel {
 		}
 
 		public void mouseEntered(MouseEvent arg0) {
-			MainFrame.getInstance().setStatus(this.getToolTipText(), false);
+			MainFrame.getInstance().setStatusText(this.getToolTipText(), false);
 		}
 
 		public void mouseExited(MouseEvent arg0) {
-			MainFrame.getInstance().removeStatus();
+			MainFrame.getInstance().removeStatusText();
 		}
 		
 		public void mouseClicked(MouseEvent arg0) {}

@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.2 2004/06/05 13:49:35 radisli Exp $
+//$Id: MainFrame.java,v 1.3 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -8,7 +8,6 @@ import javax.swing.border.*;
 import java.util.prefs.*;
 
 import ch.fha.mediamanager.gui.components.*;
-import ch.fha.mediamanager.gui.components.menu.*;
 import ch.fha.mediamanager.gui.framework.*;
 
 /**
@@ -23,10 +22,11 @@ public class MainFrame extends JFrame implements
 	private StandartToolBar standartToolBar;
 	private JPanel mainTabPanel;
 	private JPanel mainConfigPanel;
+	private JPanel aboutPanel = null;
 	private JPanel mainPanelHolder;
 	private StatePanel statePanel;
 	private ActionHandler mainActionListener = new ActionHandler();
-	private JMenuBar menuBar;
+	private MainMenuBar menuBar;
 	
 	// Singleton reference
 	private static MainFrame instance = null;
@@ -34,6 +34,8 @@ public class MainFrame extends JFrame implements
 	// Default settings
 	private static final int defaultWindowWidth = 400;
 	private static final int defaultWindowHeight = 300;
+	private static final int defaultWindowXPos = 0;
+	private static final int defaultWindowYPos = 0;
 	private static final int defaultScreenMode = JFrame.NORMAL;
 	
 	// Default graphic objects
@@ -47,6 +49,8 @@ public class MainFrame extends JFrame implements
 	// Keywords that name the settings
 	private static final String WINDOW_WIDTH = "windowWidth";
 	private static final String WINDOW_HEIGHT = "windowHeight";
+	private static final String WINDOW_X_POS = "windowXPos";
+	private static final String WINDOW_Y_POS = "windowYPos";
 	private static final String SCREEN_MODE = "screenMode";
 	
 	// Private to prevent instantiation.
@@ -76,17 +80,16 @@ public class MainFrame extends JFrame implements
 		// Load window preferences
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle(apptitle);
-		setSize(
-				prefs.getInt(WINDOW_WIDTH, defaultWindowWidth),
+		setSize(prefs.getInt(WINDOW_WIDTH, defaultWindowWidth),
 				prefs.getInt(WINDOW_HEIGHT, defaultWindowHeight));
+		setLocation(prefs.getInt(WINDOW_X_POS, defaultWindowXPos), 
+					prefs.getInt(WINDOW_Y_POS, defaultWindowYPos));
 		Image icon = Toolkit.getDefaultToolkit().getImage("images/Icon.jpg");
 		setIconImage(icon);
 		
 		// Menu-Bar
-		menuBar = new JMenuBar();
+		menuBar = new MainMenuBar();
 		setJMenuBar(menuBar);
-		JMenu fileMenu = new FileMenu(mainActionListener);
-		menuBar.add(fileMenu);
 
 		// Panels
 		Container cp = getContentPane();
@@ -97,7 +100,7 @@ public class MainFrame extends JFrame implements
 		standartToolBar = new StandartToolBar();
 		cp.add(standartToolBar, BorderLayout.NORTH);
 		
-		JPanel modificationPanel = new ModificationPanel(this);
+		JPanel modificationPanel = new ModificationPanel();
 		windowHolder.add(modificationPanel, BorderLayout.WEST);
 		
 		mainPanelHolder.add(mainTabPanel, BorderLayout.CENTER);
@@ -155,6 +158,13 @@ public class MainFrame extends JFrame implements
 	public void loadStdPanel() { loadMainPanel(mainTabPanel); }
 	/** Loads the standart <code>mainConfigPanel</code> */
 	public void loadConfigPanel() { loadMainPanel(mainConfigPanel); }
+	/** Loads the standart <code>aboutConfigPanel</code> */
+	public void loadAboutPanel() {
+		if(aboutPanel == null) {
+			aboutPanel = new AboutPanel();
+		}
+		loadMainPanel(aboutPanel);
+	}
 	
 	/**
 	 * Sets the status-text in the <code>statePanel</code> to <code>s</code>.
@@ -165,16 +175,32 @@ public class MainFrame extends JFrame implements
 	 * @param timeOut defines whether the status-text disapears
 	 *        automaticly or not.
 	 */
-	public void setStatus(String s, boolean timeOut) {
-		statePanel.setStatus(s, timeOut);
+	public void setStatusText(String s, boolean timeOut) {
+		statePanel.setStatusText(s, timeOut);
 	}
 	
 	/**
 	 * Removes the status-text from the <code>statePanel</code>.
 	 * Used to remove permanent showed text.
 	 */
-	public void removeStatus() {
-		setStatus("", false);
+	public void removeStatusText() {
+		setStatusText("", false);
+	}
+	
+	/**
+	 * Sets the connection status
+	 */
+	public void setConnectionStatus(boolean state) {
+		statePanel.setConnectionStatus(state);
+	}
+	
+	/**
+	 * Gets the connection status
+	 * 
+	 * @return Connection status 
+	 */
+	public boolean getConnectionStatus() {
+		return statePanel.getConnectionStatus();
 	}
 
 	/**
@@ -210,11 +236,15 @@ public class MainFrame extends JFrame implements
 		Dimension windowSize = getSize();
 		int windowWidth = windowSize.width;
 		int windowHeight = windowSize.height;
+		int windowXPos = getLocation().x;
+		int windowYPos = getLocation().y;
 		int screenMode = getExtendedState(); 
 		
 		try {
 			prefs.putInt(WINDOW_WIDTH, windowWidth);
 			prefs.putInt(WINDOW_HEIGHT, windowHeight);
+			prefs.putInt(WINDOW_X_POS, windowXPos);
+			prefs.putInt(WINDOW_Y_POS, windowYPos);
 			prefs.putInt(SCREEN_MODE, screenMode);
 			prefs.flush();
 		} catch(BackingStoreException e) {
@@ -237,7 +267,7 @@ public class MainFrame extends JFrame implements
 	 * @param arg0 WindowEvent
 	 */
 	public void myWindowClosing(WindowEvent arg0) {
-		if(askUser("Wollen Sie wirklich beenden?") == JOptionPane.YES_OPTION) {
+//		if(askUser("Wollen Sie wirklich beenden?") == JOptionPane.YES_OPTION) {
 			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 			try {
 				Mediamanager.fireSave();
@@ -246,5 +276,5 @@ public class MainFrame extends JFrame implements
 			}
 			System.exit(0);
 		}
-	}
+//	}
 }

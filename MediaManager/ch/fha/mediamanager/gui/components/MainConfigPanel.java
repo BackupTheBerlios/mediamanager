@@ -1,4 +1,4 @@
-//$Id: MainConfigPanel.java,v 1.1 2004/06/05 13:49:35 radisli Exp $
+//$Id: MainConfigPanel.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -9,9 +9,17 @@ import java.util.prefs.*;
 import ch.fha.mediamanager.gui.*;
 import ch.fha.mediamanager.gui.framework.*;
 
+/**
+ * Configuration panel
+ *
+ * @author Roman Rietmann
+ */
 public class MainConfigPanel extends JPanel implements
 	Savable
 {
+	/**
+	 * Constructor creates the main-config panel
+	 */
 	public MainConfigPanel() {
 		setLayout(new BorderLayout());
 		Mediamanager.addSavable(this);
@@ -19,7 +27,7 @@ public class MainConfigPanel extends JPanel implements
 		ActionListener mainActionListener = mainWindow.getMainActionListener();
 		
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton back = new JButton("Abbrechen");
+		JButton back = new JButton("Zur\u00fcck");
 		back.setActionCommand("tabs");
 		back.addActionListener(mainActionListener);
 		defaultButtonPanel.add(back);
@@ -27,6 +35,11 @@ public class MainConfigPanel extends JPanel implements
 		this.repaint();
 	}
 
+	/**
+	 * Method which saves the preferences
+	 * 
+	 * @param prefs contains the preferences  
+	 */
 	public void savePrefs(Preferences prefs) {
 		System.out.println("Saving ConfigPanel settings!");
 		try {

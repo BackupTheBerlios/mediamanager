@@ -1,9 +1,16 @@
-// $Id: Mediamanager.java,v 1.3 2004/06/05 13:49:35 radisli Exp $
+// $Id: Mediamanager.java,v 1.4 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import javax.swing.*;
+import java.awt.Dimension;
 import java.util.*;
 import java.util.prefs.*;
+
+import com.jgoodies.plaf.FontSizeHints;
+import com.jgoodies.plaf.Options;
+import com.jgoodies.plaf.plastic.Plastic3DLookAndFeel;
+import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
+import com.jgoodies.plaf.plastic.theme.SkyBluer;
 
 import ch.fha.mediamanager.gui.framework.*;
 
@@ -23,6 +30,7 @@ public class Mediamanager {
 	 */
 	public static void main(String[] args) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
+		configureUI();
 		MainFrame.getInstance();
 	}
 
@@ -68,4 +76,35 @@ public class Mediamanager {
 	public static Preferences getPrefs() {
 		return prefs;
 	}
+	
+    /**
+     * Configures the UI.
+     * Tries to set the system look on Mac,
+     * <code>ExtWindowsLookAndFeel</code> on general Windows, and
+     * <code>Plastic3DLookAndFeel</code> on Windows XP and all other OS.
+
+     * The JGoodies Swing Suite's <code>ApplicationStarter</code>,
+     * <code>ExtUIManager</code>, and <code>LookChoiceStrategies</code>
+     * classes provide a much more fine grained algorithm to choose and
+     * restore a look and theme.
+     */
+    private static void configureUI() {
+        UIManager.put(Options.USE_SYSTEM_FONTS_APP_KEY, Boolean.TRUE);
+        Options.setGlobalFontSizeHints(FontSizeHints.MIXED);
+        Options.setDefaultIconSize(new Dimension(18, 18));
+
+        /*String lafName =
+            LookUtils.isWindowsXP()
+                ? Options.getCrossPlatformLookAndFeelClassName()
+                : Options.getSystemLookAndFeelClassName();*/
+                
+        LookAndFeel plastic = new Plastic3DLookAndFeel();
+        PlasticLookAndFeel.setMyCurrentTheme(new SkyBluer());
+
+        try {
+            UIManager.setLookAndFeel(plastic);
+        } catch (Exception e) {
+            System.err.println("Can't set look & feel:" + e);
+        }
+    }
 }

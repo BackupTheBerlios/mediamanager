@@ -1,4 +1,4 @@
-//$Id: ActionHandler.java,v 1.1 2004/06/05 13:49:35 radisli Exp $
+//$Id: ActionHandler.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import java.util.*;
@@ -76,6 +76,8 @@ public class ActionHandler implements
 			mainWindow.loadStdPanel();
 		} else if(s.equals("config")) {	// Loads the default ConfigPanel
 			mainWindow.loadConfigPanel();
+		} else if(s.equals("about")) {	// Loads the AboutWindow
+			mainWindow.loadAboutPanel();
 		}
 	}
 }

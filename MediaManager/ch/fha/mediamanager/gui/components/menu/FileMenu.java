@@ -1,18 +1,23 @@
-//$Id: FileMenu.java,v 1.1 2004/05/27 13:38:16 radisli Exp $
+//$Id: FileMenu.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui.components.menu;
 
 import javax.swing.*;
 import java.awt.event.*;
 
+import ch.fha.mediamanager.gui.*;
+
 public class FileMenu extends JMenu {
-	private ActionListener mainActionHandler;
-	
-	public FileMenu(ActionListener mainActionHandler) {
-		this.mainActionHandler = mainActionHandler;
+	public FileMenu() {
+		MainFrame mainWindow = MainFrame.getInstance();
+		ActionListener mainActionListener = mainWindow.getMainActionListener();
+		
 		setText("File");
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setActionCommand("exit");
-		exit.addActionListener(mainActionHandler);
+		exit.setMnemonic(KeyEvent.VK_X);
+		exit.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+		exit.addActionListener(mainActionListener);
 		add(exit);
 
 /*		JMenuItem add = new JMenuItem("Add");

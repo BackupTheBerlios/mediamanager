@@ -1,4 +1,4 @@
-//$Id: AbstractToolBar.java,v 1.1 2004/06/05 13:49:35 radisli Exp $
+//$Id: AbstractToolBar.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public abstract class AbstractToolBar extends JToolBar {
 		}
 
 		public void mouseEntered(MouseEvent arg0) {
-			MainFrame.getInstance().setStatus(this.getToolTipText(), true);
+			MainFrame.getInstance().setStatusText(this.getToolTipText(), true);
 		}
 
 		public void mouseExited(MouseEvent arg0) {}
