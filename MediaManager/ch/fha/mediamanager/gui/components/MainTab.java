@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.6 2004/06/18 11:07:38 radisli Exp $
+//$Id: MainTab.java,v 1.7 2004/06/21 05:53:02 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -32,7 +32,8 @@ public class MainTab extends JPanel {
 		final MainFrame mainWindow = MainFrame.getInstance();
 		setLayout(new BorderLayout());
 		ActionHandler mainActionListener = mainWindow.getMainActionListener();
-		
+		setBorder(new BarBorder("Hauptfenster"));
+
 		JPanel basePanel = new JPanel(new GridLayout(3, 1));
 		JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel middleButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

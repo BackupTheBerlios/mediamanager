@@ -1,4 +1,4 @@
-//$Id: StdTabPanel.java,v 1.3 2004/06/18 11:07:38 radisli Exp $
+//$Id: StdTabPanel.java,v 1.4 2004/06/21 05:53:02 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -16,6 +16,7 @@ public class StdTabPanel extends JPanel implements
 		setLayout(new BorderLayout());
 		MainFrame mainWindow = MainFrame.getInstance();
 		ActionHandler mainActionListener = mainWindow.getMainActionListener();
+		setBorder(new BarBorder("TEST-Panel"));
 		
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton exit = new JButton("Exit");
