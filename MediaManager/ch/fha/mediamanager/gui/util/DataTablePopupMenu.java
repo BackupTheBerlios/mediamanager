@@ -15,7 +15,6 @@ import javax.swing.JTable;
 
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
-import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.plugin.MMPluginEvent;
 import ch.fha.mediamanager.workflow.DeleteWorkflow;
@@ -28,7 +27,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: DataTablePopupMenu.java,v 1.12 2004/06/29 13:35:29 ia02vond Exp $
+ * @version $Id: DataTablePopupMenu.java,v 1.13 2004/06/30 15:54:59 crac Exp $
  */
 public class DataTablePopupMenu extends JPopupMenu
 	implements MouseListener, ActionListener, Returnable {
