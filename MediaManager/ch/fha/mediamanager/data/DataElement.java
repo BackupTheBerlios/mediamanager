@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.15 2004/06/25 08:58:17 crac Exp $
+ * @version $Id: DataElement.java,v 1.16 2004/06/27 09:30:15 crac Exp $
  */
 public class DataElement {
 	
@@ -232,7 +232,7 @@ public class DataElement {
      * 
      * @param entry
      */
-    public void setEntry(Entry entry) {
+    protected void setEntry(Entry entry) {
         this.entry = entry;
     }
     
