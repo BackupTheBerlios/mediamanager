@@ -1,5 +1,5 @@
-// $Id: MainView.java,v 1.1 2004/05/24 11:32:38 radisli Exp $
-package ch.fha.mediamanager.gui;
+// $Id: MainView.java,v 1.1 2004/05/27 13:38:16 radisli Exp $
+package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -26,7 +26,7 @@ public class MainView extends JPanel
 
 		buttonPanel.add(exit);
 		exit.addActionListener(this);
-		panelHolder.add(buttonPanel, BorderLayout.NORTH);
+//		panelHolder.add(buttonPanel, BorderLayout.NORTH);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		mainTab = new MainTab();
