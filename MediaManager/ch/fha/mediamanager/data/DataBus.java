@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.16 2004/06/23 17:17:15 crac Exp $
+ * @version $Id: DataBus.java,v 1.17 2004/06/24 14:47:28 crac Exp $
  */
 public final class DataBus {
 	
@@ -65,8 +65,35 @@ public final class DataBus {
     }
     
     /**
+     * Connects to the repository.
+     */
+    public static void connect() {
+        if (currentRepository != null) {
+            metaData = currentRepository.initialize();
+            DataBus.logger.info("Repository connected.");
+        } else {
+            DataBus.logger.info("No repository available.");   
+        }
+    }
+    
+    /**
+     * Disconnects from the repository.
+     */
+    public static void disconnect() {
+        if (currentRepository != null) {
+            currentRepository.disconnect();
+            DataBus.logger.info("Repository disconnected.");
+        } else {
+            DataBus.logger.info("No repository available.");   
+        }
+    }
+    
+    /**
      * 
-     *
+     * @deprecated Use #connect() instead.
+     * 
+     * @see #connect()
+     * @see #disconnect()
      */
     public static void loadRepository() {
         if (currentRepository != null) {
