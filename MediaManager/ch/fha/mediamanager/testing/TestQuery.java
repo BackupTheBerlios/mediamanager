@@ -25,7 +25,7 @@ import ch.fha.mediamanager.data.AbstractRepository;
  * @see DataSet
  * 
  * @author crac
- * @version $Id: TestQuery.java,v 1.7 2004/06/29 14:48:19 crac Exp $
+ * @version $Id: TestQuery.java,v 1.8 2004/06/29 15:18:24 crac Exp $
  */
 public class TestQuery {
     
@@ -38,6 +38,7 @@ public class TestQuery {
         
         DataSet ds = null;
         
+        deleteAllEntities();
         createCDDB();
         
         // create entity
@@ -187,13 +188,27 @@ public class TestQuery {
         DataBus.logger.info("App stoped.");
     }
     
+    private static void deleteAllEntities() {
+        java.util.LinkedHashSet entities = DataBus.getMetaEntities();
+        java.util.Iterator it = entities.iterator();
+        
+        AbstractQuery query;
+        
+        while (it.hasNext()) {
+            query = 
+                DataBus.getQueryInstance(AbstractQuery.ENTITY_DELETE);
+            if (query.admin((MetaEntity) it.next()))
+                System.out.println("Entity deleted.");
+        }
+    }
     private static void createCDDB() {
         
         MetaEntity cdEnt = new MetaEntity("CDs");
         MetaField fa = new MetaField(MetaField.PK, "CDId", cdEnt);
         MetaField fb = new MetaField(MetaField.VARCHAR, "Interpret", cdEnt);
-        MetaField fc = new MetaField(MetaField.VARCHAR, "Kategorie", cdEnt);
-        MetaField[] flds = {fa,fb,fc};
+        MetaField fc = new MetaField(MetaField.VARCHAR, "Titel", cdEnt);
+        MetaField fd = new MetaField(MetaField.VARCHAR, "Kategorie", cdEnt);
+        MetaField[] flds = {fa,fb,fc,fd};
         
         AbstractQuery qry = 
             DataBus.getQueryInstance(AbstractQuery.ENTITY_FIELDS_CREATE);
