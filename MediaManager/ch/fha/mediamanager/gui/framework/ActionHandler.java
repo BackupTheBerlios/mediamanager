@@ -1,4 +1,4 @@
-//$Id: ActionHandler.java,v 1.4 2004/06/21 08:39:02 radisli Exp $
+//$Id: ActionHandler.java,v 1.5 2004/06/29 14:43:29 radisli Exp $
 package ch.fha.mediamanager.gui.framework;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public class ActionHandler implements
 	 * 
 	 * @param l is the <code>KeyPointListener</code> to remove.
 	 */
-	public void removeModelChangeListener(KeyPointListener l) {
+	public void removeActionListener(KeyPointListener l) {
 		list.remove(l);
 	}
 	
