@@ -10,7 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.17 2004/06/24 14:47:28 crac Exp $
+ * @version $Id: DataBus.java,v 1.18 2004/06/24 15:58:51 crac Exp $
  */
 public final class DataBus {
 	
@@ -29,6 +29,8 @@ public final class DataBus {
         String file = "conf" + java.io.File.separator + "logging.conf";
         PropertyConfigurator.configure(file);
     }
+    
+    private static User user;
     
     private static MetaData metaData;
 	private static Repository[] repositories;
@@ -70,6 +72,8 @@ public final class DataBus {
     public static void connect() {
         if (currentRepository != null) {
             metaData = currentRepository.initialize();
+            user = new User();
+            
             DataBus.logger.info("Repository connected.");
         } else {
             DataBus.logger.info("No repository available.");   
@@ -115,13 +119,19 @@ public final class DataBus {
 	    return currentRepository;
 	}
 	
+    /**
+     * 
+     * @return
+     */
 	public static Repository[] getRepositories() {
 		return repositories;
 	}
 	
 	/**
 	 * 
-	 * @return
+     * @see MetaData
+     * 
+	 * @return Returns the MetaData
 	 */
 	public static MetaData getMetaData() {
 	    return metaData;
@@ -129,7 +139,10 @@ public final class DataBus {
     
     /**
      * 
-     * @return
+     * @see MetaField
+     * @see MetaData
+     * 
+     * @return Returns Set of all MetaFields
      */
     public static Set getMetaFields() {
         return metaData.getFields();
@@ -137,7 +150,10 @@ public final class DataBus {
     
     /**
      * 
-     * @return
+     * @see MetaEntity
+     * @see MetaData
+     * 
+     * @return Returns Set of all MetaEntities
      */
     public static Set getMetaEntities() {
         return metaData.getEntities();
@@ -160,7 +176,10 @@ public final class DataBus {
      * @see MetaData
      * 
      * @param e
-     * @return
+     * @return Returns a <code>DataElement</code> 
+     *      of <code>Field</code>s with default value 
+     *      of the requested of the 
+     *      <code>MetaEntity</code>
      */
     public static DataElement getDefaultElement(MetaEntity e) {
         Set set = metaData.getMetaFields(e);
@@ -181,10 +200,22 @@ public final class DataBus {
      * @see #getDefaultElement(MetaEntity)
      * 
      * @param e
-     * @return
+     * @return Returns a <code>DataElement</code> 
+     *      of <code>Field</code>s with default value 
+     *      of the requested name of the 
+     *      <code>MetaEntity</code>
      */
     public static DataElement getDefaultElement(String e) {
         return getDefaultElement(new MetaEntity(e));
+    }
+    
+    /**
+     * 
+     * @return Returns user data of the user 
+     *      running the application
+     */
+    public static User getUser() {
+        return user;
     }
 	
     // --------------------------------
