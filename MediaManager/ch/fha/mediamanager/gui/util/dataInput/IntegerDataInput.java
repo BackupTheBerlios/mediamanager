@@ -2,8 +2,9 @@ package ch.fha.mediamanager.gui.util.dataInput;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import ch.fha.mediamanager.data.Field;
 
@@ -14,7 +15,7 @@ import ch.fha.mediamanager.data.Field;
  * @version $id$
  */
 public class IntegerDataInput extends AbstractDataInput
-	implements DocumentListener {
+	implements CaretListener {
 	
 	private JTextField textField;
 	
@@ -28,11 +29,12 @@ public class IntegerDataInput extends AbstractDataInput
 		
 		setValue(field.getValue(), false);
 		
-		textField.getDocument().addDocumentListener(this);
+		textField.setText(field.getValue().toString());
 	}
 	
 	public void setValue(Object value) {
 		setValue(value, true);
+		textField.setText(value.toString());
 	}
 	
 	public JComponent getInputComponent() {
@@ -56,15 +58,18 @@ public class IntegerDataInput extends AbstractDataInput
 		}
 		
 		field.setValue(value);
-		textField.setText(value.toString());
 		if (fireEvent) fireDataInputChanged();
 	}
 
 	public void changedUpdate(DocumentEvent e) {
-		setValue(textField.getText());
+		
 	}
 
 	public void insertUpdate(DocumentEvent e) {}
 	public void removeUpdate(DocumentEvent e) {}
+
+	public void caretUpdate(CaretEvent e) {
+		setValue(textField.getText(), true);		
+	}
 
 }

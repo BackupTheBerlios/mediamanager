@@ -2,8 +2,8 @@ package ch.fha.mediamanager.gui.util.dataInput;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 import ch.fha.mediamanager.data.Field;
 
@@ -14,7 +14,7 @@ import ch.fha.mediamanager.data.Field;
  * @version $id$
  */
 public class VarcharDataInput extends AbstractDataInput
-	implements DocumentListener {
+	implements CaretListener {
 
 	protected JTextField textField;
 	
@@ -27,8 +27,10 @@ public class VarcharDataInput extends AbstractDataInput
 				textField, field.getMetaField().getLength(), false));
 		
 		setValue(field.getValue(), false);
+
+		textField.setText(field.getValue().toString());
 		
-		textField.getDocument().addDocumentListener(this);
+		textField.addCaretListener(this);
 	}
 	
 	public JComponent getInputComponent() {
@@ -37,21 +39,17 @@ public class VarcharDataInput extends AbstractDataInput
 	
 	public void setValue(Object value) {
 		setValue(value, true);
+		textField.setText(value.toString());
 	}
 	
 	private void setValue(Object value, boolean fireEvent) {
 		field.setValue(value);
         ch.fha.mediamanager.data.DataBus.logger.info(value.toString());
-		textField.setText(value.toString());
 		if (fireEvent) fireDataInputChanged();
 	}
-	
-	public void changedUpdate(DocumentEvent e) {
-		setValue(textField.getText());
+
+	public void caretUpdate(CaretEvent e) {
+		setValue(textField.getText(), true);
 	}
-
-	public void insertUpdate(DocumentEvent e) {}
-    
-	public void removeUpdate(DocumentEvent e) {}
-
+	
 }
