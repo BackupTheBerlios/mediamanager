@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.28 2004/06/25 10:55:56 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.29 2004/06/25 11:05:15 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -730,9 +730,20 @@ public final class MckoiRepository implements Repository {
                                 break;
                             case (MetaField.BOOLEAN):
                                 field.setValue(
-                                    new Boolean(result.getBoolean(mf.getName()))
+                                    new Boolean(
+                                        (result.getInt(mf.getName()) == 1)? true: false
+                                    )
                                 );
                                 break;
+                            case (MetaField.TIMESTAMP):
+                                field.setValue(
+                                    result.getTimestamp(mf.getName())    
+                                );
+                                break;
+                            case (MetaField.DATE):
+                                field.setValue(
+                                    result.getDate(mf.getName())    
+                                );
                         }
                         e.setField(field);
                     } else {
