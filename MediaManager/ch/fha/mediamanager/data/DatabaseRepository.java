@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.15 2004/06/15 12:02:38 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.16 2004/06/15 12:30:05 crac Exp $
  */
 public final class DatabaseRepository implements Repository {
     
@@ -20,10 +20,8 @@ public final class DatabaseRepository implements Repository {
     // FIELDS
     // --------------------------------
     
-    private DatabaseConnection dbConnection; 
-        // = new DatabaseConnection(); // will be added when db is functional
-    
-    private final String name = "Mckoi Repository";
+    private DatabaseConnection dbConnection;
+    private final String name = "Mckoi Database Repository";
     
     // --------------------------------
     // CONSTRUCTORS
@@ -35,11 +33,24 @@ public final class DatabaseRepository implements Repository {
     
     /**
      * 
+     */
+    public void connect() {
+        dbConnection = new DatabaseConnection();
+    }
+    
+    /**
+     * 
+     *
+     */
+    public void disconnect() {
+        dbConnection = null;
+    }
+    
+    /**
+     * 
      * @return
      */
     public JPanel getConfPanel() {
-        // combo box for other repositories
-        
         // text field for username
         
         // text field for password
