@@ -14,7 +14,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.2 2004/06/23 17:03:41 ia02vond Exp $
+ * @version $Id: NewWorkflow.java,v 1.3 2004/06/23 19:51:27 ia02vond Exp $
  */
 public class NewWorkflow implements Workflow {
 
@@ -37,7 +37,7 @@ public class NewWorkflow implements Workflow {
 					metaEntity.getIdentifier());
 			
 			
-			new InputFormular(dataElement, this);
+			new InputFormular(dataElement, this, "Neu");
 			
 			
 		} catch (OperationCancelException e) {
