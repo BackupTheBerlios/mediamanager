@@ -7,7 +7,7 @@ package ch.fha.mediamanager.data;
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.2 2004/06/11 11:29:57 crac Exp $
+ * @version $Id: MetaField.java,v 1.3 2004/06/11 11:54:15 crac Exp $
  */
 public class MetaField {
 	
@@ -125,7 +125,7 @@ public class MetaField {
      * @return the value of entity
      */
     public MetaEntity getEntity() {
-        return (MetaEntity) entity.clone();
+        return entity;
     }
     
     // --------------------------------
@@ -192,6 +192,6 @@ public class MetaField {
      * @param value
      */
     public void setEntity(MetaEntity value) {
-        entity = (MetaEntity) value.clone();
+        entity = value;
     }
 }
