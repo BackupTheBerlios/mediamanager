@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.4 2004/06/15 09:36:21 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.5 2004/06/23 13:37:55 ia02vond Exp $
  */
 public final class PluginManager {
 	
@@ -113,6 +113,19 @@ public final class PluginManager {
 		if (!initialized) throw new IllegalStateException("not initialized");
 		
 		return container.iterator();
+	}
+	
+	/**
+	 * @return a plugin iterator over those plugins, which are interested
+	 *         interested in the given event.
+	 * @throws IllegalStateException if the plugin manager has not
+	 *         been initialized yet.
+	 */
+	public Iterator getPluginIterator(String event) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
+		return eventHandler.iterator(event);
 	}
 	
 	/**
