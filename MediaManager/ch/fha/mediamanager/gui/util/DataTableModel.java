@@ -18,7 +18,7 @@ import ch.fha.mediamanager.data.RepositoryListener;
 
 /**
  * @author ia02vond
- * @version $Id: DataTableModel.java,v 1.13 2004/06/29 12:00:31 crac Exp $
+ * @version $Id: DataTableModel.java,v 1.14 2004/06/29 12:48:12 crac Exp $
  */
 public class DataTableModel extends AbstractTableModel
 	implements RepositoryListener {
@@ -51,7 +51,7 @@ public class DataTableModel extends AbstractTableModel
         );
 		DataSet ds = qr.run();
         
-        if (ds.size() > 0) {
+        if ((ds != null) && (ds.size() > 0)) {
             metaFields = ds.getMetaFields();
             
     		Iterator it = ds.iterator();
