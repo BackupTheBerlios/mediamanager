@@ -1,4 +1,4 @@
-//$Id: MainFrame.java,v 1.5 2004/06/18 11:07:38 radisli Exp $
+//$Id: MainFrame.java,v 1.6 2004/06/18 12:32:59 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
@@ -18,7 +18,6 @@ import ch.fha.mediamanager.gui.framework.*;
  * @author Roman Rietmann
  */
 public class MainFrame extends JFrame implements
-	KeyPointListener, 
 	Savable,
 	InOut
 {
@@ -71,9 +70,6 @@ public class MainFrame extends JFrame implements
 		});
 		Preferences prefs = Mediamanager.getPrefs();
 
-		// Registeres event which is called when the <code>PluginsTab</code> is shown
-		mainActionListener.addActionListener(this, new KeyPointEvent(KeyPointEvent.CONFIG_PANEL_LOAD, ""));
-		
 		// Main Panel
 		mainTabPanel = new MainTabPanel();
 		
@@ -233,25 +229,6 @@ public class MainFrame extends JFrame implements
 		}
 	}
 
-	/**
-	 * Method is called when a preregistered key-point is reached.
-	 *  
-	 * @param e is a <code>KeyPointEvent</code> which contains:
-	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
-	 *          - additional string parameter
-	 */
-	public void runAction(KeyPointEvent e) {
-		if(e.getKeyPointEvent() == KeyPointEvent.CONFIG_PANEL_LOAD) {
-			/**
-			 * 
-			 * TODO --> Simon von Däniken
-			 * Wird ausgeführt wenn das Config Pannel geladen wird
-			 * 
-			 */
-		} else {
-			message("Uncatched KeyPointerEvent: " + e.getParameter() + " (" + e.getKeyPointEvent() + ")");	
-		}
-	}
 	
 	/**
 	 * Triggers the method <code>fireSave</code> which calls all registred
