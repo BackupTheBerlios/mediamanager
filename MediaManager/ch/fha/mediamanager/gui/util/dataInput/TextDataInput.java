@@ -13,7 +13,7 @@ import ch.fha.mediamanager.data.Field;
  * @see DataInput
  * 
  * @author ia02vond
- * @version $Id: TextDataInput.java,v 1.5 2004/06/28 15:19:17 crac Exp $
+ * @version $Id: TextDataInput.java,v 1.6 2004/06/28 19:23:20 crac Exp $
  */
 public class TextDataInput extends AbstractDataInput
 	implements CaretListener {
@@ -52,8 +52,7 @@ public class TextDataInput extends AbstractDataInput
 	}
 	
 	public void setValue(Object value, boolean fireEvent) {
-		field.setValue(value);
-        ch.fha.mediamanager.data.DataBus.logger.info(value.toString());
+		field.setTmpValue(value);
 		if (fireEvent) fireDataInputChanged();
 	}
 

@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import ch.fha.mediamanager.data.DataBus;
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
+import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.gui.util.InputFormular;
@@ -14,7 +15,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: NewWorkflow.java,v 1.7 2004/06/28 13:45:59 crac Exp $
+ * @version $Id: NewWorkflow.java,v 1.8 2004/06/28 19:23:20 crac Exp $
  */
 public class NewWorkflow implements Workflow, Returnable {
 
@@ -82,6 +83,13 @@ public class NewWorkflow implements Workflow, Returnable {
 				case PREINSERT:
 					
 					// insert
+                    java.util.Iterator it = dataElement.iterator();
+                    while (it.hasNext()) {
+                        Field fld = (Field) it.next();
+                        if (fld.getTmpValue() != null) 
+                            fld.setValue(fld.getTmpValue());
+                    }
+                    
 					DataSet set = new DataSet();
 					set.add(dataElement);
 					AbstractQuery req = 

@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import ch.fha.mediamanager.data.DataElement;
 import ch.fha.mediamanager.data.DataSet;
+import ch.fha.mediamanager.data.Field;
 import ch.fha.mediamanager.data.MetaEntity;
 import ch.fha.mediamanager.data.AbstractQuery;
 import ch.fha.mediamanager.data.DataBus;
@@ -14,7 +15,7 @@ import ch.fha.pluginstruct.Returnable;
 
 /**
  * @author ia02vond
- * @version $Id: EditWorkflow.java,v 1.8 2004/06/28 11:23:25 ia02vond Exp $
+ * @version $Id: EditWorkflow.java,v 1.9 2004/06/28 19:23:20 crac Exp $
  */
 public class EditWorkflow implements Workflow, Returnable {
 	
@@ -82,7 +83,14 @@ public class EditWorkflow implements Workflow, Returnable {
 				case PREUPDATE:
 					
 					// update
-					DataSet set = new DataSet();
+					java.util.Iterator it = dataElement.iterator();
+                    while (it.hasNext()) {
+                        Field fld = (Field) it.next();
+                        if (fld.getTmpValue() != null) 
+                            fld.setValue(fld.getTmpValue());
+                    }
+                    
+                    DataSet set = new DataSet();
 					set.add(dataElement);
 					AbstractQuery req = 
 	                    DataBus.getQueryInstance(set, AbstractQuery.UPDATE);

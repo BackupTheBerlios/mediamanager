@@ -12,7 +12,7 @@ import ch.fha.mediamanager.data.Field;
  * @see DataInput
  * 
  * @author ia02vond
- * @version $id$
+ * @version $Id: BooleanDataInput.java,v 1.2 2004/06/28 19:23:20 crac Exp $
  */
 public class BooleanDataInput extends AbstractDataInput
 	implements ActionListener {
@@ -43,8 +43,10 @@ public class BooleanDataInput extends AbstractDataInput
 	
 	private void setValue(Object value, boolean fireEvent) {
 		if (value instanceof Boolean) {
-			field.setValue(value);
-			checkBox.setSelected(((Boolean)field.getValue()).booleanValue());
+			field.setTmpValue(value);
+			checkBox.setSelected(
+                ((Boolean)field.getTmpValue()).booleanValue()
+            );
 			if (fireEvent) fireDataInputChanged();
 		} else {
 			throw new IllegalArgumentException("wrong value type");

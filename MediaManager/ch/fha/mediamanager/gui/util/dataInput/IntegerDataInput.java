@@ -57,7 +57,7 @@ public class IntegerDataInput extends AbstractDataInput
 			intval = new Integer(0);
 		}
 		
-		field.setValue(value);
+		field.setTmpValue(value);
 		if (fireEvent) fireDataInputChanged();
 	}
 
