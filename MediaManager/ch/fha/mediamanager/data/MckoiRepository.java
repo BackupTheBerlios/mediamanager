@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.7 2004/06/22 13:35:44 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.8 2004/06/22 13:54:15 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -87,7 +87,8 @@ public final class MckoiRepository implements Repository {
      * 
      * @param entity
      */
-    public boolean create(MetaEntity entity){ 
+    public boolean create(MetaEntity entity){
+        // TODO
     	return false;
     }
     
@@ -96,6 +97,7 @@ public final class MckoiRepository implements Repository {
      * @param field
      */
     public boolean create(MetaField field){
+        // TODO
         return false;   
     }
     
@@ -104,6 +106,7 @@ public final class MckoiRepository implements Repository {
      * @param entity
      */
     public boolean delete(MetaEntity entity){
+        // TODO
         return false;
     }
     
@@ -112,6 +115,7 @@ public final class MckoiRepository implements Repository {
      * @param field
      */
     public boolean delete(MetaField field) {
+        // TODO
         return false;
     }
     
@@ -180,7 +184,7 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param ds
-     * @return
+     * @return Returns null
      */
     public DataSet insert(DataSet ds) {
         if (ds.isEmpty()) return null;
@@ -249,7 +253,7 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param ds
-     * @return
+     * @return Returns null
      */
     public DataSet update(DataSet ds) {
         if (ds.isEmpty() || ds == null) 
@@ -308,16 +312,18 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param ds
-     * @return
+     * @return Returns null
      */
     public DataSet delete(DataSet ds) {
         if (ds.isEmpty()) return null;
         
-        String sql = "DELETE FROM ";
+        String sql = "DELETE FROM " + ds.getMetaEntity().getName();
         Iterator it = ds.iterator();
         
         while(it.hasNext()) {
+            DataElement e = (DataElement) it.next();
             
+            // TODO
         }
         
         return null;
@@ -498,10 +504,25 @@ public final class MckoiRepository implements Repository {
     /**
      * 
      * @param entry
+     */
+    private void deleteEntry(Entry entry) {
+        if ((entry == null) || (entry.getId() < 1))
+            throw new IllegalArgumentException();
+        
+        String sql = "DELETE FROM Entry WHERE EntryId = " + 
+            entry.getId();
+        
+        dbConnection.executeQuery(sql);
+    }
+    
+    /**
+     * 
+     * @param entry
      * @return
      */
     private Timestamp updateEntry(Entry entry) {
-        if (entry == null) throw new IllegalArgumentException();
+        if ((entry == null) || (entry.getId() < 1))
+            throw new IllegalArgumentException();
         
         Timestamp stamp = new Timestamp(System.currentTimeMillis());
         
@@ -530,7 +551,8 @@ public final class MckoiRepository implements Repository {
      * @return
      */
     private int insertEntry(Entry entry) {
-        if (entry == null) throw new IllegalArgumentException();
+        if ((entry == null) || (entry.getId() != 0))
+            throw new IllegalArgumentException();
         
         int id = 0;
         String sql = "INSERT INTO Entry " +
