@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.18 2004/06/23 14:54:00 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.19 2004/06/23 14:57:58 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -431,7 +431,7 @@ public final class MckoiRepository implements Repository {
                         case (MetaField.VARCHAR):
                             insert.setString(
                                 i,
-                                field.getValue().toString()
+                                (String) field.getValue()
                             );
                             break;
                         case (MetaField.DATE):
@@ -499,12 +499,18 @@ public final class MckoiRepository implements Repository {
                         case (MetaField.PK):
                         case (MetaField.BOOLEAN):
                         case (MetaField.INT):
-                            update.setObject(i, (Integer) fields[i-1].getValue());
+                            update.setObject(
+                                i,
+                                (Integer) fields[i-1].getValue()
+                            );
                             break;
                         case (MetaField.LIST):
                         case (MetaField.TEXT):
                         case (MetaField.VARCHAR):
-                            update.setString(i, fields[i-1].getValue().toString());
+                            update.setString(
+                                i,
+                                (String) fields[i-1].getValue()
+                            );
                             break;
                         case (MetaField.DATE):
                             update.setDate(
@@ -608,17 +614,18 @@ public final class MckoiRepository implements Repository {
                     if (mf != null) {
                         Field field = new Field(mf);
                         switch(mf.getType()) {
-                            case(MetaField.INT):
-                            case(MetaField.PK):
+                            case (MetaField.INT):
+                            case (MetaField.PK):
                                 field.setValue(
                                     new Integer(result.getInt(mf.getName()))
                                 );
                                 break;
-                            case(MetaField.TEXT):
-                            case(MetaField.VARCHAR):
+                            case (MetaField.LIST):
+                            case (MetaField.TEXT):
+                            case (MetaField.VARCHAR):
                                 field.setValue(result.getString(mf.getName()));
                                 break;
-                            case(MetaField.BOOLEAN):
+                            case (MetaField.BOOLEAN):
                                 field.setValue(
                                     new Boolean(result.getBoolean(mf.getName()))
                                 );
