@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.8 2004/06/21 07:30:58 radisli Exp $
+//$Id: MainTab.java,v 1.9 2004/06/21 07:36:56 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -89,7 +89,6 @@ public class MainTab extends JPanel implements
 	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
 	 */
 	public void runAction(KeyPointEvent e) {
-		MainFrame mainWindow = MainFrame.getInstance();
 		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
 			topButton.setIcon(disconnectImage);
 			topButton.setToolTipText(disconnectStr);
@@ -97,7 +96,6 @@ public class MainTab extends JPanel implements
 		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
 			topButton.setIcon(connectImage);
 			topButton.setToolTipText(connectStr);
-			mainWindow.setStatusText("Wird getrennt ...", true);
 			topLabel.setText("Verbinden");
 		}
 	}
