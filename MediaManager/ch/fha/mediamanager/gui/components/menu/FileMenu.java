@@ -1,17 +1,45 @@
-//$Id: FileMenu.java,v 1.2 2004/06/16 08:10:36 radisli Exp $
+//$Id: FileMenu.java,v 1.3 2004/06/21 08:40:24 radisli Exp $
 package ch.fha.mediamanager.gui.components.menu;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.*;
 
-public class FileMenu extends JMenu {
+public class FileMenu extends JMenu implements
+	KeyPointListener
+{
+	private JMenuItem connectState, prefs;
+	
 	public FileMenu() {
-		MainFrame mainWindow = MainFrame.getInstance();
-		ActionListener mainActionListener = mainWindow.getMainActionListener();
-		
+		final MainFrame mainWindow = MainFrame.getInstance();
+		ActionHandler mainActionListener = mainWindow.getMainActionListener();
 		setText("File");
+		
+		connectState = new JMenuItem("Verbinden");
+		connect();
+		connectState.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(mainWindow.getConnectionStatus()) {
+					mainWindow.disconnect();
+				} else {
+					mainWindow.connect();
+				}
+			}
+		});
+		add(connectState);
+
+		prefs = new JMenuItem("Einstellungen");
+		prefs.setActionCommand("config");
+		prefs.setMnemonic(KeyEvent.VK_E);
+		prefs.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_E, KeyEvent.CTRL_MASK));
+		prefs.addActionListener(mainActionListener);
+		add(prefs);
+
+		addSeparator();
+
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setActionCommand("exit");
 		exit.setMnemonic(KeyEvent.VK_X);
@@ -19,16 +47,31 @@ public class FileMenu extends JMenu {
                 KeyEvent.VK_F4, ActionEvent.ALT_MASK));
 		exit.addActionListener(mainActionListener);
 		add(exit);
+		
+		mainActionListener.addActionListener(this);
+	}
+	
+	private void connect() {
+		connectState.setText("Verbinden");
+		connectState.setMnemonic(KeyEvent.VK_V);
+		connectState.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_V, KeyEvent.CTRL_MASK));
+	}
 
-/*		JMenuItem add = new JMenuItem("Add");
-		add.addActionListener(
-			new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					standartToolBar.addToolbarElement("images/LINE.gif", "Select");
-				}
-			}
-		);
-		add(add);
-*/
+	/**
+	 * Method is called when a preregistered key-point is reached.
+	 *  
+	 * @param e is a <code>KeyPointEvent</code> which contains:
+	 *          - specific <code>KeyPointEvent</code> (e.g. WINDOW_EXIT)
+	 */
+	public void runAction(KeyPointEvent e) {
+		if(e.getKeyPointEvent() == KeyPointEvent.CONNECTING) {
+			connectState.setText("Trennen");
+			connectState.setMnemonic(KeyEvent.VK_T);
+			connectState.setAccelerator(KeyStroke.getKeyStroke(
+	                KeyEvent.VK_T, KeyEvent.CTRL_MASK));
+		} else if(e.getKeyPointEvent() == KeyPointEvent.DISCONNECTING) {
+			connect();
+		}
 	}
 }
