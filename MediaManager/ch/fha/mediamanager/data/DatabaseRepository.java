@@ -10,11 +10,59 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.8 2004/06/05 14:13:06 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.9 2004/06/05 16:26:56 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
+    // --------------------------------
+    // ATTRIBUTES
+    // --------------------------------
+    
     private DatabaseConnection dbConnection;
+    
+    // --------------------------------
+    // OPERATIONS
+    // --------------------------------
+    
+    /**
+     * 
+     * @param entity
+     */
+    public boolean create(MetaEntity entity){ 
+    	return false;
+    }
+    
+    /**
+     * 
+     * @param field
+     */
+    public boolean create(MetaField field){
+        return false;   
+    }
+    
+    /**
+     * 
+     * @param entity
+     */
+    public boolean delete(MetaEntity entity){
+        return false;
+    }
+    
+    /**
+     * 
+     * @param field
+     */
+    public boolean delete(MetaField field) {
+        return false;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Set loadMetaData() {
+    	return null;
+    }
 
     /**
      * 
