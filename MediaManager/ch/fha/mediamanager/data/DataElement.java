@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.5 2004/06/11 12:35:27 crac Exp $
+ * @version $Id: DataElement.java,v 1.6 2004/06/15 12:12:16 crac Exp $
  */
 public class DataElement {
 	
@@ -59,6 +59,25 @@ public class DataElement {
     // --------------------------------
     // ACCESSORS
     // --------------------------------
+    
+    /**
+     * 
+     * @return
+     */
+    public MetaField[] getMetaFields() {
+        if (isEmpty()) return null;
+        
+        MetaField[] meta = new MetaField[size()];
+        java.util.Iterator it = iterator();
+        
+        int i = 0;
+        while(it.hasNext()) {
+            Field tmp = (Field) it.next();
+            meta[i] = tmp.getMetaField();
+        }
+        
+        return meta;
+    }
     
     /**
      * 

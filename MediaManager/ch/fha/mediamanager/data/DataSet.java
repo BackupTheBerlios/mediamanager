@@ -9,7 +9,7 @@ import java.util.HashSet;
  * @see DataElement
  *
  * @author crac
- * @version $Id: DataSet.java,v 1.5 2004/06/10 20:07:02 crac Exp $
+ * @version $Id: DataSet.java,v 1.6 2004/06/15 12:12:16 crac Exp $
  */
 public class DataSet {
 	
@@ -57,5 +57,28 @@ public class DataSet {
      */
     public int size() {
         return dSet.size();
+    }
+    
+    // --------------------------------
+    // ACCESSORS
+    // --------------------------------
+    
+    /**
+     * Returns the meta data about all fields of the 
+     * <code>DataSet</code>. 
+     * 
+     * <p>Note: Since all its <code>DataElement</code>s 
+     * have the same fields only the field of the first 
+     * elements are returned. 
+     * 
+     * @return
+     */
+    public MetaField[] getMetaFields() {
+        if (isEmpty()) return null;
+        
+        java.util.Iterator it = iterator();
+        DataElement element = (DataElement) it.next();
+        
+        return element.getMetaFields();
     }
 }
