@@ -10,7 +10,7 @@ import java.util.Vector;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.11 2004/06/05 18:24:42 crac Exp $
+ * @version $Id: DatabaseRepository.java,v 1.12 2004/06/05 18:47:25 crac Exp $
  */
 public class DatabaseRepository implements Repository {
     
@@ -18,8 +18,8 @@ public class DatabaseRepository implements Repository {
     // ATTRIBUTES
     // --------------------------------
     
-    private DatabaseConnection dbConnection = 
-        new DatabaseConnection();
+    private DatabaseConnection dbConnection; 
+        // = new DatabaseConnection(); // will be added when db is functional
     
     // --------------------------------
     // CONSTRUCTORS
