@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.20 2004/06/23 15:02:29 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.21 2004/06/24 11:19:32 crac Exp $
  */
 public final class MckoiRepository implements Repository {
     
@@ -162,15 +162,14 @@ public final class MckoiRepository implements Repository {
        
        // TODO
        
-       String sql = "ALTER TABLE ? ADD ? ? ?;";
+       String alter = "ALTER TABLE " + field.getEntity().getName() + 
+           " ADD ;";
        
        insertField = 
            dbConnection.prepareStatement("INSERT INTO Fld (" +
                "FldId,FldName,FldEntId,FldFldtypeId,FldLength," +
                "FldDefault,FldHidden,FldMandatory) VALUES (" +
                "?,?,?,?,?,?,?,?);");
-       createField = 
-           dbConnection.prepareStatement(sql);
            
        try {
            dbConnection.getConnection().setAutoCommit(false);
@@ -185,9 +184,6 @@ public final class MckoiRepository implements Repository {
            insertField.setInt(8, (field.getMandatory() == true)? 1: 0);
            insertField.execute();
            
-           createField.setString(1, field.getEntity().getName());
-           createField.setString(2, field.getName());
-           
            int length = field.getLength();
            
            switch (field.getType()) {
@@ -200,7 +196,7 @@ public final class MckoiRepository implements Repository {
                case (MetaField.TIMESTAMP):
            }
            
-           createField.execute();
+           dbConnection.executeQuery(alter);
            
            dbConnection.getConnection().commit();
        } catch (SQLException e) {
@@ -274,15 +270,16 @@ public final class MckoiRepository implements Repository {
        
        String delFld = "DELETE FROM Fld WHERE FldId = " + 
            field.getId() + ";";
-       String delField = "ALTER TABLE ? DELETE ?";
-       
-       java.sql.PreparedStatement delete = 
-           dbConnection.prepareStatement(delField);
+       String delField = "ALTER TABLE " + 
+           field.getEntity().getName() + " DELETE " + field.getName() + ";";
            
        try {
-           delete.setString(1, field.getEntity().getName());
-           delete.setString(2, field.getName());
-           delete.execute();
+           dbConnection.getConnection().setAutoCommit(false);
+           
+           dbConnection.executeQuery(delField);
+           dbConnection.executeQuery(delFld);
+           
+           dbConnection.getConnection().commit();
        } catch (SQLException e) {
            DataBus.logger.warn("Field " + field.getIdentifier() + 
                " not deleted.");
@@ -837,15 +834,12 @@ public final class MckoiRepository implements Repository {
         if ((pk == null) || (entity == null)) 
             throw new IllegalArgumentException();
         
-        java.sql.PreparedStatement sqlNextPK = 
-            dbConnection.prepareStatement("SELECT MAX(?) FROM ?;");
+        String sqlNextPK = 
+            "SELECT MAX(" + pk + ") FROM " + entity + ";";
         
         try {
-            sqlNextPK.setString(1, pk);
-            sqlNextPK.setString(2, entity);
-            
             ResultSet result =  
-                sqlNextPK.executeQuery();
+                dbConnection.executeQuery(sqlNextPK);
             result.next();
             return (result.getInt(1) + 1);
         } catch (SQLException e) {
@@ -890,6 +884,11 @@ public final class MckoiRepository implements Repository {
             new JTextField(mckoiSettings.getLogPath());
         panel.add(logPath);
         
+        panel.add(new JLabel("Log Datei"));
+        final JTextField logFile = 
+            new JTextField(mckoiSettings.getLogFile());
+        panel.add(logFile);
+        
         panel.add(new JLabel("Ignoriere Gross- Kleinschreibung"));
         final JTextField ignoreCase = 
             new JTextField(mckoiSettings.getIgnoreCase());
@@ -931,13 +930,13 @@ public final class MckoiRepository implements Repository {
                         mckoiSettings.restoreDefaults();
                         dataCache.setText(mckoiSettings.getDataCache());
                         logPath.setText(mckoiSettings.getLogPath());
+                        logFile.setText(mckoiSettings.getLogFile());
                         logLevel.setText(mckoiSettings.getLogLevel());
                         entryCache.setText(mckoiSettings.getEntryCache());
                         workerThreads.setText(mckoiSettings.getWorkerThreads());
                         dbPath.setText(mckoiSettings.getDbPath());
                         readOnly.setText(mckoiSettings.getReadOnly());
                         ignoreCase.setText(mckoiSettings.getIgnoreCase());
-                        panel.repaint();
                     }
                 }
             });
@@ -949,6 +948,7 @@ public final class MckoiRepository implements Repository {
                     if (e.getActionCommand().equals("save")) {
                         mckoiSettings.setDataCache(dataCache.getText());
                         mckoiSettings.setLogPath(logPath.getText());
+                        mckoiSettings.setLogFile(logFile.getText());
                         mckoiSettings.setLogLevel(logLevel.getText());
                         mckoiSettings.setEntryCache(entryCache.getText());
                         mckoiSettings.setWorkerThreads(workerThreads.getText());
