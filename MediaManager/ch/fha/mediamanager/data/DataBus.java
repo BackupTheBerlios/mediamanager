@@ -6,7 +6,7 @@ import java.util.Set;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.2 2004/06/05 18:24:42 crac Exp $
+ * @version $Id: DataBus.java,v 1.3 2004/06/05 18:32:11 crac Exp $
  */
 public class DataBus {
 	
@@ -46,7 +46,7 @@ public class DataBus {
 	 * 
 	 * @return
 	 */
-	public Repository getRepository() {
+	public static Repository getRepository() {
 		return repository;
 	}
 	
