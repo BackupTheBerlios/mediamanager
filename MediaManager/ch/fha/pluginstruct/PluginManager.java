@@ -3,96 +3,111 @@ package ch.fha.pluginstruct;
 
 /**
  * @author ia02vond
- * @version $Id: PluginManager.java,v 1.1 2004/05/13 12:09:40 ia02vond Exp $
+ * @version $Id: PluginManager.java,v 1.2 2004/05/18 07:41:06 ia02vond Exp $
  */
 public final class PluginManager {
 	
-	private static InOut inOut;
-	private static Version systemVersion;
-	private static String[] eventList;
+	private static PluginManager manager = null;
 	
-	private static Container container;
-	private static EventHandler eventHandler;
+	private InOut inOut;
+	private Version systemVersion;
+	private String[] eventList;
 	
-	private static boolean initialized = false;
+	private Container container;
+	private EventHandler eventHandler;
 	
-	public static void initialize() {
-		if (initialized) {
-			throw new IllegalStateException("already initialized");
-		}
-		if (systemVersion == null) {
-			throw new IllegalStateException("no system version specified");
-		}
-		if (eventList == null) {
-			throw new IllegalStateException("no event list specified");
-		}
+	private boolean initialized = false;
+	
+	private PluginManager() {}
+	
+	public void initialize() {
 		if (inOut == null) {
 			inOut = new KeyboardInOut();
 		}
-		container = new Container();
+		
+		container    = new Container();
 		eventHandler = new EventHandler(eventList);
 		container.init();
+		
 		initialized = true;
 	}
 	
-	public static void setSystemVersion(Version version) {
-		if (initialized) {
-			throw new IllegalStateException("already initialized");
+	public static PluginManager getInstance(String[] eventList, Version systemVersion) {
+		if (eventList == null || systemVersion == null ||
+			!systemVersion.validate()) {
+			throw new IllegalArgumentException();
 		}
-		if (version != null && version.validate()) {
-			systemVersion = version;
-		} else {
-			throw new IllegalArgumentException("illegal system version");
+	
+		if (manager != null) {
+			throw new IllegalStateException("already created");
 		}
+		
+		manager = new PluginManager();
+		manager.eventList = eventList;
+		manager.systemVersion = systemVersion;
+		
+		return manager;
 	}
 	
-	public static void setEventList(String[] events) {
-		if (initialized) {
-			throw new IllegalStateException("already initialized");
-		} else if (events == null) {
-			throw new IllegalStateException("illegal event list");
+	public static PluginManager getInstance() {
+		if (manager == null) {
+			throw new IllegalStateException("pluginmanager has not been initialized yet, use getInstance(String[], Version)");
 		}
-		eventList = events;
+		return manager;
 	}
 	
-	public static void fireEvent(
+	public void fireEvent(
 			PluginEvent pluginEvent,
 			String event,
 			String condition) throws OperationCancelException {
 		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
 		eventHandler.fireEvent(pluginEvent, event, condition);
 	}
 	
-	public static boolean isPluginActivated(String identifier) {
+	public boolean isPluginActivated(String identifier) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
 		return getContainer().isPluginActivated(identifier);
 	}
 	
-	public static void setPluginActivity(String identifier, boolean activated) {
+	public void setPluginActivity(String identifier, boolean activated) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
 		getContainer().setPluginActivity(identifier, activated);
 	}
 	
-	public static void addEventHandlerListener(EventHandlerListener listener) {
+	public void addEventHandlerListener(EventHandlerListener listener) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
 		getEventHandler().addEventHandlerListener(listener);
 	}
 	
-	public static void removeEventHandlerListener(EventHandlerListener listener) {
+	public void removeEventHandlerListener(EventHandlerListener listener) {
+		
+		if (!initialized) throw new IllegalStateException("not initialized");
+		
 		getEventHandler().removeEventHandlerListener(listener);
 	}
 	
 	protected static Container getContainer() {
-		return container;
+		return manager.container;
 	}
 	
 	protected static EventHandler getEventHandler() {
-		return eventHandler;
+		return manager.eventHandler;
 	}
 	
 	protected static Version getSystemVersion() {
-		return systemVersion;
+		return manager.systemVersion;
 	}
 	
 	protected static InOut getInOut() {
-		return inOut;
+		return manager.inOut;
 	}
 	
 }
