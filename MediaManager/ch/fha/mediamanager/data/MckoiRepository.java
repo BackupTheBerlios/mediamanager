@@ -24,9 +24,9 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: DatabaseRepository.java,v 1.22 2004/06/19 08:34:52 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.1 2004/06/19 09:13:01 crac Exp $
  */
-public final class DatabaseRepository implements Repository {
+public final class MckoiRepository implements Repository {
     
     // --------------------------------
     // FIELDS
@@ -51,7 +51,7 @@ public final class DatabaseRepository implements Repository {
      * 
      * 
      */
-    public DatabaseRepository() {}
+    public MckoiRepository() {}
     
     // --------------------------------
     // OPERATIONS
