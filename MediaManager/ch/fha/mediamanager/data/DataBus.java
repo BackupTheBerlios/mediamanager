@@ -10,11 +10,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import ch.fha.mediamanager.gui.*;
+import ch.fha.mediamanager.gui.framework.KeyPointEvent;
+
 /**
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.30 2004/06/28 12:43:43 crac Exp $
+ * @version $Id: DataBus.java,v 1.31 2004/06/28 14:00:28 radisli Exp $
  */
 public final class DataBus {
 	
@@ -77,8 +80,10 @@ public final class DataBus {
             //user = new User();
             
             DataBus.logger.info("Repository connected.");
+            MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.POST_CONNECT);
         } else {
-            DataBus.logger.info("No repository available.");   
+            DataBus.logger.info("No repository available.");
+            MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.CONNECT_ERROR);
         }
     }
     
@@ -92,8 +97,10 @@ public final class DataBus {
             currentRepository.disconnect();
             metaData = null;
             DataBus.logger.info("Repository disconnected.");
+            MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.POST_DISCONNECT);
         } else {
-            DataBus.logger.info("No repository available.");   
+            DataBus.logger.info("No repository available.");
+            MainFrame.getInstance().getMainActionListener().fireAction(KeyPointEvent.DISCONNECT_ERROR);
         }
     }
 	
