@@ -1,13 +1,13 @@
 package ch.fha.mediamanager.data;
 
 /**
- * Holds meta information about an entity field.
+ * Holds meta information about the field of an entity.
  * 
  * @see MetaEntity
  * @see MetaData
  * 
  * @author crac
- * @version $Id: MetaField.java,v 1.4 2004/06/11 12:36:14 crac Exp $
+ * @version $Id: MetaField.java,v 1.5 2004/06/11 17:03:47 crac Exp $
  */
 public final class MetaField implements Cloneable {
 	
