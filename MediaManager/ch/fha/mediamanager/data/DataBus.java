@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.22 2004/06/25 16:11:39 crac Exp $
+ * @version $Id: DataBus.java,v 1.23 2004/06/25 17:26:46 crac Exp $
  */
 public final class DataBus {
 	
@@ -207,7 +207,7 @@ public final class DataBus {
      * 
 	 * @return Returns the MetaData
 	 */
-	public static MetaData getMetaData() {
+	protected static MetaData getMetaData() {
 	    return metaData;
 	}
     

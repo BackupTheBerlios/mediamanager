@@ -1,5 +1,6 @@
 package ch.fha.mediamanager.data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.13 2004/06/25 17:15:49 crac Exp $
+ * @version $Id: MetaData.java,v 1.14 2004/06/25 17:26:46 crac Exp $
  */
 public final class MetaData {
     
@@ -19,8 +20,8 @@ public final class MetaData {
     // FIELDS
     // --------------------------------
     
-    private Set metaFields = new java.util.HashSet();
-    private Set metaEntities = new java.util.HashSet();
+    private HashSet metaFields = new HashSet();
+    private HashSet metaEntities = new HashSet();
     
     // --------------------------------
     // CONSTRUCTORS
@@ -159,18 +160,22 @@ public final class MetaData {
     
     /**
      * 
-     * @return
+     * @return Returns clone of <code>MetaEntity</code>
+     *      Set to prevent direct modification of 
+     *      the elements
      */
-    protected Set getEntities() {
-    	return metaEntities;
+    protected HashSet getEntities() {
+    	return (HashSet) metaEntities.clone();
     }
     
     /**
      * 
-     * @return
+     * @return Returns clone of <code>MetaField</code>
+     *      Set to prevent direct modification of 
+     *      the elements
      */
-    protected Set getFields() {
-    	return metaFields;
+    protected HashSet getFields() {
+    	return (HashSet) metaFields.clone();
     }
     
     /**
