@@ -11,7 +11,7 @@ import java.util.Set;
  * @see MetaEntity
  * 
  * @author crac
- * @version $Id: MetaData.java,v 1.6 2004/06/19 11:05:19 crac Exp $
+ * @version $Id: MetaData.java,v 1.7 2004/06/20 22:42:47 crac Exp $
  */
 public final class MetaData {
     
@@ -138,6 +138,55 @@ public final class MetaData {
      */
     public Set getFields() {
     	return metaFields;
+    }
+    
+    /**
+     * 
+     * @param e
+     * @return
+     */
+    public boolean contains(MetaEntity e) {
+        java.util.Iterator it = fieldIterator();
+        while (it.hasNext()) {
+            MetaEntity tmp = (MetaEntity) it.next();
+            if (tmp.equals(e)) {
+                return true;   
+            }
+        }
+        return false;   
+    }
+    
+    /**
+     * 
+     * @param f
+     * @return
+     */
+    public boolean contains(MetaField f) {
+        java.util.Iterator it = fieldIterator();
+        while (it.hasNext()) {
+            MetaField tmp = (MetaField) it.next();
+            if (tmp.equals(f)) {
+                return true;   
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @param e
+     * @return
+     */
+    public MetaField getField(String name, MetaEntity e) {
+        java.util.Iterator it = fieldIterator();
+        while (it.hasNext()) {
+            MetaField tmp = (MetaField) it.next();
+            if (tmp.equals(new MetaField(name, e))) {
+                return tmp;   
+            }
+        }
+        return null;   
     }
     
     /**
