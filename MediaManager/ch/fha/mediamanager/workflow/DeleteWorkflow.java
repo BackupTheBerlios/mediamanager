@@ -17,7 +17,7 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.4 2004/06/23 17:03:41 ia02vond Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.5 2004/06/25 06:58:59 radisli Exp $
  */
 public class DeleteWorkflow implements Workflow {
 
@@ -34,7 +34,7 @@ public class DeleteWorkflow implements Workflow {
 	public void start() {
 		if (dataSet.size() == 1 && JOptionPane.showConfirmDialog(
 					MainFrame.getInstance(),
-					"Soll der Eintrag wirklich gelöscht werden?",
+					"Soll der Eintrag wirklich gel\u00f6scht werden?",
 					"???",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
@@ -44,7 +44,7 @@ public class DeleteWorkflow implements Workflow {
 			
 		} else if (dataSet.size() > 1 && JOptionPane.showConfirmDialog(
 				MainFrame.getInstance(),
-				"Sollen die " + dataSet.size() + " Einträge wirklich gelöscht werden?",
+				"Sollen die " + dataSet.size() + " Eintr\u00e4ge wirklich gel\u00f6scht werden?",
 				"???",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
@@ -60,7 +60,7 @@ public class DeleteWorkflow implements Workflow {
 			pluginManager.fireEvent(
 					new MMPluginEvent(dataElement),
 					"predelete",
-					metaEntity.getIdentifier());
+					metaEntity.getName());
 			
 			
 			// delete
@@ -71,11 +71,11 @@ public class DeleteWorkflow implements Workflow {
 			pluginManager.fireEvent(
 					new MMPluginEvent(dataElement),
 					"postdelete",
-					metaEntity.getIdentifier());
+					metaEntity.getName());
 		
 		} catch (OperationCancelException e) {
 			String message =
-				"Operation 'delete " + metaEntity.getIdentifier() +
+				"Operation 'delete " + metaEntity.getName() +
 				" ' was canceled by a plugin.";
 			DataBus.logger.info(message);
 		}
