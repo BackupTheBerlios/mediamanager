@@ -1,4 +1,4 @@
-//$Id: StdTabPanel.java,v 1.13 2004/06/24 06:12:31 crac Exp $
+//$Id: StdTabPanel.java,v 1.14 2004/06/25 06:45:51 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -28,10 +28,10 @@ public class StdTabPanel extends JPanel {
 		table.addMouseListener(new DataTablePopupMenu(table, model, decorator, metaEntity));
 		
 		JPanel defaultButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton exit = new JButton("Exit");
-		exit.setActionCommand("exit");
-		exit.addActionListener(mainActionListener);
-		defaultButtonPanel.add(exit);
+		JButton back = new JButton("Zur\u00fcck");
+		back.setActionCommand("tabs");
+		back.addActionListener(mainActionListener);
+		defaultButtonPanel.add(back);
 		add(defaultButtonPanel, BorderLayout.SOUTH);
 	}
 }
