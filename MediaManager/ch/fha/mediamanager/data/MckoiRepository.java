@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  *
  * @author crac
- * @version $Id: MckoiRepository.java,v 1.57 2004/06/30 22:11:59 crac Exp $
+ * @version $Id: MckoiRepository.java,v 1.58 2004/07/01 09:12:31 crac Exp $
  */
 public final class MckoiRepository extends AbstractRepository {
     
@@ -560,6 +560,7 @@ public final class MckoiRepository extends AbstractRepository {
             if (entry.getId() != 0) break;
             
             entry.setId(insertEntry(entry));
+            el.setEntry(entry);
             
             sql += " ( EntryId ";
             values += entry.getId();
@@ -672,6 +673,7 @@ public final class MckoiRepository extends AbstractRepository {
             try {
                 Entry entry = el.getEntry();
                 entry.setLastModified(updateEntry(entry));
+                el.setEntry(entry);
                 
                 for (int i = 1; i <= fields.length; i++) {
                     MetaField metaField = fields[i-1].getMetaField();

@@ -6,9 +6,9 @@ import java.util.Set;
 /**
  *
  * @author crac
- * @version $Id: DataElement.java,v 1.21 2004/06/29 11:53:01 crac Exp $
+ * @version $Id: DataElement.java,v 1.22 2004/07/01 09:12:31 crac Exp $
  */
-public class DataElement {
+public final class DataElement {
 	
     // --------------------------------
     // FIELDS
@@ -28,19 +28,19 @@ public class DataElement {
      * @param entry
      */
     public DataElement(MetaEntity entity, Entry entry) {
-        this.entity = entity;
+        this.entity = (MetaEntity) entity.clone();
         this.entry = (Entry) entry.clone();
         initFields(entity);
     }
     
     /**
-    *
+    * Used for creating a new <code>DataElement</code> 
+    * which is not already in the repository.
+    * 
     * @param entity
     */
     public DataElement(MetaEntity entity) {
-        this.entity = entity;
-        this.entry = new Entry();
-        initFields(entity);
+        this(entity, new Entry());
     }
     
     // --------------------------------
@@ -163,6 +163,8 @@ public class DataElement {
     }
     
     /**
+     * Returns copy of the <code>Entry</code> to 
+     * prevent malicious mutations.
      * 
      * @return Returns the <code>Entry</code>
      */
@@ -252,7 +254,7 @@ public class DataElement {
      * @return Returns the <code>MetaEntity</code>
      */
     public MetaEntity getMetaEntity() {
-        return entity;
+        return (MetaEntity) entity.clone();
     }
     
     /**
@@ -278,7 +280,7 @@ public class DataElement {
      * @param entry
      */
     protected void setEntry(Entry entry) {
-        this.entry = entry;
+        this.entry = (Entry) entry.clone();
     }
     
     /**
