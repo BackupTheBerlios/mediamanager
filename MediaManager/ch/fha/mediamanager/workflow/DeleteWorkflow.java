@@ -11,25 +11,26 @@ import ch.fha.pluginstruct.PluginManager;
 
 /**
  * @author ia02vond
- * @version $Id: DeleteWorkflow.java,v 1.2 2004/06/22 08:39:21 ia02vond Exp $
+ * @version $Id: DeleteWorkflow.java,v 1.3 2004/06/23 13:50:57 ia02vond Exp $
  */
 public class DeleteWorkflow implements Workflow {
 
-	private DataElement dataElement;
+	private DataSet dataSet;
 	private MetaEntity  metaEntity;
 	private PluginManager pluginManager;
 	
-	public DeleteWorkflow(DataElement dataElement) {
-		this.dataElement = dataElement;
-		this.metaEntity  = dataElement.getMetaEntity();
+	public DeleteWorkflow(DataSet dataSet) {
+		this.dataSet = dataSet;
+		this.metaEntity  = dataSet.getMetaEntity();
 		this.pluginManager = PluginManager.getInstance();
 	}
 	
 	public void start() {
-		try {
-			
+		/*
+		try {	
 			// TODO OptionPane confirm (yes, no);
-			
+			// TODO foreeach dataelement {
+			/*
 			if (true) {    // if yes
 				pluginManager.fireEvent(
 						new MMPluginEvent(dataElement),
@@ -48,13 +49,14 @@ public class DeleteWorkflow implements Workflow {
 						"postdelete",
 						metaEntity.getIdentifier());
 			
-				
-			}
+			
+			
 		} catch (OperationCancelException e) {
 			String message =
 				"Operation 'delete " + metaEntity.getIdentifier() +
 				" ' was canceled by a plugin.";
 			DataBus.logger.info(message);
 		}
+		*/
 	}
 }
