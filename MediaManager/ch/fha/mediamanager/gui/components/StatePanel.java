@@ -1,4 +1,4 @@
-//$Id: StatePanel.java,v 1.3 2004/06/25 14:18:24 radisli Exp $
+//$Id: StatePanel.java,v 1.4 2004/06/27 12:48:53 crac Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class StatePanel extends JPanel {
 	// Default color for disconnected state
 	private final static Color disconnected = Color.RED;
 	// Font type for the status text
-	private static final Font statusFont = new Font("arial", Font.BOLD, 12);
+	private static final Font statusFont = new Font("arial", Font.PLAIN, 12);
 	
 	private static boolean showStatePermanent;
 	private JLabel statusTextLabel = new JLabel();
