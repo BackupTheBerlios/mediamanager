@@ -13,7 +13,7 @@ import org.apache.log4j.PropertyConfigurator;
  * 
  * 
  * @author crac
- * @version $Id: DataBus.java,v 1.24 2004/06/26 12:19:23 crac Exp $
+ * @version $Id: DataBus.java,v 1.25 2004/06/26 15:18:42 crac Exp $
  */
 public final class DataBus {
 	
@@ -94,17 +94,6 @@ public final class DataBus {
         } else {
             DataBus.logger.info("No repository available.");   
         }
-    }
-    
-    /**
-     * 
-     * @deprecated Use #connect() instead.
-     * 
-     * @see #connect()
-     * @see #disconnect()
-     */
-    public static void loadRepository() {
-        connect();
     }
 	
     // --------------------------------
