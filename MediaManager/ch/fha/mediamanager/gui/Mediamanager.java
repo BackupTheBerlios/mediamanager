@@ -1,4 +1,4 @@
-// $Id: Mediamanager.java,v 1.10 2004/06/23 11:53:44 ia02vond Exp $
+// $Id: Mediamanager.java,v 1.11 2004/06/23 13:34:18 ia02vond Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.Dimension;
@@ -41,7 +41,10 @@ public class Mediamanager {
 			"preinsert",
 			"postinsert",
 			"preupdate",
-			"postupdate"
+			"postupdate",
+			"norow",
+			"singlerow",
+			"multirow"
 	};
 	/** current application version, used for plugin manager */
 	private final static Version APPL_VERSION = new Version("1_0");
