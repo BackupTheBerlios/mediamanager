@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.9 2004/06/21 07:36:56 radisli Exp $
+//$Id: MainTab.java,v 1.10 2004/06/21 08:40:58 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -139,7 +139,6 @@ public class MainTab extends JPanel implements
 		public void mousePressed(MouseEvent arg0) {}
 		public void mouseReleased(MouseEvent arg0) {}
 	}
-	
 	
 	/**
 	 * Simple Extension of <code>JLabel</code> which
