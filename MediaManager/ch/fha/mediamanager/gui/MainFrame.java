@@ -1,12 +1,14 @@
-//$Id: MainFrame.java,v 1.3 2004/06/16 08:10:36 radisli Exp $
+//$Id: MainFrame.java,v 1.4 2004/06/17 12:35:04 radisli Exp $
 package ch.fha.mediamanager.gui;
 
 import java.awt.*;
+import java.awt.Container;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.prefs.*;
 
+import ch.fha.pluginstruct.*;
 import ch.fha.mediamanager.gui.components.*;
 import ch.fha.mediamanager.gui.framework.*;
 
@@ -17,7 +19,8 @@ import ch.fha.mediamanager.gui.framework.*;
  */
 public class MainFrame extends JFrame implements
 	KeyPointListener, 
-	Savable
+	Savable,
+	InOut
 {
 	private StandartToolBar standartToolBar;
 	private JPanel mainTabPanel;
@@ -68,7 +71,7 @@ public class MainFrame extends JFrame implements
 		});
 		Preferences prefs = Mediamanager.getPrefs();
 
-		// ---> test
+		// ---> test KeyPointEvent
 		mainActionListener.addActionListener(this, new KeyPointEvent(KeyPointEvent.WINDOW_EXIT, "test successfull at MainFrame::init"));
 		
 		// Main Panel
@@ -97,8 +100,9 @@ public class MainFrame extends JFrame implements
 		mainPanelHolder = new JPanel(new BorderLayout());
 		JPanel windowHolder = new JPanel(new BorderLayout());
 
-		standartToolBar = new StandartToolBar();
-		cp.add(standartToolBar, BorderLayout.NORTH);
+		// Tool-Bar
+		// standartToolBar = new StandartToolBar();
+		// cp.add(standartToolBar, BorderLayout.NORTH);
 		
 		JPanel modificationPanel = new ModificationPanel();
 		windowHolder.add(modificationPanel, BorderLayout.WEST);
@@ -204,29 +208,6 @@ public class MainFrame extends JFrame implements
 	}
 
 	/**
-	 * TODO Description 
-	 */
-	public void display(Exception e) {
-		e.printStackTrace();
-		JOptionPane.showMessageDialog(
-			this,
-			e.getMessage(),
-			"Fehler",
-			JOptionPane.ERROR_MESSAGE);
-	}
-	
-	/**
-	 * TODO Description 
-	 */
-	public int askUser(String message) {
-		return JOptionPane.showConfirmDialog(
-				this,
-				message,
-				"Nachticht",
-				JOptionPane.OK_OPTION);
-	}
-	
-	/**
 	 * Saves the current settings.
 	 * 
 	 * @param prefs the object where the local settings should be stored
@@ -248,12 +229,12 @@ public class MainFrame extends JFrame implements
 			prefs.putInt(SCREEN_MODE, screenMode);
 			prefs.flush();
 		} catch(BackingStoreException e) {
-			display(e);
+			exception(e);
 		}
 	}
 
 	/**
-	 * TODO Description 
+	 * TODO ---> To Delete 
 	 */
 	public void runAction(KeyPointEvent e) {
 		System.out.println("runAction performed in MainFrame:");
@@ -267,14 +248,71 @@ public class MainFrame extends JFrame implements
 	 * @param arg0 WindowEvent
 	 */
 	public void myWindowClosing(WindowEvent arg0) {
-//		if(askUser("Wollen Sie wirklich beenden?") == JOptionPane.YES_OPTION) {
+		String[] options = {"Ja", "Nein"};
+		if(option("Wollen Sie wirklich beenden?", options) == 0) {
 			mainActionListener.fireAction(KeyPointEvent.WINDOW_EXIT);
 			try {
 				Mediamanager.fireSave();
 			} catch(Exception e) {
-				display(e);
+				exception(e);
 			}
 			System.exit(0);
 		}
-//	}
+	}
+
+	/**
+	 * Shows the <code>message</code> in a message dialog
+	 * 
+	 * @param message the message wich will be shown
+	 */	
+	public void message(String message) {
+		JOptionPane.showMessageDialog(
+			this,
+			message, 
+			"Hinweis",
+			JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Shows a <code>showOptionDialog</code> which displays a
+	 * <code>message</code> and must be answered by one of the
+	 * <code>options</code> choices.
+	 * 
+	 * @param message the message which will be displayed
+	 * @param options the choices which will be given
+	 */
+	public int option(String message, String[] options) {
+		return JOptionPane.showOptionDialog(
+			this,
+			message,
+			"Nachricht",
+			JOptionPane.DEFAULT_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			null, 
+			options,
+			options[0]);
+	}
+
+	/**
+	 * Used due compatibility with <code>InOut</code> interface
+	 * 
+	 * @param e <code>PluginLogicException</code>
+	 */
+	public void exception(PluginLogicException e) {
+		exception((Exception)e);
+	}
+
+	/**
+	 * Shows the <code>e</code> exception in a message dialog
+	 * 
+	 * @param e is the exeption which should be displayed
+	 */
+	public void exception(Exception e) {
+		e.printStackTrace();
+		JOptionPane.showMessageDialog(
+			this,
+			e.getMessage(),
+			"Fehler",
+			JOptionPane.ERROR_MESSAGE);
+	}
 }

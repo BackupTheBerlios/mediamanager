@@ -1,4 +1,4 @@
-//$Id: MainTab.java,v 1.4 2004/06/16 10:29:34 ia02vond Exp $
+//$Id: MainTab.java,v 1.5 2004/06/17 12:35:04 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -20,8 +20,9 @@ public class MainTab extends JPanel {
 	// Images for connectbutton
 	private final static ImageIcon connectImage = new ImageIcon("images/connect.gif");
 	private final static ImageIcon disconnectImage = new ImageIcon("images/disconnect.gif");
-	// Connectbutton
+
 	private NavButton topButton;
+	private JLabel topLabel;
 	
 	/**
 	 * Constructor which creates the <code>MainTab</code>
@@ -44,24 +45,26 @@ public class MainTab extends JPanel {
 						topButton.setIcon(connectImage);
 						topButton.setToolTipText(connectStr);
 						mainWindow.setStatusText("Wird getrennt ...", true);
+						topLabel.setText("Verbinden");
 					} else {
 						mainWindow.setConnectionStatus(true);
 						topButton.setIcon(disconnectImage);
 						topButton.setToolTipText(disconnectStr);
 						mainWindow.setStatusText("Wird verbunden ...", true);
+						topLabel.setText("Trennen");
 					}
 				}
 			} ,
 			"Zum Server verbinden");
 		topButtonPanel.add(topButton);
-		JLabel topLabel = new RenderedJLabel("Verbinden");
+		topLabel = new RenderedJLabel("Verbinden");
 		topLabel.setFont(MainFrame.titleFont);
 		topButtonPanel.add(topLabel);
 		basePanel.add(topButtonPanel);
 		
 		ImageIcon prefsImage = new ImageIcon("images/prefs.gif");
 		NavButton middleButton = new NavButton(prefsImage,
-				mainActionListener, "Haupteinstellungen ver�ndern");
+				mainActionListener, "Haupteinstellungen ver\u00e4ndern");
 		middleButton.setActionCommand("config");
 		middleButtonPanel.add(middleButton);
 		JLabel middleLabel = new RenderedJLabel("Einstellungen");

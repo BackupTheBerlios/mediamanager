@@ -1,4 +1,4 @@
-// $Id: MainTabPanel.java,v 1.1 2004/06/05 13:49:35 radisli Exp $
+// $Id: MainTabPanel.java,v 1.2 2004/06/17 12:35:04 radisli Exp $
 package ch.fha.mediamanager.gui.components;
 
 import java.awt.*;
@@ -9,16 +9,13 @@ import javax.swing.*;
  *
  * @author Roman Rietmann
  */
-public class MainTabPanel extends JPanel {
-	private JTabbedPane tabbedPane;
-	private JPanel mainTab, moviesTab;
-	
+public class MainTabPanel extends JPanel {	
 	public MainTabPanel() {
 		setLayout(new BorderLayout());
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		mainTab = new MainTab();
-		moviesTab = new StdTabPanel();
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JPanel mainTab = new MainTab();
+		JPanel moviesTab = new StdTabPanel();
 		tabbedPane.addTab("Hauptfenster", mainTab);
 		tabbedPane.addTab("Movies", moviesTab);
 	
